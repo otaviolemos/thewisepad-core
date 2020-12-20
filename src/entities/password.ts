@@ -2,7 +2,7 @@ import { InvalidPasswordError } from './errors/invalid-password-error'
 import { Either, left, right } from '../shared/either'
 
 export class Password {
-  private readonly _value
+  private readonly _value: string
 
   public get value () {
     return this._value

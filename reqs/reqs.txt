@@ -1,5 +1,4 @@
 Tasks
-- make all classes immutable
 
 Use Cases
 - create user
