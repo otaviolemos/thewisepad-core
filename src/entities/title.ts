@@ -6,6 +6,7 @@ export class Title {
 
   private constructor (title: string) {
     this.value = title
+    Object.freeze(this)
   }
 
   public static create (title: string): Either<InvalidTitleError, Title> {
