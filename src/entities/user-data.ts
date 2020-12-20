@@ -1,3 +1,4 @@
 export interface UserData {
-  email: string
+  email: string,
+  password: string
 }
