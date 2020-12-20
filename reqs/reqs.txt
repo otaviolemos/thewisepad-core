@@ -1,6 +1,6 @@
 Tasks
 - add password to user 
-- validate password
+- validate password (needs to be at least 6 char long; contain number)
 
 
 Use Cases
