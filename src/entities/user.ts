@@ -20,6 +20,7 @@ export class User {
   private constructor (email: Email, password: Password) {
     this._email = email
     this._password = password
+    Object.freeze(this)
   }
 
   public static create (userData: UserData): Either<InvalidEmailError | InvalidPasswordError, User> {
