@@ -13,7 +13,7 @@ export class Title {
       return right(new Title(title))
     }
 
-    return left(new InvalidTitleError())
+    return left(new InvalidTitleError(title))
   }
 
   static validate (title: string): boolean {

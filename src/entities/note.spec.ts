@@ -20,6 +20,6 @@ describe('Note entity', () => {
     const validEmail = 'my@mail.com'
     const validContent = 'content'
     const validOwner: User = User.create({ email: validEmail }).value as User
-    expect(Note.create(validOwner, invalidTitle, validContent)).toEqual(left(new InvalidTitleError()))
+    expect(Note.create(validOwner, invalidTitle, validContent)).toEqual(left(new InvalidTitleError('')))
   })
 })
