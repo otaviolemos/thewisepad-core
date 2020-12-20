@@ -1,8 +1,8 @@
 Tasks
 
 Use Cases
-- create user
+- signup 
 - create note
 - update note
 - delete note
-- login
+- signin
