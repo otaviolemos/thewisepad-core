@@ -18,10 +18,18 @@ describe('User domain entity', () => {
     expect(error).toEqual(left(new InvalidPasswordError()))
   })
 
+  test('should not create user with invalid password (too few chars)', () => {
+    const validEmail = 'any@mail.com'
+    const invalidPassword = '123ab'
+    const error = User.create({ email: validEmail, password: invalidPassword })
+    expect(error).toEqual(left(new InvalidPasswordError()))
+  })
+
   test('should create user with valid data', () => {
     const validEmail = 'any@mail.com'
     const validPassword = '1validpassword'
     const user: User = User.create({ email: validEmail, password: validPassword }).value as User
     expect(user.email.value).toEqual(validEmail)
+    expect(user.password.value).toEqual(validPassword)
   })
 })
