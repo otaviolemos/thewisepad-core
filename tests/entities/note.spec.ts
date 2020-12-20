@@ -1,7 +1,7 @@
-import { User } from './user'
-import { Note } from './note'
-import { InvalidTitleError } from './errors/invalid-title-error'
-import { left } from '../shared/either'
+import { User } from '../../src/entities/user'
+import { Note } from '../../src/entities/note'
+import { InvalidTitleError } from '../../src/entities/errors/invalid-title-error'
+import { left } from '../../src/shared/either'
 
 describe('Note entity', () => {
   test('should be created with a valid title and owner', () => {
