@@ -25,7 +25,7 @@ export class Password {
       return false
     }
 
-    if (!Password.hasNumber(password)) {
+    if (!Password.hasNumber(password) || password.length < 6) {
       return false
     }
 

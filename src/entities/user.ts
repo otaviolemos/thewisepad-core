@@ -7,13 +7,19 @@ import { InvalidPasswordError } from './errors/invalid-password-error'
 
 export class User {
   private readonly _email: Email
+  private readonly _password: Password
 
   public get email () {
     return this._email
   }
 
-  private constructor (email: Email) {
+  public get password () {
+    return this._password
+  }
+
+  private constructor (email: Email, password: Password) {
     this._email = email
+    this._password = password
   }
 
   public static create (userData: UserData): Either<InvalidEmailError | InvalidPasswordError, User> {
@@ -28,7 +34,8 @@ export class User {
     }
 
     const email: Email = emailOrError.value as Email
+    const password: Password = passwordOrError.value as Password
 
-    return right(new User(email))
+    return right(new User(email, password))
   }
 }
