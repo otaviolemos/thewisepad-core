@@ -1,6 +1,5 @@
 Next tasks
-- implement error paths in singup use case
-  - should handle data validation (email, password)
+- signin
 
 Use Cases
 - signup 
