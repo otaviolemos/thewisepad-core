@@ -8,6 +8,8 @@ import { ExistingUserError } from '../../../src/use-cases/signup/errors/existing
 
 const validEmail = 'any@mail.com'
 const validPassword = '1validpassword'
+const invalidEmail = 'invalid_email'
+const invalidPassword = '1abc'
 const validUserSignupRequest: UserData = { email: validEmail, password: validPassword }
 const emptyUserRepository: UserRepository = new InMemoryUserRepository([])
 const userDataArrayWithSingleUser: UserData[] = new Array(validUserSignupRequest)
@@ -27,5 +29,19 @@ describe('Signup use case', () => {
     const sut: Signup = new Signup(singleUserUserRepository, encoder)
     const error = await sut.perform(validUserSignupRequest)
     expect(error.value).toEqual(new ExistingUserError(validUserSignupRequest))
+  })
+
+  test('should not signup user with invalid email', async () => {
+    const userSignupRequestWithInvalidEmail: UserData = { email: invalidEmail, password: validPassword }
+    const sut: Signup = new Signup(emptyUserRepository, encoder)
+    const error = await sut.perform(userSignupRequestWithInvalidEmail)
+    expect((error.value as Error).name).toEqual('InvalidEmailError')
+  })
+
+  test('should not signup user with invalid password', async () => {
+    const userSignupRequestWithInvalidPassword: UserData = { email: validEmail, password: invalidPassword }
+    const sut: Signup = new Signup(emptyUserRepository, encoder)
+    const error = await sut.perform(userSignupRequestWithInvalidPassword)
+    expect((error.value as Error).name).toEqual('InvalidPasswordError')
   })
 })
