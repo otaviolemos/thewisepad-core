@@ -1,6 +1,6 @@
-import { UserData } from '../entities/user-data'
-import { UserRepository } from './ports/user-repository'
-import { Encoder } from './signup/ports/encoder'
+import { UserData } from '../../entities/user-data'
+import { UserRepository } from '../ports/user-repository'
+import { Encoder } from './ports/encoder'
 
 export class Signup {
   private readonly _userRepository: UserRepository

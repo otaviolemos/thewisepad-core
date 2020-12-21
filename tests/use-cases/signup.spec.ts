@@ -3,7 +3,7 @@ import { UserRepository } from '../../src/use-cases/ports/user-repository'
 import { InMemoryUserRepository } from './in-memory-user-repository'
 import { Encoder } from '../../src/use-cases/signup/ports/encoder'
 import { FakeEncoder } from './signup/fake-encoder'
-import { Signup } from '../../src/use-cases/signup'
+import { Signup } from '../../src/use-cases/signup/signup'
 
 const validEmail = 'any@mail.com'
 const validPassword = '1validpassword'

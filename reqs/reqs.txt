@@ -1,5 +1,7 @@
 Next tasks
 - implement error paths in singup use case
+  - should not add existing user
+  - should handle data validation (email, password)
 
 Use Cases
 - signup 
