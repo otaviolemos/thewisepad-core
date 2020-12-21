@@ -3,9 +3,9 @@ import { left } from '../../src/shared/either'
 import { InvalidEmailError } from '../../src/entities/errors/invalid-email-error'
 import { InvalidPasswordError } from '../../src/entities/errors/invalid-password-error'
 
-const invalidEmail = 'invalid_email'
-const validPassword = '1validpassword'
 const validEmail = 'any@mail.com'
+const validPassword = '1validpassword'
+const invalidEmail = 'invalid_email'
 const invalidPasswordWithNoNumbers = 'invalid'
 const invalidPasswordWithTooFewCharacters = '123ab'
 
