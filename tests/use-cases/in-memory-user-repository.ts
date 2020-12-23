@@ -17,11 +17,12 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   public async findUserByEmail (email: string): Promise<UserData> {
-    const found = this.data.find(user => user.email === email)
+    const found = this.data.find((user: UserData, index: number) => user.email === email)
     return found || null
   }
 
   public async addUser (userData: UserData): Promise<UserData> {
+    userData.id = this.data.length.toString()
     this._data.push(userData)
     return userData
   }
