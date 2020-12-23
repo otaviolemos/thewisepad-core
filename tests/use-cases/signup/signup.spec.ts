@@ -20,7 +20,7 @@ describe('Signup use case', () => {
   test('should signup user with valid data', async () => {
     const sut: Signup = new Signup(emptyUserRepository, encoder)
     const userSignupResponse = (await sut.perform(validUserSignupRequest))
-    expect(userSignupResponse.value).toEqual(validUserSignupRequest)
+    expect((userSignupResponse.value as UserData).id).toEqual('0')
     expect((await emptyUserRepository.findAllUsers()).length).toEqual(1)
     expect((await emptyUserRepository.findUserByEmail(validEmail)).password).toEqual(validPassword + 'ENCRYPTED')
   })
