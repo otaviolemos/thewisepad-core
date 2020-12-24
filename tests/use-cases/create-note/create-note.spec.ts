@@ -11,6 +11,7 @@ describe('Create note use case', () => {
   const unregisteredEmail = 'other@mail.com'
   const validPassword = '1validpassword'
   const validTitle = 'my note'
+  const invalidTitle = ''
   const emptyContent = ''
   const emptyNoteRepository: NoteRepository = new InMemoryNoteRepository([])
   const validRegisteredUser: UserData = { email: validEmail, password: validPassword, id: '0' }
@@ -20,6 +21,12 @@ describe('Create note use case', () => {
 
   const validCreateNoteRequest: NoteData = {
     title: validTitle,
+    content: emptyContent,
+    ownerEmail: validRegisteredUser.email
+  }
+
+  const createNoteRequestWithInvalidTitle: NoteData = {
+    title: invalidTitle,
     content: emptyContent,
     ownerEmail: validRegisteredUser.email
   }
@@ -43,5 +50,18 @@ describe('Create note use case', () => {
     const usecase = new CreateNote(emptyNoteRepository, singleUserUserRepository)
     const response: Error = (await usecase.perform(createNoteRequestWithUnregisteredOwner)).value as Error
     expect(response.name).toEqual('UnregisteredOwnerError')
+  })
+
+  test('should not create note with invalid title', async () => {
+    const usecase = new CreateNote(emptyNoteRepository, singleUserUserRepository)
+    const response: Error = (await usecase.perform(createNoteRequestWithInvalidTitle)).value as Error
+    expect(response.name).toEqual('InvalidTitleError')
+  })
+
+  test('should not create note with existing title', async () => {
+    const usecase = new CreateNote(emptyNoteRepository, singleUserUserRepository)
+    await usecase.perform(validCreateNoteRequest)
+    const error: Error = (await usecase.perform(validCreateNoteRequest)).value as Error
+    expect(error.name).toEqual('ExistingTitleError')
   })
 })
