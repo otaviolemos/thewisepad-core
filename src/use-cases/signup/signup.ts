@@ -30,7 +30,7 @@ export class Signup {
       return left(userOrError.value)
     }
 
-    if (await this.userRepository.findUserByEmail(userSignupRequest.email) !== null) {
+    if (await this.userRepository.findUserByEmail(userSignupRequest.email)) {
       return left(new ExistingUserError(userSignupRequest))
     }
 
