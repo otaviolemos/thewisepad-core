@@ -8,11 +8,13 @@ import { InMemoryNoteRepository } from './in-memory-note-repository'
 
 describe('Create note use case', () => {
   const validEmail = 'any@mail.com'
+  const unregisteredEmail = 'other@mail.com'
   const validPassword = '1validpassword'
   const validTitle = 'my note'
   const emptyContent = ''
   const emptyNoteRepository: NoteRepository = new InMemoryNoteRepository([])
   const validRegisteredUser: UserData = { email: validEmail, password: validPassword, id: '0' }
+  const unregisteredUser: UserData = { email: unregisteredEmail, password: validPassword }
   const userDataArrayWithSingleUser: UserData[] = new Array(validRegisteredUser)
   const singleUserUserRepository: UserRepository = new InMemoryUserRepository(userDataArrayWithSingleUser)
 
@@ -21,12 +23,25 @@ describe('Create note use case', () => {
     content: emptyContent,
     ownerEmail: validRegisteredUser.email
   }
-  test('should create note with valid user and title', async () => {
+
+  const createNoteRequestWithUnregisteredOwner: NoteData = {
+    title: validTitle,
+    content: emptyContent,
+    ownerEmail: unregisteredUser.email
+  }
+
+  test('should create note with valid owner and title', async () => {
     const usecase = new CreateNote(emptyNoteRepository, singleUserUserRepository)
-    const response: NoteData = await usecase.perform(validCreateNoteRequest) as NoteData
+    const response: NoteData = (await usecase.perform(validCreateNoteRequest)).value as NoteData
     const addedNotes: NoteData[] = await emptyNoteRepository.findAllNotesFrom(validRegisteredUser.id)
     expect(addedNotes.length).toEqual(1)
     expect((addedNotes[0]).title).toEqual(validTitle)
     expect(response.id).toEqual('0')
+  })
+
+  test('should not create note with unregistered owner', async () => {
+    const usecase = new CreateNote(emptyNoteRepository, singleUserUserRepository)
+    const response: Error = (await usecase.perform(createNoteRequestWithUnregisteredOwner)).value as Error
+    expect(response.name).toEqual('UnregisteredOwnerError')
   })
 })
