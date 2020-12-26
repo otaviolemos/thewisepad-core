@@ -20,4 +20,18 @@ export class InMemoryNoteRepository implements NoteRepository {
   public async findAllNotesFrom (userId: string): Promise<NoteData[]> {
     return this.data.filter(note => note.ownerId === userId)
   }
+
+  public async findNote (noteId: string): Promise<NoteData> {
+    const note = this.data.find(note => note.id === noteId)
+    return note || null
+  }
+
+  public async remove (noteId: string): Promise<NoteData> {
+    const noteToBeRemoved = this.data.find(note => note.id === noteId)
+    if (!noteToBeRemoved) {
+      return null
+    }
+    this.data.splice(this.data.findIndex(note => note.id === noteId), 1)
+    return noteToBeRemoved
+  }
 }
