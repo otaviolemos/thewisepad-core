@@ -32,4 +32,10 @@ describe('Load notes for user use case', () => {
     expect(notes[0].title).toEqual(validTitle1)
     expect(notes[1].title).toEqual(validTitle2)
   })
+
+  test('should fail to load notes for user without notes', async () => {
+    const usecase: LoadNotesForUser = new LoadNotesForUser(noteRepositoryWithTwoNotes)
+    const notes: NoteData[] = await usecase.perform('1')
+    expect(notes.length).toEqual(0)
+  })
 })
