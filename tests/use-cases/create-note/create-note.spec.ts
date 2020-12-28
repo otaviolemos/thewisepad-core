@@ -43,7 +43,7 @@ describe('Create note use case', () => {
     const addedNotes: NoteData[] = await emptyNoteRepository.findAllNotesFrom(validRegisteredUser.id)
     expect(addedNotes.length).toEqual(1)
     expect((addedNotes[0]).title).toEqual(validTitle)
-    expect(response.id).toEqual('0')
+    expect(response.id).not.toBeUndefined()
   })
 
   test('should not create note with unregistered owner', async () => {
