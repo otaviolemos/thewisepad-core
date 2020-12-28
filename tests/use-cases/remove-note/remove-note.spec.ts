@@ -9,9 +9,7 @@ describe('Remove note use case', () => {
     ownerId: '0',
     id: '0'
   }
-  const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([
-    aNote
-  ])
+  const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([aNote])
 
   test('should remove existing note', async () => {
     const usecase = new RemoveNote(noteRepositoryWithANote)
