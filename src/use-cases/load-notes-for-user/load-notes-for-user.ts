@@ -1,4 +1,4 @@
-import { NoteData } from '../create-note/note-data'
+import { NoteData } from '../ports/note-data'
 import { NoteRepository } from '../ports/note-repository'
 
 export class LoadNotesForUser {

@@ -1,4 +1,4 @@
-import { NoteData } from '../../../src/use-cases/create-note/note-data'
+import { NoteData } from '../../../src/use-cases/ports/note-data'
 import { NoteRepository } from '../../../src/use-cases/ports/note-repository'
 import { LoadNotesForUser } from '../../../src/use-cases/load-notes-for-user/load-notes-for-user'
 import { InMemoryNoteRepository } from '../in-memory-note-repository'

@@ -1,6 +1,6 @@
 import { UserData } from '../../../src/entities/user-data'
 import { CreateNote } from '../../../src/use-cases/create-note/create-note'
-import { NoteData } from '../../../src/use-cases/create-note/note-data'
+import { NoteData } from '../../../src/use-cases/ports/note-data'
 import { NoteRepository } from '../../../src/use-cases/ports/note-repository'
 import { UserRepository } from '../../../src/use-cases/ports/user-repository'
 import { InMemoryUserRepository } from '../in-memory-user-repository'
