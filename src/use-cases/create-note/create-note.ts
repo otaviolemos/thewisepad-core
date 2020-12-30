@@ -6,7 +6,7 @@ import { UserRepository } from '../ports/user-repository'
 import { ExistingTitleError } from './errors/existing-title-error'
 import { UnregisteredOwnerError } from './errors/invalid-owner-error'
 import { NoteData } from './note-data'
-import { NoteRepository } from './ports/note-repository'
+import { NoteRepository } from '../ports/note-repository'
 
 export class CreateNote {
   private readonly noteRepository: NoteRepository

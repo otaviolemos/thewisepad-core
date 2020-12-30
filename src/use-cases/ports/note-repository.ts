@@ -1,4 +1,4 @@
-import { NoteData } from '../note-data'
+import { NoteData } from './note-data'
 
 export interface NoteRepository {
   addNote (noteData: NoteData): Promise<NoteData>
