@@ -5,4 +5,4 @@ Use Cases
 - create note ✅
 - update note content
 - update note title
-- delete note
+- remove note ✅
