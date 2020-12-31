@@ -23,7 +23,8 @@ export class CreateNote {
       return left(new UnregisteredOwnerError())
     }
 
-    const noteOrError = Note.create(User.create(owner).value as User, request.title, request.content)
+    const ownerUser = User.create(owner).value as User
+    const noteOrError = Note.create(ownerUser, request.title, request.content)
     if (noteOrError.isLeft()) {
       return left(noteOrError.value)
     }
@@ -35,6 +36,6 @@ export class CreateNote {
     }
 
     const note: Note = noteOrError.value
-    return right(await this.noteRepository.addNote({ title: note.title.value, content: note.content, ownerId: owner.id }))
+    return right(await this.noteRepository.addNote({ title: note.title.value, content: note.content, ownerEmail: ownerUser.email.value, ownerId: owner.id }))
   }
 }

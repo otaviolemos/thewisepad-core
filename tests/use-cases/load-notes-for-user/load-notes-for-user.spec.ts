@@ -7,18 +7,21 @@ describe('Load notes for user use case', () => {
   const validTitle1 = 'my note'
   const validTitle2 = 'my second note'
   const validUserId = '0'
+  const validUserEmail = 'valid@mail.com'
   const someContent = 'some content'
   const someOtherContent = 'some other content'
   const note1: NoteData = {
     title: validTitle1,
     content: someContent,
     ownerId: validUserId,
+    ownerEmail: validUserEmail,
     id: '0'
   }
   const note2: NoteData = {
     title: validTitle2,
     content: someOtherContent,
     ownerId: validUserId,
+    ownerEmail: validUserEmail,
     id: '1'
   }
   const noteRepositoryWithTwoNotes: NoteRepository = new InMemoryNoteRepository(

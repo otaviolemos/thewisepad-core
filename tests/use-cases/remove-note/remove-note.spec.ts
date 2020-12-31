@@ -6,6 +6,7 @@ describe('Remove note use case', () => {
   const aNote = {
     title: 'my note',
     content: 'some content',
+    ownerEmail: 'valid@mail.com',
     ownerId: '0',
     id: '0'
   }
