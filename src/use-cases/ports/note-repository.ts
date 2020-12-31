@@ -5,4 +5,6 @@ export interface NoteRepository {
   findAllNotesFrom (userId: string): Promise<NoteData[]>
   findNote (noteId: string): Promise<NoteData>
   remove (noteId: string): Promise<NoteData>
+  updateTitle (noteId: string, newTitle: string): Promise<boolean>
+  updateContent (noteId: string, newContent: string): Promise<boolean>
 }
