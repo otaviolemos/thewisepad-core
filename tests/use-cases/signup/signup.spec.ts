@@ -6,17 +6,17 @@ import { FakeEncoder } from './fake-encoder'
 import { Signup } from '../../../src/use-cases/signup/signup'
 import { ExistingUserError } from '../../../src/use-cases/signup/errors/existing-user-error'
 
-const validEmail = 'any@mail.com'
-const validPassword = '1validpassword'
-const invalidEmail = 'invalid_email'
-const invalidPassword = '1abc'
-const validUserSignupRequest: UserData = { email: validEmail, password: validPassword }
-const emptyUserRepository: UserRepository = new InMemoryUserRepository([])
-const userDataArrayWithSingleUser: UserData[] = new Array(validUserSignupRequest)
-const singleUserUserRepository: UserRepository = new InMemoryUserRepository(userDataArrayWithSingleUser)
-const encoder: Encoder = new FakeEncoder()
-
 describe('Signup use case', () => {
+  const validEmail = 'any@mail.com'
+  const validPassword = '1validpassword'
+  const invalidEmail = 'invalid_email'
+  const invalidPassword = '1abc'
+  const validUserSignupRequest: UserData = { email: validEmail, password: validPassword }
+  const emptyUserRepository: UserRepository = new InMemoryUserRepository([])
+  const userDataArrayWithSingleUser: UserData[] = new Array(validUserSignupRequest)
+  const singleUserUserRepository: UserRepository = new InMemoryUserRepository(userDataArrayWithSingleUser)
+  const encoder: Encoder = new FakeEncoder()
+
   test('should signup user with valid data', async () => {
     const sut: Signup = new Signup(emptyUserRepository, encoder)
     const userSignupResponse = (await sut.perform(validUserSignupRequest))
