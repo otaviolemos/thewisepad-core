@@ -22,8 +22,8 @@ describe('Sign up use case', () => {
     const userSignUpResponse = (await sut.perform(validUserSignUpRequest))
     expect((userSignUpResponse.value as UserData).email).toEqual(validEmail)
     expect((userSignUpResponse.value as UserData).id).not.toBeUndefined()
-    expect((await emptyUserRepository.findAllUsers()).length).toEqual(1)
-    expect((await emptyUserRepository.findUserByEmail(validEmail)).password).toEqual(validPassword + 'ENCRYPTED')
+    expect((await emptyUserRepository.findAll()).length).toEqual(1)
+    expect((await emptyUserRepository.findByEmail(validEmail)).password).toEqual(validPassword + 'ENCRYPTED')
   })
 
   test('should not sign up existing user', async () => {

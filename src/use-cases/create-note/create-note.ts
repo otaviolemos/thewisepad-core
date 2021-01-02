@@ -18,7 +18,7 @@ export class CreateNote {
   }
 
   public async perform (request: NoteData): Promise<Either<ExistingTitleError | UnregisteredOwnerError | InvalidTitleError, NoteData>> {
-    const owner = await this.userRepository.findUserByEmail(request.ownerEmail)
+    const owner = await this.userRepository.findByEmail(request.ownerEmail)
     if (!owner) {
       return left(new UnregisteredOwnerError())
     }

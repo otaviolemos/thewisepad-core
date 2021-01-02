@@ -30,11 +30,11 @@ export class SignUp {
       return left(userOrError.value)
     }
 
-    if (await this.userRepository.findUserByEmail(userSignupRequest.email)) {
+    if (await this.userRepository.findByEmail(userSignupRequest.email)) {
       return left(new ExistingUserError(userSignupRequest))
     }
 
     const encodedPassword = await this.encoder.encode(userSignupRequest.password)
-    return right(await this._userRepository.addUser({ email: userSignupRequest.email, password: encodedPassword }))
+    return right(await this._userRepository.add({ email: userSignupRequest.email, password: encodedPassword }))
   }
 }
