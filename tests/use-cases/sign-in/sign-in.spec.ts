@@ -6,7 +6,7 @@ import { Signin } from '../../../src/use-cases/signin/signin'
 import { InMemoryUserRepository } from '../in-memory-user-repository'
 import { FakeEncoder } from '../signup/fake-encoder'
 
-describe('Signin use case', () => {
+describe('Sign in use case', () => {
   const validEmail = 'any@mail.com'
   const validPassword = '1validpassword'
   const wrongPassword = 'wrongpassword'
