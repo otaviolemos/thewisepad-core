@@ -4,7 +4,7 @@ import { WrongPasswordError } from '../../../src/use-cases/sign-in/errors/wrong-
 import { UserNotFoundError } from '../../../src/use-cases/sign-in/errors/user-not-found-error'
 import { SignIn } from '../../../src/use-cases/sign-in/sign-in'
 import { InMemoryUserRepository } from '../in-memory-user-repository'
-import { FakeEncoder } from '../signup/fake-encoder'
+import { FakeEncoder } from '../sign-up/fake-encoder'
 
 describe('Sign in use case', () => {
   const validEmail = 'any@mail.com'
