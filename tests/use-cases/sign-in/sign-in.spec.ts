@@ -12,8 +12,8 @@ describe('Sign in use case', () => {
   const wrongPassword = 'wrongpassword'
   const unregisteredEmail = 'another@mail.com'
   const validUserSigninRequest: UserData = { email: validEmail, password: validPassword }
-  const signinRequestWithWrongPassword: UserData = { email: validEmail, password: wrongPassword }
-  const signinRequestWithUnregisteredUser: UserData = { email: unregisteredEmail, password: validPassword }
+  const signInRequestWithWrongPassword: UserData = { email: validEmail, password: wrongPassword }
+  const signInRequestWithUnregisteredUser: UserData = { email: unregisteredEmail, password: validPassword }
   const userDataArrayWithSingleUser: UserData[] = new Array({ email: validEmail, password: validPassword + 'ENCRYPTED' })
   const singleUserUserRepository: UserRepository = new InMemoryUserRepository(userDataArrayWithSingleUser)
 
@@ -25,13 +25,13 @@ describe('Sign in use case', () => {
 
   test('should not sign in if password is incorrect', async () => {
     const usecase = new SignIn(singleUserUserRepository, new FakeEncoder())
-    const response = (await (usecase.perform(signinRequestWithWrongPassword))).value as WrongPasswordError
+    const response = (await (usecase.perform(signInRequestWithWrongPassword))).value as WrongPasswordError
     expect(response.name).toEqual('WrongPasswordError')
   })
 
   test('should not sign in with unregistered user', async () => {
     const usecase = new SignIn(singleUserUserRepository, new FakeEncoder())
-    const response = (await (usecase.perform(signinRequestWithUnregisteredUser))).value as UserNotFoundError
+    const response = (await (usecase.perform(signInRequestWithUnregisteredUser))).value as UserNotFoundError
     expect(response.name).toEqual('UserNotFoundError')
   })
 })
