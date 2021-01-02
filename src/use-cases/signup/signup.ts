@@ -4,7 +4,7 @@ import { User } from '../../entities/user'
 import { Either, left, right } from '../../shared/either'
 import { UserRepository } from '../ports/user-repository'
 import { ExistingUserError } from './errors/existing-user-error'
-import { Encoder } from './ports/encoder'
+import { Encoder } from '../ports/encoder'
 import { InvalidPasswordError } from '../../entities/errors/invalid-password-error'
 
 export class Signup {
