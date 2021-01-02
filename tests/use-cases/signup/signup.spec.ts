@@ -1,7 +1,7 @@
 import { UserData } from '../../../src/entities/user-data'
 import { UserRepository } from '../../../src/use-cases/ports/user-repository'
 import { InMemoryUserRepository } from '../in-memory-user-repository'
-import { Encoder } from '../../../src/use-cases/signup/ports/encoder'
+import { Encoder } from '../../../src/use-cases/ports/encoder'
 import { FakeEncoder } from './fake-encoder'
 import { Signup } from '../../../src/use-cases/signup/signup'
 import { ExistingUserError } from '../../../src/use-cases/signup/errors/existing-user-error'
