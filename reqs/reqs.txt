@@ -1,6 +1,6 @@
 Use Cases
 - signup ✅
-- signin
+- signin ✅
 - load notes for a user ✅
 - create note ✅
 - update note ✅
