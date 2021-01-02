@@ -16,6 +16,6 @@ describe('Remove note use case', () => {
     const usecase = new RemoveNote(noteRepositoryWithANote)
     const removed = await usecase.perform(aNote.id)
     expect(removed).toBe(aNote)
-    expect(await noteRepositoryWithANote.findNote(aNote.id)).toBeNull()
+    expect(await noteRepositoryWithANote.findById(aNote.id)).toBeNull()
   })
 })
