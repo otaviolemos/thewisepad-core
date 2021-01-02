@@ -17,19 +17,19 @@ describe('Sign in use case', () => {
   const userDataArrayWithSingleUser: UserData[] = new Array({ email: validEmail, password: validPassword + 'ENCRYPTED' })
   const singleUserUserRepository: UserRepository = new InMemoryUserRepository(userDataArrayWithSingleUser)
 
-  test('should correctly signin if password is correct', async () => {
+  test('should correctly sign in if password is correct', async () => {
     const usecase = new SignIn(singleUserUserRepository, new FakeEncoder())
     const userResponse = (await (usecase.perform(validUserSigninRequest))).value
     expect(userResponse).toEqual(validUserSigninRequest)
   })
 
-  test('should not signin if password is incorrect', async () => {
+  test('should not sign in if password is incorrect', async () => {
     const usecase = new SignIn(singleUserUserRepository, new FakeEncoder())
     const response = (await (usecase.perform(signinRequestWithWrongPassword))).value as WrongPasswordError
     expect(response.name).toEqual('WrongPasswordError')
   })
 
-  test('should not signin with unregistered user', async () => {
+  test('should not sign in with unregistered user', async () => {
     const usecase = new SignIn(singleUserUserRepository, new FakeEncoder())
     const response = (await (usecase.perform(signinRequestWithUnregisteredUser))).value as UserNotFoundError
     expect(response.name).toEqual('UserNotFoundError')
