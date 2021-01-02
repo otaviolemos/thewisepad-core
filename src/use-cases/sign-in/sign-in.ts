@@ -5,7 +5,7 @@ import { Encoder } from '../ports/encoder'
 import { UserNotFoundError } from './errors/user-not-found-error'
 import { WrongPasswordError } from './errors/wrong-password-error'
 
-export class Signin {
+export class SignIn {
   private readonly userRepository: UserRepository
   private readonly encoder: Encoder
 
