@@ -11,35 +11,35 @@ describe('Signup use case', () => {
   const validPassword = '1validpassword'
   const invalidEmail = 'invalid_email'
   const invalidPassword = '1abc'
-  const validUserSignupRequest: UserData = { email: validEmail, password: validPassword }
+  const validUserSignUpRequest: UserData = { email: validEmail, password: validPassword }
   const emptyUserRepository: UserRepository = new InMemoryUserRepository([])
-  const userDataArrayWithSingleUser: UserData[] = new Array(validUserSignupRequest)
+  const userDataArrayWithSingleUser: UserData[] = new Array(validUserSignUpRequest)
   const singleUserUserRepository: UserRepository = new InMemoryUserRepository(userDataArrayWithSingleUser)
   const encoder: Encoder = new FakeEncoder()
 
-  test('should signup user with valid data', async () => {
+  test('should sign up user with valid data', async () => {
     const sut: Signup = new Signup(emptyUserRepository, encoder)
-    const userSignupResponse = (await sut.perform(validUserSignupRequest))
+    const userSignupResponse = (await sut.perform(validUserSignUpRequest))
     expect((userSignupResponse.value as UserData).email).toEqual(validEmail)
     expect((userSignupResponse.value as UserData).id).not.toBeUndefined()
     expect((await emptyUserRepository.findAllUsers()).length).toEqual(1)
     expect((await emptyUserRepository.findUserByEmail(validEmail)).password).toEqual(validPassword + 'ENCRYPTED')
   })
 
-  test('should not signup existing user', async () => {
+  test('should not sign up existing user', async () => {
     const sut: Signup = new Signup(singleUserUserRepository, encoder)
-    const error = await sut.perform(validUserSignupRequest)
-    expect(error.value).toEqual(new ExistingUserError(validUserSignupRequest))
+    const error = await sut.perform(validUserSignUpRequest)
+    expect(error.value).toEqual(new ExistingUserError(validUserSignUpRequest))
   })
 
-  test('should not signup user with invalid email', async () => {
+  test('should not sign up user with invalid email', async () => {
     const userSignupRequestWithInvalidEmail: UserData = { email: invalidEmail, password: validPassword }
     const sut: Signup = new Signup(emptyUserRepository, encoder)
     const error = await sut.perform(userSignupRequestWithInvalidEmail)
     expect((error.value as Error).name).toEqual('InvalidEmailError')
   })
 
-  test('should not signup user with invalid password', async () => {
+  test('should not sign up user with invalid password', async () => {
     const userSignupRequestWithInvalidPassword: UserData = { email: validEmail, password: invalidPassword }
     const sut: Signup = new Signup(emptyUserRepository, encoder)
     const error = await sut.perform(userSignupRequestWithInvalidPassword)
