@@ -1,6 +1,6 @@
 import { UserData } from '../../../src/entities/user-data'
 import { UserRepository } from '../../../src/use-cases/ports/user-repository'
-import { InMemoryUserRepository } from '../in-memory-user-repository'
+import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
 import { Encoder } from '../../../src/use-cases/ports/encoder'
 import { FakeEncoder } from './fake-encoder'
 import { SignUp } from '../../../src/use-cases/sign-up/sign-up'

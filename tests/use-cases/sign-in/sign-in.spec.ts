@@ -1,7 +1,7 @@
 import { UserData } from '../../../src/entities/user-data'
 import { UserRepository } from '../../../src/use-cases/ports/user-repository'
 import { SignIn } from '../../../src/use-cases/sign-in/sign-in'
-import { InMemoryUserRepository } from '../in-memory-user-repository'
+import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
 import { FakeEncoder } from '../sign-up/fake-encoder'
 
 describe('Sign in use case', () => {
