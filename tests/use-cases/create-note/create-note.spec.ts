@@ -3,8 +3,8 @@ import { CreateNote } from '../../../src/use-cases/create-note/create-note'
 import { NoteData } from '../../../src/use-cases/ports/note-data'
 import { NoteRepository } from '../../../src/use-cases/ports/note-repository'
 import { UserRepository } from '../../../src/use-cases/ports/user-repository'
-import { InMemoryUserRepository } from '../in-memory-user-repository'
-import { InMemoryNoteRepository } from '../in-memory-note-repository'
+import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
+import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
 
 describe('Create note use case', () => {
   const validEmail = 'any@mail.com'

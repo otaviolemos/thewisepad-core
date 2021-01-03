@@ -1,5 +1,5 @@
-import { NoteData } from '../../src/use-cases/ports/note-data'
-import { NoteRepository } from '../../src/use-cases/ports/note-repository'
+import { NoteData } from '../../../src/use-cases/ports/note-data'
+import { NoteRepository } from '../../../src/use-cases/ports/note-repository'
 import { v4 as uuidv4 } from 'uuid'
 
 export class InMemoryNoteRepository implements NoteRepository {

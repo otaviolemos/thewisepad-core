@@ -1,5 +1,5 @@
-import { UserRepository } from '../../src/use-cases/ports/user-repository'
-import { UserData } from '../../src/entities/user-data'
+import { UserRepository } from '../../../src/use-cases/ports/user-repository'
+import { UserData } from '../../../src/entities/user-data'
 import { v4 as uuidv4 } from 'uuid'
 
 export class InMemoryUserRepository implements UserRepository {

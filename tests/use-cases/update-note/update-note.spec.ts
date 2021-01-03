@@ -2,8 +2,8 @@ import { NoteData } from '../../../src/use-cases/ports/note-data'
 import { NoteRepository } from '../../../src/use-cases/ports/note-repository'
 import { UserRepository } from '../../../src/use-cases/ports/user-repository'
 import { UpdateNote } from '../../../src/use-cases/update-note/update-note'
-import { InMemoryNoteRepository } from '../in-memory-note-repository'
-import { InMemoryUserRepository } from '../in-memory-user-repository'
+import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
+import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
 
 describe('Update note use case', () => {
   const originalTitle = 'my note'
