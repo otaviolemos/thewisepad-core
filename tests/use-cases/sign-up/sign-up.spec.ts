@@ -13,7 +13,8 @@ describe('Sign up use case', () => {
     const encoder: Encoder = new FakeEncoder()
     const sut: SignUp = new SignUp(emptyUserRepository, encoder)
     const validUserSignUpRequest =
-      UserBuilder.aUser()
+      UserBuilder
+        .aUser()
         .build()
     const userSignUpResponse = (await sut.perform(validUserSignUpRequest))
     expect((userSignUpResponse.value as UserData).email).toEqual(validUserSignUpRequest.email)
@@ -24,7 +25,8 @@ describe('Sign up use case', () => {
 
   test('should not sign up existing user', async () => {
     const validUserSignUpRequest =
-      UserBuilder.aUser()
+      UserBuilder
+        .aUser()
         .build()
     const userDataArrayWithSingleUser: UserData[] = new Array(validUserSignUpRequest)
     const singleUserUserRepository: UserRepository = new InMemoryUserRepository(userDataArrayWithSingleUser)
@@ -36,7 +38,8 @@ describe('Sign up use case', () => {
 
   test('should not sign up user with invalid email', async () => {
     const userSignupRequestWithInvalidEmail: UserData =
-      UserBuilder.aUser()
+      UserBuilder
+        .aUser()
         .withInvalidEmail()
         .build()
     const emptyUserRepository = new InMemoryUserRepository([])
@@ -48,7 +51,8 @@ describe('Sign up use case', () => {
 
   test('should not sign up user with invalid password', async () => {
     const userSignupRequestWithInvalidPassword: UserData =
-      UserBuilder.aUser()
+      UserBuilder
+        .aUser()
         .withInvalidPassword()
         .build()
     const emptyUserRepository = new InMemoryUserRepository([])
