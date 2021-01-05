@@ -8,7 +8,8 @@ export class NoteBuilder {
     title: 'my note',
     content: 'my content',
     ownerEmail: this.owner.email,
-    ownerId: this.owner.id
+    ownerId: this.owner.id,
+    id: '0'
   }
 
   public static aNote (): NoteBuilder {
@@ -17,6 +18,12 @@ export class NoteBuilder {
 
   public withInvalidTitle (): NoteBuilder {
     this.note.title = ''
+    return this
+  }
+
+  public withDifferentTitleAndId (): NoteBuilder {
+    this.note.title = 'other title'
+    this.note.id = '1'
     return this
   }
 
