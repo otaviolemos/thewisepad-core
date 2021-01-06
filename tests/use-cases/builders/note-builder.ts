@@ -33,6 +33,16 @@ export class NoteBuilder {
     return this
   }
 
+  public withUnregisteredOwner (): NoteBuilder {
+    const unregisteredEmail = 'unregistered@mail.com'
+    const unregisteredId = '10'
+    this.owner.email = unregisteredEmail
+    this.owner.id = unregisteredId
+    this.note.ownerEmail = unregisteredEmail
+    this.note.ownerId = unregisteredId
+    return this
+  }
+
   public build (): NoteData {
     return this.note
   }

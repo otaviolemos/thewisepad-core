@@ -25,12 +25,11 @@ describe('Create note use case', () => {
     const emptyNoteRepository = new InMemoryNoteRepository([])
     const singleUserUserRepository = getSingleUserUserRepository()
     const usecase = new CreateNote(emptyNoteRepository, singleUserUserRepository)
-    const unregisteredEmail = 'other@mail.com'
     const createNoteRequestWithUnregisteredOwner: NoteData =
       NoteBuilder
         .aNote()
+        .withUnregisteredOwner()
         .build()
-    createNoteRequestWithUnregisteredOwner.ownerEmail = unregisteredEmail
     const response: Error = (await usecase.perform(createNoteRequestWithUnregisteredOwner)).value as Error
     expect(response.name).toEqual('UnregisteredOwnerError')
   })
