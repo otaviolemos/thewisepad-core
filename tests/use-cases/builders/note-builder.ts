@@ -27,6 +27,12 @@ export class NoteBuilder {
     return this
   }
 
+  public withDifferentTitleAndContent (): NoteBuilder {
+    this.note.title = 'other title'
+    this.note.content = 'other content'
+    return this
+  }
+
   public build (): NoteData {
     return this.note
   }
