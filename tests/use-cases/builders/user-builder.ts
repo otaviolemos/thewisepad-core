@@ -11,6 +11,11 @@ export class UserBuilder {
     return new UserBuilder()
   }
 
+  public withDifferentEmail (): UserBuilder {
+    this.user.email = 'unregistered@mail.com'
+    return this
+  }
+
   public withInvalidEmail (): UserBuilder {
     this.user.email = 'invalid_email'
     return this
@@ -18,6 +23,11 @@ export class UserBuilder {
 
   public withInvalidPassword (): UserBuilder {
     this.user.password = '1abc'
+    return this
+  }
+
+  public withWrongPassword (): UserBuilder {
+    this.user.password = 'wrongpassword'
     return this
   }
 
