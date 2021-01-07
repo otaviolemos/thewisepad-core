@@ -51,20 +51,14 @@ describe('Create note use case', () => {
     const emptyNoteRepository = new InMemoryNoteRepository([])
     const singleUserUserRepository = getSingleUserUserRepository()
     const usecase = new CreateNote(emptyNoteRepository, singleUserUserRepository)
-    const validCreateNoteRequest: NoteData =
-      NoteBuilder
-        .aNote()
-        .build()
+    const validCreateNoteRequest: NoteData = NoteBuilder.aNote().build()
     await usecase.perform(validCreateNoteRequest)
     const error: Error = (await usecase.perform(validCreateNoteRequest)).value as Error
     expect(error.name).toEqual('ExistingTitleError')
   })
 
   function getSingleUserUserRepository (): UserRepository {
-    const validRegisteredUser: UserData =
-    UserBuilder
-      .aUser()
-      .build()
+    const validRegisteredUser: UserData = UserBuilder.aUser().build()
     const userDataArrayWithSingleUser: UserData[] = new Array(validRegisteredUser)
     return new InMemoryUserRepository(userDataArrayWithSingleUser)
   }
