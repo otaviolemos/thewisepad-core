@@ -1,9 +1,9 @@
 import { UserRepository } from '../../../src/use-cases/ports/user-repository'
 import { UserData } from '../../../src/entities/user-data'
-import { v4 as uuidv4 } from 'uuid'
 
 export class InMemoryUserRepository implements UserRepository {
   private readonly _data: UserData[]
+  private idcounter: number = 0
 
   public get data () {
     return this._data
@@ -23,7 +23,8 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   public async add (userData: UserData): Promise<UserData> {
-    userData.id = uuidv4()
+    userData.id = this.idcounter.toString()
+    this.idcounter++
     this._data.push(userData)
     return userData
   }

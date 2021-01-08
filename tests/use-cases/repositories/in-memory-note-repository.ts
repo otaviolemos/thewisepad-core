@@ -1,9 +1,9 @@
 import { NoteData } from '../../../src/use-cases/ports/note-data'
 import { NoteRepository } from '../../../src/use-cases/ports/note-repository'
-import { v4 as uuidv4 } from 'uuid'
 
 export class InMemoryNoteRepository implements NoteRepository {
   private readonly _data: NoteData[]
+  private idcounder: number = 0
   private get data () {
     return this._data
   }
@@ -13,7 +13,8 @@ export class InMemoryNoteRepository implements NoteRepository {
   }
 
   public async add (note: NoteData): Promise<NoteData> {
-    note.id = uuidv4()
+    note.id = this.idcounder.toString()
+    this.idcounder++
     this._data.push(note)
     return note
   }
