@@ -25,7 +25,7 @@ export class SignUp {
   }
 
   public async perform (userSignupRequest: UserData): Promise<Either<ExistingUserError | InvalidEmailError | InvalidPasswordError, UserData>> {
-    const userOrError = User.create(userSignupRequest)
+    const userOrError = User.create(userSignupRequest.email, userSignupRequest.password)
     if (userOrError.isLeft()) {
       return left(userOrError.value)
     }

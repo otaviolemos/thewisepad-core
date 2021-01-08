@@ -8,22 +8,22 @@ const invalidPasswordWithTooFewCharacters = '123ab'
 
 describe('User domain entity', () => {
   test('should not create user with invalid e-mail address', () => {
-    const error = User.create({ email: invalidEmail, password: validPassword }).value as Error
+    const error = User.create(invalidEmail, validPassword).value as Error
     expect(error.name).toEqual('InvalidEmailError')
   })
 
   test('should not create user with invalid password (no numbers)', () => {
-    const error = User.create({ email: validEmail, password: invalidPasswordWithNoNumbers }).value as Error
+    const error = User.create(validEmail, invalidPasswordWithNoNumbers).value as Error
     expect(error.name).toEqual('InvalidPasswordError')
   })
 
   test('should not create user with invalid password (too few chars)', () => {
-    const error = User.create({ email: validEmail, password: invalidPasswordWithTooFewCharacters }).value as Error
+    const error = User.create(validEmail, invalidPasswordWithTooFewCharacters).value as Error
     expect(error.name).toEqual('InvalidPasswordError')
   })
 
   test('should create user with valid data', () => {
-    const user: User = User.create({ email: validEmail, password: validPassword }).value as User
+    const user: User = User.create(validEmail, validPassword).value as User
     expect(user.email.value).toEqual(validEmail)
     expect(user.password.value).toEqual(validPassword)
   })

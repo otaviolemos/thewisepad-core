@@ -1,4 +1,3 @@
-import { UserData } from './ports/user-data'
 import { Either, left, right } from '../shared/either'
 import { InvalidEmailError } from './errors/invalid-email-error'
 import { Email } from './email'
@@ -23,20 +22,20 @@ export class User {
     Object.freeze(this)
   }
 
-  public static create (userData: UserData): Either<InvalidEmailError | InvalidPasswordError, User> {
-    const emailOrError = Email.create(userData.email)
+  public static create (email: string, password: string): Either<InvalidEmailError | InvalidPasswordError, User> {
+    const emailOrError = Email.create(email)
     if (emailOrError.isLeft()) {
-      return left(new InvalidEmailError(userData.email))
+      return left(new InvalidEmailError(email))
     }
 
-    const passwordOrError = Password.create(userData.password)
+    const passwordOrError = Password.create(password)
     if (passwordOrError.isLeft()) {
       return left(new InvalidPasswordError())
     }
 
-    const email: Email = emailOrError.value as Email
-    const password: Password = passwordOrError.value as Password
+    const emailObject: Email = emailOrError.value as Email
+    const passwordObject: Password = passwordOrError.value as Password
 
-    return right(new User(email, password))
+    return right(new User(emailObject, passwordObject))
   }
 }

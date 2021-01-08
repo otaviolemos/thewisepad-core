@@ -23,7 +23,7 @@ export class CreateNote {
       return left(new UnregisteredOwnerError())
     }
 
-    const ownerUser = User.create(owner).value as User
+    const ownerUser = User.create(owner.email, owner.password).value as User
     const noteOrError = Note.create(ownerUser, request.title, request.content)
     if (noteOrError.isLeft()) {
       return left(noteOrError.value)
