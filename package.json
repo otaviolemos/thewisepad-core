@@ -1,7 +1,7 @@
 {
-  "name": "notepad",
+  "name": "notepad-core",
   "version": "1.0.0",
-  "description": "",
+  "description": "Core of a simple notepad app developed using clean architecture and TDD.",
   "main": "index.js",
   "scripts": {
     "test:unit": "jest --passWithNoTests --watch",
