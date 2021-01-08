@@ -1,11 +1,3 @@
-Controllers
-- sign up 
-- sign in 
-- load notes for a user 
-- create note 
-- update note 
-- remove note 
-
 Use Cases
 - sign up ✅
 - sign in ✅
