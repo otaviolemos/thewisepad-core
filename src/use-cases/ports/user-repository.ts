@@ -1,4 +1,4 @@
-import { UserData } from '../../entities/ports/user-data'
+import { UserData } from './user-data'
 
 export interface UserRepository {
   findAll () : Promise<UserData[]>

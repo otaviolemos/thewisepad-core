@@ -1,4 +1,4 @@
-import { UserData } from '../../../src/entities/ports/user-data'
+import { UserData } from '../../../src/use-cases/ports/user-data'
 import { UserRepository } from '../../../src/use-cases/ports/user-repository'
 import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
 import { Encoder } from '../../../src/use-cases/ports/encoder'
