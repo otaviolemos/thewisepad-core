@@ -1,5 +1,5 @@
 import { InvalidEmailError } from '../../entities/errors/invalid-email-error'
-import { UserData } from '../../entities/user-data'
+import { UserData } from '../../entities/ports/user-data'
 import { User } from '../../entities/user'
 import { Either, left, right } from '../../shared/either'
 import { UserRepository } from '../ports/user-repository'

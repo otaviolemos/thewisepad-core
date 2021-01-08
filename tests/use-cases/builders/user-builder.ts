@@ -1,4 +1,4 @@
-import { UserData } from '../../../src/entities/user-data'
+import { UserData } from '../../../src/entities/ports/user-data'
 
 export class UserBuilder {
   private user: UserData = {

@@ -1,4 +1,4 @@
-import { UserData } from './user-data'
+import { UserData } from './ports/user-data'
 import { Either, left, right } from '../shared/either'
 import { InvalidEmailError } from './errors/invalid-email-error'
 import { Email } from './email'

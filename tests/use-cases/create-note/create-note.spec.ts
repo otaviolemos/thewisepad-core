@@ -1,4 +1,4 @@
-import { UserData } from '../../../src/entities/user-data'
+import { UserData } from '../../../src/entities/ports/user-data'
 import { CreateNote } from '../../../src/use-cases/create-note/create-note'
 import { NoteData } from '../../../src/use-cases/ports/note-data'
 import { UserRepository } from '../../../src/use-cases/ports/user-repository'

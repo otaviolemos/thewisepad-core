@@ -1,4 +1,4 @@
-import { UserData } from '../../../src/entities/user-data'
+import { UserData } from '../../../src/entities/ports/user-data'
 import { UserRepository } from '../../../src/use-cases/ports/user-repository'
 import { SignIn } from '../../../src/use-cases/sign-in/sign-in'
 import { UserBuilder } from '../builders/user-builder'
