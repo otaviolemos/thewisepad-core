@@ -1,9 +1,8 @@
-import { UserData } from '../../../src/use-cases/ports/user-data'
-import { UserRepository } from '../../../src/use-cases/ports/user-repository'
-import { SignIn } from '../../../src/use-cases/sign-in/sign-in'
-import { UserBuilder } from '../builders/user-builder'
-import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
-import { FakeEncoder } from '../sign-up/fake-encoder'
+import { UserData, UserRepository } from '@/use-cases/ports'
+import { SignIn } from '@/use-cases/sign-in'
+import { UserBuilder } from '@test/use-cases/builders'
+import { InMemoryUserRepository } from '@test/use-cases/repositories'
+import { FakeEncoder } from '@test/use-cases/sign-up'
 
 describe('Sign in use case', () => {
   test('should correctly sign in if password is correct', async () => {

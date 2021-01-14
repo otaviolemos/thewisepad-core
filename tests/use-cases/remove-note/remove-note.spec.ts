@@ -1,7 +1,7 @@
-import { NoteRepository } from '../../../src/use-cases/ports/note-repository'
-import { RemoveNote } from '../../../src/use-cases/remove-note/remove-note'
-import { NoteBuilder } from '../builders/note-builder'
-import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
+import { NoteRepository } from '@/use-cases/ports'
+import { RemoveNote } from '@/use-cases/remove-note'
+import { NoteBuilder } from '@test/use-cases/builders'
+import { InMemoryNoteRepository } from '@test/use-cases/repositories'
 
 describe('Remove note use case', () => {
   test('should remove existing note', async () => {

@@ -1,8 +1,7 @@
-import { NoteData } from '../../../src/use-cases/ports/note-data'
-import { NoteRepository } from '../../../src/use-cases/ports/note-repository'
-import { LoadNotesForUser } from '../../../src/use-cases/load-notes-for-user/load-notes-for-user'
-import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
-import { NoteBuilder } from '../builders/note-builder'
+import { NoteData, NoteRepository } from '@/use-cases/ports'
+import { LoadNotesForUser } from '@/use-cases/load-notes-for-user'
+import { InMemoryNoteRepository } from '@test/use-cases/repositories'
+import { NoteBuilder } from '@test/use-cases/builders'
 
 describe('Load notes for user use case', () => {
   test('should correctly load notes for a registered user', async () => {

@@ -1,11 +1,7 @@
-import { UserData } from '../../../src/use-cases/ports/user-data'
-import { CreateNote } from '../../../src/use-cases/create-note/create-note'
-import { NoteData } from '../../../src/use-cases/ports/note-data'
-import { UserRepository } from '../../../src/use-cases/ports/user-repository'
-import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
-import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
-import { UserBuilder } from '../builders/user-builder'
-import { NoteBuilder } from '../builders/note-builder'
+import { UserData, NoteData, UserRepository } from '@/use-cases/ports'
+import { CreateNote } from '@/use-cases/create-note'
+import { InMemoryUserRepository, InMemoryNoteRepository } from '@test/use-cases/repositories'
+import { UserBuilder, NoteBuilder } from '@test/use-cases/builders'
 
 describe('Create note use case', () => {
   test('should create note with valid owner and title', async () => {

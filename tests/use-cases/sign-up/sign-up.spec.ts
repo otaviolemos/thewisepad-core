@@ -1,11 +1,9 @@
-import { UserData } from '../../../src/use-cases/ports/user-data'
-import { UserRepository } from '../../../src/use-cases/ports/user-repository'
-import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
-import { Encoder } from '../../../src/use-cases/ports/encoder'
-import { FakeEncoder } from './fake-encoder'
-import { SignUp } from '../../../src/use-cases/sign-up/sign-up'
-import { ExistingUserError } from '../../../src/use-cases/sign-up/errors/existing-user-error'
-import { UserBuilder } from '../builders/user-builder'
+import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
+import { SignUp } from '@/use-cases/sign-up'
+import { ExistingUserError } from '@/use-cases/sign-up/errors'
+import { UserBuilder } from '@test/use-cases/builders'
+import { InMemoryUserRepository } from '@test/use-cases/repositories'
+import { FakeEncoder } from '@test/use-cases/sign-up'
 
 describe('Sign up use case', () => {
   test('should sign up user with valid data', async () => {

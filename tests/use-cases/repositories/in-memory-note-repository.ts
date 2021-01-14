@@ -1,5 +1,4 @@
-import { NoteData } from '../../../src/use-cases/ports/note-data'
-import { NoteRepository } from '../../../src/use-cases/ports/note-repository'
+import { NoteData, NoteRepository } from '@/use-cases/ports'
 
 export class InMemoryNoteRepository implements NoteRepository {
   private readonly _data: NoteData[]

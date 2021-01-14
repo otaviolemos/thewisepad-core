@@ -1,11 +1,7 @@
-import { NoteData } from '../../../src/use-cases/ports/note-data'
-import { NoteRepository } from '../../../src/use-cases/ports/note-repository'
-import { UserRepository } from '../../../src/use-cases/ports/user-repository'
-import { UpdateNote } from '../../../src/use-cases/update-note/update-note'
-import { NoteBuilder } from '../builders/note-builder'
-import { UserBuilder } from '../builders/user-builder'
-import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
-import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
+import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
+import { UpdateNote } from '@/use-cases/update-note'
+import { InMemoryNoteRepository, InMemoryUserRepository } from '@test/use-cases/repositories'
+import { UserBuilder, NoteBuilder } from '@test/use-cases/builders'
 
 describe('Update note use case', () => {
   test('should update title and content of existing note', async () => {
