@@ -17,7 +17,8 @@ export class UpdateNote {
   }
 
   public async perform (noteId: string, changedNoteData: NoteData): Promise<Either<ExistingTitleError | InvalidTitleError, NoteData>> {
-    const owner = User.create(await this.userRepository.findByEmail(changedNoteData.ownerEmail)).value as User
+    const userData = await this.userRepository.findByEmail(changedNoteData.ownerEmail)
+    const owner = User.create(userData.email, userData.password).value as User
     const noteOrError = Note.create(owner, changedNoteData.title, changedNoteData.content)
     if (noteOrError.isLeft()) {
       return left(noteOrError.value)
