@@ -1,11 +1,8 @@
-import { InvalidEmailError } from '../../entities/errors/invalid-email-error'
-import { UserData } from '../ports/user-data'
-import { User } from '../../entities/user'
-import { Either, left, right } from '../../shared/either'
-import { UserRepository } from '../ports/user-repository'
-import { ExistingUserError } from './errors/existing-user-error'
-import { Encoder } from '../ports/encoder'
-import { InvalidPasswordError } from '../../entities/errors/invalid-password-error'
+import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
+import { UserData, UserRepository, Encoder } from '@/use-cases/ports'
+import { User } from '@/entities'
+import { Either, left, right } from '@/shared'
+import { ExistingUserError } from '@/use-cases/sign-up/errors'
 
 export class SignUp {
   private readonly _userRepository: UserRepository

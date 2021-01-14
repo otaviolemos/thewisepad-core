@@ -1,9 +1,6 @@
-import { UserData } from '../ports/user-data'
-import { Either, left, right } from '../../shared/either'
-import { UserRepository } from '../ports/user-repository'
-import { Encoder } from '../ports/encoder'
-import { UserNotFoundError } from './errors/user-not-found-error'
-import { WrongPasswordError } from './errors/wrong-password-error'
+import { UserData, UserRepository, Encoder } from '@/use-cases/ports'
+import { Either, left, right } from '@/shared'
+import { UserNotFoundError, WrongPasswordError } from '@/use-cases/sign-in/errors'
 
 export class SignIn {
   private readonly userRepository: UserRepository
