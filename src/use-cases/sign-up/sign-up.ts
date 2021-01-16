@@ -32,6 +32,7 @@ export class SignUp {
     }
 
     const encodedPassword = await this.encoder.encode(userSignupRequest.password)
-    return right(await this._userRepository.add({ email: userSignupRequest.email, password: encodedPassword }))
+    const response = await this._userRepository.add({ email: userSignupRequest.email, password: encodedPassword })
+    return right(response)
   }
 }

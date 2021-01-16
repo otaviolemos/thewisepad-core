@@ -1,7 +1,7 @@
 import { UserData } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
 import { HttpResponse } from '@/controllers/ports'
-import { badRequest, forbidden, ok } from '@/controllers/util'
+import { badRequest, created, forbidden } from '@/controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 
 export class SignUpController {
@@ -15,7 +15,7 @@ export class SignUpController {
     const response = await this.usecase.perform(request)
 
     if (response.isRight()) {
-      return ok(response.value)
+      return created(response.value)
     }
 
     if (response.isLeft()) {

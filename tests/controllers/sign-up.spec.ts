@@ -17,10 +17,10 @@ describe('Sign up controller', () => {
   const userSignupRequestWithInvalidEmail = UserBuilder.aUser().withInvalidEmail().build()
   const userSignupRequestWithInvalidPassword = UserBuilder.aUser().withInvalidPassword().build()
 
-  test('should return 200 and registered user when user is successfully signed up', async () => {
+  test('should return 201 and registered user when user is successfully signed up', async () => {
     validUserSignUpRequest.id = undefined
     const response: HttpResponse = await controller.handle(validUserSignUpRequest)
-    expect(response.statusCode).toEqual(200)
+    expect(response.statusCode).toEqual(201)
     expect((response.body as UserData).id).toEqual('0')
   })
 
