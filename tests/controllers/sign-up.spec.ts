@@ -42,4 +42,14 @@ describe('Sign up controller', () => {
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(InvalidPasswordError)
   })
+
+  test('should return 500 if an error is raised internally', async () => {
+    SignUp.prototype.perform = jest.fn().mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const controllerWithMockUseCase = new SignUpController(signUpUseCase)
+    const response: HttpResponse = await controllerWithMockUseCase.handle(validUserSignUpRequest)
+    expect(response.statusCode).toEqual(500)
+    expect(response.body).toBeInstanceOf(Error)
+  })
 })
