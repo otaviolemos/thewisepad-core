@@ -44,12 +44,12 @@ describe('Sign up controller', () => {
   })
 
   test('should return 500 if an error is raised internally', async () => {
-    SignUp.prototype.perform = jest.fn().mockImplementationOnce(() => {
-      throw new Error()
-    })
+    const originalPerform = SignUp.prototype.perform
+    SignUp.prototype.perform = () => { throw new Error() }
     const controllerWithMockUseCase = new SignUpController(signUpUseCase)
     const response: HttpResponse = await controllerWithMockUseCase.handle(validUserSignUpRequest)
     expect(response.statusCode).toEqual(500)
     expect(response.body).toBeInstanceOf(Error)
+    SignUp.prototype.perform = originalPerform
   })
 })
