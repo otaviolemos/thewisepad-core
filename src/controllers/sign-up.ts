@@ -1,10 +1,10 @@
 import { UserData } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
-import { HttpResponse } from '@/controllers/ports'
+import { HttpResponse, Controller } from '@/controllers/ports'
 import { badRequest, created, forbidden, serverError } from '@/controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 
-export class SignUpController {
+export class SignUpController implements Controller {
   private readonly usecase: SignUp
 
   constructor (usecase: SignUp) {
