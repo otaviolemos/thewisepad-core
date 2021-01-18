@@ -1,6 +1,5 @@
-import { UserData } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
-import { HttpResponse, Controller } from '@/controllers/ports'
+import { HttpResponse, Controller, HttpRequest } from '@/controllers/ports'
 import { badRequest, created, forbidden, serverError } from '@/controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 
@@ -11,9 +10,10 @@ export class SignUpController implements Controller {
     this.usecase = usecase
   }
 
-  async handle (request: UserData): Promise<HttpResponse> {
+  async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
-      const response = await this.usecase.perform(request)
+      const response =
+        await this.usecase.perform({ email: request.body.email, password: request.body.password })
 
       if (response.isRight()) {
         return created(response.value)
