@@ -1,4 +1,4 @@
-import { HttpResponse } from '@/controllers/ports'
+import { HttpRequest, HttpResponse } from '@/controllers/ports'
 import { SignUpController } from '@/controllers/sign-up'
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
 import { Encoder, UserData } from '@/use-cases/ports'
@@ -13,12 +13,29 @@ describe('Sign up controller', () => {
   const encoder: Encoder = new FakeEncoder()
   const signUpUseCase: SignUp = new SignUp(emptyUserRepository, encoder)
   const controller = new SignUpController(signUpUseCase)
-  const validUserSignUpRequest = UserBuilder.aUser().build()
-  const userSignupRequestWithInvalidEmail = UserBuilder.aUser().withInvalidEmail().build()
-  const userSignupRequestWithInvalidPassword = UserBuilder.aUser().withInvalidPassword().build()
+  const validUser = UserBuilder.aUser().build()
+  const validUserSignUpRequest: HttpRequest = {
+    body: {
+      email: validUser.email,
+      password: validUser.password
+    }
+  }
+  const userWithInvalidEmail = UserBuilder.aUser().withInvalidEmail().build()
+  const userSignupRequestWithInvalidEmail: HttpRequest = {
+    body: {
+      email: userWithInvalidEmail.email,
+      password: userWithInvalidEmail.password
+    }
+  }
+  const userWithInvalidPassword = UserBuilder.aUser().withInvalidPassword().build()
+  const userSignupRequestWithInvalidPassword: HttpRequest = {
+    body: {
+      email: userWithInvalidPassword.email,
+      password: userWithInvalidPassword.password
+    }
+  }
 
   test('should return 201 and registered user when user is successfully signed up', async () => {
-    validUserSignUpRequest.id = undefined
     const response: HttpResponse = await controller.handle(validUserSignUpRequest)
     expect(response.statusCode).toEqual(201)
     expect((response.body as UserData).id).toEqual('0')
