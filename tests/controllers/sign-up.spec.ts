@@ -1,5 +1,5 @@
-import { HttpRequest, HttpResponse } from '@/controllers/ports'
-import { SignUpController } from '@/controllers/sign-up'
+import { HttpRequest, HttpResponse } from '@/web-controllers/ports'
+import { SignUpController } from '@/web-controllers/sign-up'
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
 import { Encoder, UserData } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'

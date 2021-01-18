@@ -1,9 +1,9 @@
 import { SignUp } from '@/use-cases/sign-up'
-import { HttpResponse, Controller, HttpRequest } from '@/controllers/ports'
-import { badRequest, created, forbidden, serverError } from '@/controllers/util'
+import { HttpResponse, WebController, HttpRequest } from '@/web-controllers/ports'
+import { badRequest, created, forbidden, serverError } from '@/web-controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 
-export class SignUpController implements Controller {
+export class SignUpController implements WebController {
   private readonly usecase: SignUp
 
   constructor (usecase: SignUp) {
