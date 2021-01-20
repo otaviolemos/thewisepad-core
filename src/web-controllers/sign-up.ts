@@ -1,7 +1,7 @@
 import { HttpResponse, WebController, HttpRequest } from '@/web-controllers/ports'
 import { badRequest, created, forbidden, serverError } from '@/web-controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
-import { UseCase } from '@/use-cases/ports/use-case'
+import { UseCase } from '@/use-cases/ports'
 
 export class SignUpController implements WebController {
   private readonly usecase: UseCase
