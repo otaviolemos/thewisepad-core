@@ -68,8 +68,8 @@ describe('Sign up controller', () => {
   })
 
   test('should return 500 if an error is raised internally', async () => {
-    const controllerWithMockUseCase = new SignUpController(errorThrowingSignUpUseCaseStub)
-    const response: HttpResponse = await controllerWithMockUseCase.handle(validUserSignUpRequest)
+    const controllerWithStubUseCase = new SignUpController(errorThrowingSignUpUseCaseStub)
+    const response: HttpResponse = await controllerWithStubUseCase.handle(validUserSignUpRequest)
     expect(response.statusCode).toEqual(500)
     expect(response.body).toBeInstanceOf(Error)
   })
