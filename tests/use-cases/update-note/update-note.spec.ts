@@ -14,7 +14,8 @@ describe('Update note use case', () => {
       owner
     ])
     const usecase = new UpdateNote(noteRepositoryWithANote, userRepositoryWithAUser)
-    const response = (await usecase.perform(originalNote.id, changedNote)).value as NoteData
+    changedNote.id = originalNote.id
+    const response = (await usecase.perform(changedNote)).value as NoteData
     expect(response.title).toEqual(changedNote.title)
     expect(response.content).toEqual(changedNote.content)
   })
