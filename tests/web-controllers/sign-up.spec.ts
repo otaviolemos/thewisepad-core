@@ -1,13 +1,12 @@
 import { HttpRequest, HttpResponse } from '@/web-controllers/ports'
 import { SignUpController } from '@/web-controllers/sign-up'
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
-import { Encoder, UserData } from '@/use-cases/ports'
+import { Encoder, UserData, UseCase } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { UserBuilder } from '@test/use-cases/builders'
 import { InMemoryUserRepository } from '@test/use-cases/repositories'
 import { FakeEncoder } from '@test/use-cases/sign-up'
-import { UseCase } from '@/use-cases/ports/use-case'
 
 describe('Sign up controller', () => {
   const emptyUserRepository = new InMemoryUserRepository([])
