@@ -7,11 +7,12 @@ import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { UserBuilder } from '@test/use-cases/builders'
 import { InMemoryUserRepository } from '@test/use-cases/repositories'
 import { FakeEncoder } from '@test/use-cases/sign-up'
+import { UseCase } from '@/use-cases/ports/use-case'
 
 describe('Sign up controller', () => {
   const emptyUserRepository = new InMemoryUserRepository([])
   const encoder: Encoder = new FakeEncoder()
-  const signUpUseCase: SignUp = new SignUp(emptyUserRepository, encoder)
+  const signUpUseCase: UseCase = new SignUp(emptyUserRepository, encoder)
   const controller = new SignUpController(signUpUseCase)
   const validUser = UserBuilder.aUser().build()
   const validUserSignUpRequest: HttpRequest = {
@@ -34,6 +35,12 @@ describe('Sign up controller', () => {
       password: userWithInvalidPassword.password
     }
   }
+  class ErrorThrowingSingUpUseCaseStub implements UseCase {
+    async perform (request: UserData): Promise<void> {
+      throw Error()
+    }
+  }
+  const errorThrowingSignUpUseCaseStub: ErrorThrowingSingUpUseCaseStub = new ErrorThrowingSingUpUseCaseStub()
 
   test('should return 201 and registered user when user is successfully signed up', async () => {
     const response: HttpResponse = await controller.handle(validUserSignUpRequest)
@@ -61,12 +68,9 @@ describe('Sign up controller', () => {
   })
 
   test('should return 500 if an error is raised internally', async () => {
-    const originalPerform = SignUp.prototype.perform
-    SignUp.prototype.perform = () => { throw new Error() }
-    const controllerWithMockUseCase = new SignUpController(signUpUseCase)
+    const controllerWithMockUseCase = new SignUpController(errorThrowingSignUpUseCaseStub)
     const response: HttpResponse = await controllerWithMockUseCase.handle(validUserSignUpRequest)
     expect(response.statusCode).toEqual(500)
     expect(response.body).toBeInstanceOf(Error)
-    SignUp.prototype.perform = originalPerform
   })
 })
