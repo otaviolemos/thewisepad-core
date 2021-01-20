@@ -1,12 +1,12 @@
-import { SignUp } from '@/use-cases/sign-up'
 import { HttpResponse, WebController, HttpRequest } from '@/web-controllers/ports'
 import { badRequest, created, forbidden, serverError } from '@/web-controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
+import { UseCase } from '@/use-cases/ports/use-case'
 
 export class SignUpController implements WebController {
-  private readonly usecase: SignUp
+  private readonly usecase: UseCase
 
-  constructor (usecase: SignUp) {
+  constructor (usecase: UseCase) {
     this.usecase = usecase
   }
 
