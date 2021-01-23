@@ -7,6 +7,7 @@ import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { UserBuilder } from '@test/use-cases/builders'
 import { InMemoryUserRepository } from '@test/use-cases/repositories'
 import { FakeEncoder } from '@test/use-cases/sign-up'
+import { MissingParamError } from '@/web-controllers/errors'
 
 describe('Sign up controller', () => {
   const emptyUserRepository = new InMemoryUserRepository([])
@@ -64,6 +65,41 @@ describe('Sign up controller', () => {
     const response: HttpResponse = await controller.handle(userSignupRequestWithInvalidPassword)
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(InvalidPasswordError)
+  })
+
+  test('should return 400 when trying to sign up user with missing email', async () => {
+    const userSignupRequestWithMissingEmail: HttpRequest = {
+      body: {
+        password: validUser.password
+      }
+    }
+    const response: HttpResponse = await controller.handle(userSignupRequestWithMissingEmail)
+    expect(response.statusCode).toEqual(400)
+    expect(response.body).toBeInstanceOf(MissingParamError)
+    expect((response.body as Error).message).toEqual('Missing parameter: email.')
+  })
+
+  test('should return 400 when trying to sign up user with missing password', async () => {
+    const userSignupRequestWithMissingPassword: HttpRequest = {
+      body: {
+        email: validUser.email
+      }
+    }
+    const response: HttpResponse = await controller.handle(userSignupRequestWithMissingPassword)
+    expect(response.statusCode).toEqual(400)
+    expect(response.body).toBeInstanceOf(MissingParamError)
+    expect((response.body as Error).message).toEqual('Missing parameter: password.')
+  })
+
+  test('should return 400 when trying to sign up user with missing email and password', async () => {
+    const userSignupRequestWithMissingPassword: HttpRequest = {
+      body: {
+      }
+    }
+    const response: HttpResponse = await controller.handle(userSignupRequestWithMissingPassword)
+    expect(response.statusCode).toEqual(400)
+    expect(response.body).toBeInstanceOf(MissingParamError)
+    expect((response.body as Error).message).toEqual('Missing parameter: email password.')
   })
 
   test('should return 500 if an error is raised internally', async () => {
