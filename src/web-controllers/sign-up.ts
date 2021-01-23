@@ -2,6 +2,7 @@ import { HttpResponse, WebController, HttpRequest } from '@/web-controllers/port
 import { badRequest, created, forbidden, serverError } from '@/web-controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { UseCase } from '@/use-cases/ports'
+import { MissingParamError } from '@/web-controllers/errors/missing-param-error'
 
 export class SignUpController implements WebController {
   private readonly usecase: UseCase
@@ -12,6 +13,12 @@ export class SignUpController implements WebController {
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
+      if (!(request.body.email) || !(request.body.password)) {
+        let missingParam = !(request.body.email) ? 'email ' : ''
+        missingParam += !(request.body.password) ? 'password' : ''
+        return badRequest(new MissingParamError(missingParam.trim()))
+      }
+
       const response =
         await this.usecase.perform({ email: request.body.email, password: request.body.password })
 
