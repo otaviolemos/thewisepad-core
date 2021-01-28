@@ -1,16 +1,9 @@
 import { HttpResponse, WebController, HttpRequest } from '@/web-controllers/ports'
 import { badRequest, created, forbidden, serverError } from '@/web-controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
-import { UseCase } from '@/use-cases/ports'
 import { MissingParamError } from '@/web-controllers/errors/missing-param-error'
 
-export class SignUpController implements WebController {
-  private readonly usecase: UseCase
-
-  constructor (usecase: UseCase) {
-    this.usecase = usecase
-  }
-
+export class SignUpController extends WebController {
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
       if (!(request.body.email) || !(request.body.password)) {
