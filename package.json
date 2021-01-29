@@ -4,7 +4,8 @@
   "description": "Core of a simple notepad app developed using clean architecture and TDD.",
   "main": "index.js",
   "scripts": {
-    "test:unit": "jest --passWithNoTests --watch",
+    "test:unit": "jest --passWithNoTests --watch -c jest-unit.config.js",
+    "test:integration": "jest --passWithNoTests --watch -c jest-integration.config.js",
     "test:staged": "jest --passWithNoTests --findRelatedTests"
   },
   "keywords": [],
