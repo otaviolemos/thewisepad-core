@@ -7,7 +7,7 @@ import { InMemoryUserRepository } from '@test/use-cases/repositories'
 import { AuthenticationResult } from '@/use-cases/authentication/ports'
 
 describe('Custom authenticator', () => {
-  test('should correctly authenticate if password is correct', async () => {
+  test('should correctly authenticate if user email and password is correct', async () => {
     const singleUserUserRepository = await getSingleUserUserRepository()
     const validUserSigninRequest: UserData = UserBuilder.aUser().build()
     const fakeTokenManager = new FakeTokenManager()
@@ -24,6 +24,15 @@ describe('Custom authenticator', () => {
     const authentication = new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), fakeTokenManager)
     const response = (await (authentication.auth(signInRequestWithWrongPassword))).value as Error
     expect(response.name).toEqual('WrongPasswordError')
+  })
+
+  test('should not authenticate with unregistered user', async () => {
+    const singleUserUserRepository = await getSingleUserUserRepository()
+    const signInRequestWithUnregisteredUser: UserData = UserBuilder.aUser().withDifferentEmail().build()
+    const fakeTokenManager = new FakeTokenManager()
+    const authentication = new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), fakeTokenManager)
+    const response = (await (authentication.auth(signInRequestWithUnregisteredUser))).value as Error
+    expect(response.name).toEqual('UserNotFoundError')
   })
 
   async function getSingleUserUserRepository (): Promise<UserRepository> {
