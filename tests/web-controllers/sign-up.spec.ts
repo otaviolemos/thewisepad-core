@@ -8,11 +8,23 @@ import { UserBuilder } from '@test/use-cases/builders'
 import { InMemoryUserRepository } from '@test/use-cases/repositories'
 import { FakeEncoder } from '@test/use-cases/encoders'
 import { MissingParamError } from '@/web-controllers/errors'
+import { AuthenticationParams, AuthenticationResult, AuthenticationService } from '@/use-cases/authentication/ports'
+import { Either, right } from '@/shared'
+import { UserNotFoundError, WrongPasswordError } from '@/use-cases/authentication/errors'
 
 describe('Sign up controller', () => {
   const emptyUserRepository = new InMemoryUserRepository([])
   const encoder: Encoder = new FakeEncoder()
-  const signUpUseCase: UseCase = new SignUp(emptyUserRepository, encoder)
+  class AuthenticationServiceStub implements AuthenticationService {
+    async auth (authenticationParams: AuthenticationParams): Promise<Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>> {
+      return right({
+        accessToken: 'accessToken',
+        id: UserBuilder.aUser().build().id
+      })
+    }
+  }
+  const authenticationStub = new AuthenticationServiceStub()
+  const signUpUseCase: UseCase = new SignUp(emptyUserRepository, encoder, authenticationStub)
   const controller = new SignUpController(signUpUseCase)
   const validUser = UserBuilder.aUser().build()
   const validUserSignUpRequest: HttpRequest = {
@@ -42,10 +54,12 @@ describe('Sign up controller', () => {
   }
   const errorThrowingSignUpUseCaseStub: ErrorThrowingSignUpUseCaseStub = new ErrorThrowingSignUpUseCaseStub()
 
-  test('should return 201 and registered user when user is successfully signed up', async () => {
+  test('should return 201 and authentication result when user is successfully signed up', async () => {
     const response: HttpResponse = await controller.handle(validUserSignUpRequest)
+    const authResult = response.body as AuthenticationResult
     expect(response.statusCode).toEqual(201)
-    expect((response.body as UserData).id).toEqual('0')
+    expect(authResult.id).toEqual('0')
+    expect(authResult.accessToken).toBeDefined()
   })
 
   test('should return 403 when trying to sign up existing user', async () => {
