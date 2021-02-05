@@ -3,7 +3,7 @@ import { SignUp } from '@/use-cases/sign-up'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { UserBuilder } from '@test/use-cases/builders'
 import { InMemoryUserRepository } from '@test/use-cases/repositories'
-import { FakeEncoder } from '@test/use-cases/sign-up'
+import { FakeEncoder } from '@test/use-cases/encoders'
 
 describe('Sign up use case', () => {
   test('should sign up user with valid data', async () => {
