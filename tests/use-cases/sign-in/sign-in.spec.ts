@@ -3,19 +3,22 @@ import { SignIn } from '@/use-cases/sign-in'
 import { UserBuilder } from '@test/use-cases/builders'
 import { InMemoryUserRepository } from '@test/use-cases/repositories'
 import { FakeEncoder } from '@test/use-cases/encoders'
+import { FakeTokenManager } from '../authentication'
+import { AuthenticationResult } from '@/use-cases/authentication/ports'
+import { CustomAuthentication } from '@/use-cases/authentication'
 
 describe('Sign in use case', () => {
   test('should correctly sign in if password is correct', async () => {
     const singleUserUserRepository = await getSingleUserUserRepository()
     const validUserSigninRequest: UserData = UserBuilder.aUser().build()
-    const usecase = new SignIn(singleUserUserRepository, new FakeEncoder())
-    const userResponse = (await (usecase.perform(validUserSigninRequest))).value
-    expect(userResponse).toEqual(validUserSigninRequest)
+    const usecase = new SignIn(singleUserUserRepository, new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), new FakeTokenManager()))
+    const userResponse = (await (usecase.perform(validUserSigninRequest))).value as AuthenticationResult
+    expect(userResponse.id).toEqual(validUserSigninRequest.id)
   })
 
   test('should not sign in if password is incorrect', async () => {
     const singleUserUserRepository = await getSingleUserUserRepository()
-    const usecase = new SignIn(singleUserUserRepository, new FakeEncoder())
+    const usecase = new SignIn(singleUserUserRepository, new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), new FakeTokenManager()))
     const signInRequestWithWrongPassword: UserData =
       UserBuilder.aUser().withWrongPassword().build()
     const response = (await (usecase.perform(signInRequestWithWrongPassword))).value as Error
@@ -24,7 +27,7 @@ describe('Sign in use case', () => {
 
   test('should not sign in with unregistered user', async () => {
     const singleUserUserRepository = await getSingleUserUserRepository()
-    const usecase = new SignIn(singleUserUserRepository, new FakeEncoder())
+    const usecase = new SignIn(singleUserUserRepository, new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), new FakeTokenManager()))
     const signInRequestWithUnregisteredUser: UserData =
       UserBuilder.aUser().withDifferentEmail().build()
     const response = (await (usecase.perform(signInRequestWithUnregisteredUser))).value as Error
@@ -36,7 +39,8 @@ describe('Sign in use case', () => {
     const userDataArrayWithSingleUser: UserData[] =
       new Array({
         email: aUser.email,
-        password: await new FakeEncoder().encode(aUser.password)
+        password: await new FakeEncoder().encode(aUser.password),
+        id: aUser.id
       })
     return new InMemoryUserRepository(userDataArrayWithSingleUser)
   }
