@@ -13,8 +13,7 @@ describe('Register Routes', () => {
         password: '1validpassword'
       })
       .expect(201, {
-        email: 'any@mail.com',
-        password: '1validpasswordENCRYPTED',
+        accessToken: 'accessToken',
         id: '0'
       })
   })
