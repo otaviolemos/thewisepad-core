@@ -1,6 +1,6 @@
 import { UserData, UserRepository, Encoder, UseCase } from '@/use-cases/ports'
 import { Either, left, right } from '@/shared'
-import { UserNotFoundError, WrongPasswordError } from '@/use-cases/sign-in/errors'
+import { UserNotFoundError, WrongPasswordError } from '@/use-cases/authentication/errors'
 
 export class SignIn implements UseCase {
   private readonly userRepository: UserRepository
