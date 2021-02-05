@@ -12,6 +12,6 @@ class AuthenticationServiceStub implements AuthenticationService {
   }
 }
 
-export default () => {
+export function makeAuthenticationStub () {
   return new AuthenticationServiceStub()
 }

@@ -4,20 +4,11 @@ import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { UserBuilder } from '@test/use-cases/builders'
 import { InMemoryUserRepository } from '@test/use-cases/repositories'
 import { FakeEncoder } from '@test/use-cases/encoders'
-import { Either, right } from '@/shared'
-import { AuthenticationParams, AuthenticationResult, AuthenticationService } from '@/use-cases/authentication/ports'
-import { UserNotFoundError, WrongPasswordError } from '@/use-cases/authentication/errors'
+import { makeAuthenticationStub } from '@test/use-cases/authentication'
+import { AuthenticationResult } from '@/use-cases/authentication/ports'
 
 describe('Sign up use case', () => {
-  class AuthenticationServiceStub implements AuthenticationService {
-    async auth (authenticationParams: AuthenticationParams): Promise<Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>> {
-      return right({
-        accessToken: 'accessToken',
-        id: UserBuilder.aUser().build().id
-      })
-    }
-  }
-  const authenticationStub = new AuthenticationServiceStub()
+  const authenticationStub = makeAuthenticationStub()
 
   test('should sign up user with valid data', async () => {
     const emptyUserRepository = new InMemoryUserRepository([])

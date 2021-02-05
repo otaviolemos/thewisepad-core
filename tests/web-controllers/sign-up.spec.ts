@@ -8,22 +8,13 @@ import { UserBuilder } from '@test/use-cases/builders'
 import { InMemoryUserRepository } from '@test/use-cases/repositories'
 import { FakeEncoder } from '@test/use-cases/encoders'
 import { MissingParamError } from '@/web-controllers/errors'
-import { AuthenticationParams, AuthenticationResult, AuthenticationService } from '@/use-cases/authentication/ports'
-import { Either, right } from '@/shared'
-import { UserNotFoundError, WrongPasswordError } from '@/use-cases/authentication/errors'
+import { makeAuthenticationStub } from '@test/use-cases/authentication'
+import { AuthenticationResult } from '@/use-cases/authentication/ports'
 
 describe('Sign up controller', () => {
   const emptyUserRepository = new InMemoryUserRepository([])
   const encoder: Encoder = new FakeEncoder()
-  class AuthenticationServiceStub implements AuthenticationService {
-    async auth (authenticationParams: AuthenticationParams): Promise<Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>> {
-      return right({
-        accessToken: 'accessToken',
-        id: UserBuilder.aUser().build().id
-      })
-    }
-  }
-  const authenticationStub = new AuthenticationServiceStub()
+  const authenticationStub = makeAuthenticationStub()
   const signUpUseCase: UseCase = new SignUp(emptyUserRepository, encoder, authenticationStub)
   const controller = new SignUpController(signUpUseCase)
   const validUser = UserBuilder.aUser().build()
