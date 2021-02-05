@@ -17,18 +17,18 @@ export class CustomAuthentication implements AuthenticationService {
 
   async auth (authenticationParams: AuthenticationParams): Promise<Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>> {
     const user = await this.userRepository.findByEmail(authenticationParams.email)
-    if (user) {
-      const isValid = await this.encoder.compare(authenticationParams.password, user.password)
-      if (!isValid) {
-        return left(new WrongPasswordError())
-      }
-      const accessToken = await this.tokenManager.sign(user.id)
-      await this.userRepository.updateAccessToken(user.id, accessToken)
-      return right({
-        accessToken,
-        id: user.id
-      })
+    if (!user) {
+      return left(new UserNotFoundError())
     }
-    return left(new UserNotFoundError())
+    const isValid = await this.encoder.compare(authenticationParams.password, user.password)
+    if (!isValid) {
+      return left(new WrongPasswordError())
+    }
+    const accessToken = await this.tokenManager.sign(user.id)
+    await this.userRepository.updateAccessToken(user.id, accessToken)
+    return right({
+      accessToken,
+      id: user.id
+    })
   }
 }
