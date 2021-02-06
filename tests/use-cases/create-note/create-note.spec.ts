@@ -1,7 +1,7 @@
 import { UserData, NoteData, UserRepository } from '@/use-cases/ports'
 import { CreateNote } from '@/use-cases/create-note'
-import { InMemoryUserRepository, InMemoryNoteRepository } from '@test/use-cases/doubles/repositories'
-import { UserBuilder, NoteBuilder } from '@test/use-cases/builders'
+import { InMemoryUserRepository, InMemoryNoteRepository } from '@test/doubles/repositories'
+import { UserBuilder, NoteBuilder } from '@test/builders'
 
 describe('Create note use case', () => {
   test('should create note with valid owner and title', async () => {

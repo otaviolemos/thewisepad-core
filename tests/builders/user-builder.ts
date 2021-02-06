@@ -1,4 +1,4 @@
-import { UserData } from '../../../src/use-cases/ports/user-data'
+import { UserData } from '../../src/use-cases/ports/user-data'
 
 export class UserBuilder {
   private user: UserData = {

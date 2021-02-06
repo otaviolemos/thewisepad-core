@@ -1,5 +1,5 @@
-import { UserData } from '../../../src/use-cases/ports/user-data'
-import { NoteData } from '../../../src/use-cases/ports/note-data'
+import { UserData } from '../../src/use-cases/ports/user-data'
+import { NoteData } from '../../src/use-cases/ports/note-data'
 import { UserBuilder } from './user-builder'
 
 export class NoteBuilder {

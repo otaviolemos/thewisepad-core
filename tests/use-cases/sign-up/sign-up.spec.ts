@@ -1,9 +1,9 @@
 import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
-import { UserBuilder } from '@test/use-cases/builders'
-import { InMemoryUserRepository } from '@test/use-cases/doubles/repositories'
-import { FakeEncoder } from '@test/use-cases/doubles/encoder'
+import { UserBuilder } from '@test/builders'
+import { InMemoryUserRepository } from '@test/doubles/repositories'
+import { FakeEncoder } from '@test/doubles/encoder'
 import { makeAuthenticationStub } from '@test/use-cases/authentication'
 import { AuthenticationResult } from '@/use-cases/authentication/ports'
 

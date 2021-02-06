@@ -1,7 +1,7 @@
 import { NoteData, NoteRepository } from '@/use-cases/ports'
 import { LoadNotesForUser } from '@/use-cases/load-notes-for-user'
-import { InMemoryNoteRepository } from '@test/use-cases/doubles/repositories'
-import { NoteBuilder } from '@test/use-cases/builders'
+import { InMemoryNoteRepository } from '@test/doubles/repositories'
+import { NoteBuilder } from '@test/builders'
 
 describe('Load notes for user use case', () => {
   test('should correctly load notes for a registered user', async () => {

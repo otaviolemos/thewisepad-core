@@ -1,9 +1,9 @@
 import { CustomAuthentication } from '@/use-cases/authentication/'
 import { UserData, UserRepository } from '@/use-cases/ports'
-import { FakeEncoder } from '@test/use-cases/doubles/encoder'
-import { FakeTokenManager } from '../doubles/authentication/fake-token-manager'
-import { UserBuilder } from '@test/use-cases/builders'
-import { InMemoryUserRepository } from '@test/use-cases/doubles/repositories'
+import { FakeEncoder } from '@test/doubles/encoder'
+import { FakeTokenManager } from '../../doubles/authentication/fake-token-manager'
+import { UserBuilder } from '@test/builders'
+import { InMemoryUserRepository } from '@test/doubles/repositories'
 import { AuthenticationResult } from '@/use-cases/authentication/ports'
 
 describe('Custom authenticator', () => {
