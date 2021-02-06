@@ -1,9 +1,9 @@
 import { Either, right, left } from '@/shared'
-import { TokenManager } from '@/use-cases/authentication/ports'
+import { Payload, TokenManager } from '@/use-cases/authentication/ports'
 
 export class FakeTokenManager implements TokenManager {
-  async sign (info: string): Promise<string> {
-    return info + 'token'
+  async sign (info: Payload): Promise<string> {
+    return info.id + 'token'
   }
 
   async verify (token: string): Promise<Either<Error, string>> {
