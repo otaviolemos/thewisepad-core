@@ -10,4 +10,14 @@ describe('JWT token manager', () => {
     expect(signedToken).not.toEqual(info)
     expect(await tokenManager.verify(signedToken)).toHaveProperty('value.id')
   })
+
+  test('should correctly verify expired json web tokens', async () => {
+    const secret = 'my secret'
+    const tokenManager = new JwtTokenManager(secret)
+    const info: Payload = { id: 'my id' }
+    const exp = '0.1s'
+    const signedToken = await tokenManager.sign(info, exp)
+    expect(signedToken).not.toEqual(info)
+    // todo: expect((await tokenManager.verify(signedToken) as Error).name).toEqual('TokenExpiredError')
+  })
 })
