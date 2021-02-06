@@ -1,14 +1,12 @@
-import { UserData, UserRepository, UseCase } from '@/use-cases/ports'
+import { UserData, UseCase } from '@/use-cases/ports'
 import { Either } from '@/shared'
 import { UserNotFoundError, WrongPasswordError } from '@/use-cases/authentication/errors'
 import { AuthenticationResult, AuthenticationService } from '../authentication/ports'
 
 export class SignIn implements UseCase {
-  private readonly userRepository: UserRepository
   private readonly authentication: AuthenticationService
 
-  constructor (userRepository: UserRepository, authentication: AuthenticationService) {
-    this.userRepository = userRepository
+  constructor (authentication: AuthenticationService) {
     this.authentication = authentication
   }
 
