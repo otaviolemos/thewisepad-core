@@ -3,7 +3,7 @@ import { SignIn } from '@/use-cases/sign-in'
 import { UserBuilder } from '@test/builders'
 import { InMemoryUserRepository } from '@test/doubles/repositories'
 import { FakeEncoder } from '@test/doubles/encoder'
-import { FakeTokenManager } from '../authentication'
+import { FakeTokenManager } from '@test/doubles/authentication'
 import { AuthenticationResult } from '@/use-cases/authentication/ports'
 import { CustomAuthentication } from '@/use-cases/authentication'
 

@@ -2,7 +2,7 @@ import { SignUp } from '@/use-cases/sign-up'
 import { SignUpController } from '@/web-controllers/'
 import { InMemoryUserRepository } from '@test/doubles/repositories'
 import { FakeEncoder } from '@test/doubles/encoder'
-import { makeAuthenticationStub } from '@test/use-cases/authentication'
+import { makeAuthenticationStub } from '@test/doubles/authentication'
 
 export const makeSignUpController = (): SignUpController => {
   const userRepository = new InMemoryUserRepository([])

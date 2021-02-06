@@ -1,6 +1,6 @@
 module.exports = {
   roots: [
-    '<rootDir>/tests',
+    '<rootDir>/test',
     '<rootDir>/src'
   ],
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
@@ -11,6 +11,6 @@ module.exports = {
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-    '^@test/(.*)$': '<rootDir>/tests/$1'
+    '^@test/(.*)$': '<rootDir>/test/$1'
   }
 }
