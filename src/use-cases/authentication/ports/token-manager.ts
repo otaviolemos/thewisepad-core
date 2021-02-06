@@ -5,6 +5,6 @@ export type Payload = {
 }
 
 export interface TokenManager {
-  sign (info: Payload): Promise<string>
+  sign (info: Payload, expiresIn?: string): Promise<string>
   verify (token: string): Promise<Either<Error, string | object>>
 }
