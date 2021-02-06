@@ -1,6 +1,6 @@
 import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
 import { UpdateNote } from '@/use-cases/update-note'
-import { InMemoryNoteRepository, InMemoryUserRepository } from '@test/use-cases/repositories'
+import { InMemoryNoteRepository, InMemoryUserRepository } from '@test/use-cases/doubles/repositories'
 import { UserBuilder, NoteBuilder } from '@test/use-cases/builders'
 
 describe('Update note use case', () => {
