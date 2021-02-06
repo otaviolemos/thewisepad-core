@@ -6,22 +6,14 @@ import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { AuthenticationResult, AuthenticationService } from '@/use-cases/authentication/ports'
 
 export class SignUp implements UseCase {
-  private readonly _userRepository: UserRepository
-  private readonly _encoder: Encoder
-  private readonly _authentication: AuthenticationService
-
-  private get userRepository () {
-    return this._userRepository
-  }
-
-  private get encoder () {
-    return this._encoder
-  }
+  private readonly userRepository: UserRepository
+  private readonly encoder: Encoder
+  private readonly authentication: AuthenticationService
 
   constructor (userRepository: UserRepository, encoder: Encoder, authentication: AuthenticationService) {
-    this._userRepository = userRepository
-    this._encoder = encoder
-    this._authentication = authentication
+    this.userRepository = userRepository
+    this.encoder = encoder
+    this.authentication = authentication
   }
 
   public async perform (userSignupRequest: UserData): Promise<Either<ExistingUserError | InvalidEmailError | InvalidPasswordError, AuthenticationResult>> {
@@ -35,8 +27,8 @@ export class SignUp implements UseCase {
     }
 
     const encodedPassword = await this.encoder.encode(userSignupRequest.password)
-    await this._userRepository.add({ email: userSignupRequest.email, password: encodedPassword })
-    const response = (await this._authentication.auth({ email: userSignupRequest.email, password: encodedPassword })).value as AuthenticationResult
+    await this.userRepository.add({ email: userSignupRequest.email, password: encodedPassword })
+    const response = (await this.authentication.auth({ email: userSignupRequest.email, password: encodedPassword })).value as AuthenticationResult
 
     return right(response)
   }
