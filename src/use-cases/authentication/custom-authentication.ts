@@ -27,7 +27,7 @@ export class CustomAuthentication implements AuthenticationService {
     const accessToken = await this.tokenManager.sign({ id: user.id })
 
     return right({
-      accessToken,
+      accessToken: accessToken,
       id: user.id
     })
   }
