@@ -25,7 +25,7 @@ export class CustomAuthentication implements AuthenticationService {
       return left(new WrongPasswordError())
     }
     const accessToken = await this.tokenManager.sign({ id: user.id })
-    await this.userRepository.updateAccessToken(user.id, accessToken)
+
     return right({
       accessToken,
       id: user.id
