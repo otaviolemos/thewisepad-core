@@ -7,8 +7,19 @@ describe('JWT token manager', () => {
     const tokenManager = new JwtTokenManager(secret)
     const info: Payload = { id: 'my id' }
     const signedToken = await tokenManager.sign(info)
+    const response = await tokenManager.verify(signedToken)
     expect(signedToken).not.toEqual(info)
-    expect(await tokenManager.verify(signedToken)).toHaveProperty('value.id')
+    expect(response).toHaveProperty('value.id')
+    expect(response.isRight()).toBeTruthy()
+  })
+
+  test('should correctly verify invalid json web token', async () => {
+    const secret = 'my secret'
+    const tokenManager = new JwtTokenManager(secret)
+    const info: Payload = { id: 'my id' }
+    const signedToken = await tokenManager.sign(info)
+    const invalidToken = signedToken + 'some trash'
+    expect((await tokenManager.verify(invalidToken)).isLeft()).toBeTruthy()
   })
 
   test('should correctly verify expired json web tokens', async () => {
