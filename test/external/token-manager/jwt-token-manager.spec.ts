@@ -1,5 +1,6 @@
 import { JwtTokenManager } from '@/external/token-manager'
 import { Payload } from '@/use-cases/authentication/ports'
+import { TokenExpiredError } from 'jsonwebtoken'
 import * as sinon from 'sinon'
 
 describe('JWT token manager', () => {
@@ -32,7 +33,7 @@ describe('JWT token manager', () => {
     const signedToken = await tokenManager.sign(info, exp)
     clock.tick(3600100)
     expect(signedToken).not.toEqual(info)
-    expect(((await (tokenManager.verify(signedToken))).value as Error).name).toEqual('TokenExpiredError')
+    expect(((await (tokenManager.verify(signedToken))).value)).toBeInstanceOf(TokenExpiredError)
     clock.restore()
   })
 })
