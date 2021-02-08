@@ -1,4 +1,4 @@
-import { Middleware } from '@/main/middleware/ports'
+import { Middleware } from '@/presentation/middleware/ports'
 import { AccessDeniedError } from '@/use-cases/authentication/errors'
 import { Payload, TokenManager } from '@/use-cases/authentication/ports'
 import { MissingParamError } from '@/presentation/web-controllers/errors'

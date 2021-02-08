@@ -1,4 +1,4 @@
-import { Middleware } from '@/main/middleware/ports'
+import { Middleware } from '@/presentation/middleware/ports'
 import { Authentication } from '@/presentation/middleware'
 import { FakeTokenManager } from '@test/doubles/authentication'
 
