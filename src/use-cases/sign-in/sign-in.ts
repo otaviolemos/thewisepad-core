@@ -1,7 +1,7 @@
 import { UserData, UseCase } from '@/use-cases/ports'
 import { Either } from '@/shared'
 import { UserNotFoundError, WrongPasswordError } from '@/use-cases/authentication/errors'
-import { AuthenticationResult, AuthenticationService } from '../authentication/ports'
+import { AuthenticationResult, AuthenticationService } from '@/use-cases/authentication/ports'
 
 export class SignIn implements UseCase {
   private readonly authentication: AuthenticationService
