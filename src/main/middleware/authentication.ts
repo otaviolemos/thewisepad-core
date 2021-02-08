@@ -39,4 +39,4 @@ export class AuthMiddleware implements Middleware {
   }
 }
 
-export const auth = adaptMiddleware(makeAuthMiddleware())
+export const authMiddleware = adaptMiddleware(makeAuthMiddleware())
