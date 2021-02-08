@@ -1,7 +1,7 @@
-import { HttpResponse, WebController, HttpRequest } from '@/presentation/web-controllers/ports'
-import { badRequest, created, forbidden, serverError } from '@/presentation/web-controllers/util'
+import { HttpResponse, WebController, HttpRequest } from '@/presentation/controllers/ports'
+import { badRequest, created, forbidden, serverError } from '@/presentation/controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
-import { MissingParamError } from '@/presentation/web-controllers/errors/missing-param-error'
+import { MissingParamError } from '@/presentation/controllers/errors/missing-param-error'
 import { UseCase } from '@/use-cases/ports'
 
 export class SignUpController implements WebController {

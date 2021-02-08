@@ -1,5 +1,5 @@
 import { SignUp } from '@/use-cases/sign-up'
-import { SignUpController } from '@/presentation/web-controllers'
+import { SignUpController } from '@/presentation/controllers'
 import { InMemoryUserRepository } from '@test/doubles/repositories'
 import { FakeEncoder } from '@test/doubles/encoder'
 import { makeAuthenticationStub } from '@test/doubles/authentication'

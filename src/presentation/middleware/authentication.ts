@@ -1,9 +1,9 @@
 import { Middleware } from '@/presentation/middleware/ports'
 import { AccessDeniedError } from '@/use-cases/authentication/errors'
 import { Payload, TokenManager } from '@/use-cases/authentication/ports'
-import { MissingParamError } from '@/presentation/web-controllers/errors'
-import { HttpResponse } from '@/presentation/web-controllers/ports'
-import { forbidden, ok, serverError } from '@/presentation/web-controllers/util'
+import { MissingParamError } from '@/presentation/controllers/errors'
+import { HttpResponse } from '@/presentation/controllers/ports'
+import { forbidden, ok, serverError } from '@/presentation/controllers/util'
 
 export type AuthRequest = {
   accessToken: string
