@@ -1,4 +1,4 @@
-import { HttpResponse, HttpRequest } from '@/web-controllers/ports'
+import { HttpResponse, HttpRequest } from '@/presentation/web-controllers/ports'
 
 export interface WebController {
  handle (request: HttpRequest): Promise<HttpResponse>

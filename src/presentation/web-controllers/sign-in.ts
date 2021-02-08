@@ -1,6 +1,6 @@
 import { UseCase } from '@/use-cases/ports'
-import { HttpRequest, HttpResponse, WebController } from '@/web-controllers/ports'
-import { ok } from '@/web-controllers/util'
+import { HttpRequest, HttpResponse, WebController } from '@/presentation/web-controllers/ports'
+import { ok } from '@/presentation/web-controllers/util'
 
 export class SignInController implements WebController {
   protected readonly signInUseCase: UseCase
