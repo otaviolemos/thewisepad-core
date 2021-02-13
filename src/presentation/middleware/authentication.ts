@@ -28,7 +28,8 @@ export class Authentication implements Middleware {
         if (decodedTokenOrError.isLeft()) {
           return forbidden(decodedTokenOrError.value)
         }
-        return ok({ id: (decodedTokenOrError.value as Payload).id })
+        const payload: Payload = decodedTokenOrError.value as Payload
+        return ok(payload)
       }
       return forbidden(new AccessDeniedError())
     } catch (error) {

@@ -16,9 +16,9 @@ export class JwtTokenManager implements TokenManager {
     return jwt.sign(info, this.secret)
   }
 
-  async verify (token: string): Promise<Either<Error, string | object>> {
+  async verify (token: string): Promise<Either<Error, Payload>> {
     try {
-      const decoded = jwt.verify(token, this.secret)
+      const decoded = jwt.verify(token, this.secret) as Payload
       return right(decoded)
     } catch (error) {
       return left(error)

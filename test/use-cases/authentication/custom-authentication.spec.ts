@@ -14,7 +14,7 @@ describe('Custom authenticator', () => {
     const authentication = new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), fakeTokenManager)
     const response = (await (authentication.auth(validUserSigninRequest))).value as AuthenticationResult
     expect(response.id).toEqual('0')
-    expect((await fakeTokenManager.verify(response.accessToken)).value).toEqual(validUserSigninRequest.id)
+    expect((await fakeTokenManager.verify(response.accessToken)).value).toEqual({ id: validUserSigninRequest.id })
   })
 
   test('should not authenticate if password is incorrect', async () => {
