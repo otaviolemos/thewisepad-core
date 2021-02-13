@@ -6,13 +6,13 @@ import { Payload, TokenManager } from '@/use-cases/authentication/ports'
 import { Either } from '@/shared'
 
 describe('Authentication middleware', () => {
-  test('should return forbidden with missing param error if access token is empty', async () => {
+  test('should return forbidden with invalid token error if access token is empty', async () => {
     const authMiddleware = new Authentication(new FakeTokenManager())
     const response: HttpResponse = await authMiddleware.handle({ accessToken: '' })
     expect(response).toEqual(forbidden(new Error('Invalid token.')))
   })
 
-  test('should return forbidden with missing param error if access token is null', async () => {
+  test('should return forbidden with invalid token error if access token is null', async () => {
     const authMiddleware = new Authentication(new FakeTokenManager())
     const response: HttpResponse = await authMiddleware.handle({ accessToken: null })
     expect(response).toEqual(forbidden(new Error('Invalid token.')))
