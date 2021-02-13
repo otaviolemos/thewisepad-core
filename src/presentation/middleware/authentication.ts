@@ -1,7 +1,5 @@
 import { Middleware } from '@/presentation/middleware/ports'
-import { AccessDeniedError } from '@/use-cases/authentication/errors'
 import { Payload, TokenManager } from '@/use-cases/authentication/ports'
-import { MissingParamError } from '@/presentation/controllers/errors'
 import { HttpResponse } from '@/presentation/controllers/ports'
 import { forbidden, ok, serverError } from '@/presentation/controllers/util'
 
@@ -20,18 +18,16 @@ export class Authentication implements Middleware {
     try {
       const { accessToken } = request
       if (!accessToken) {
-        return forbidden(new MissingParamError('accessToken'))
+        return forbidden(new Error('Invalid token.'))
       }
 
-      if (accessToken) {
-        const decodedTokenOrError = await this.tokenManager.verify(accessToken)
-        if (decodedTokenOrError.isLeft()) {
-          return forbidden(decodedTokenOrError.value)
-        }
-        const payload: Payload = decodedTokenOrError.value as Payload
-        return ok(payload)
+      const decodedTokenOrError = await this.tokenManager.verify(accessToken)
+      if (decodedTokenOrError.isLeft()) {
+        return forbidden(decodedTokenOrError.value)
       }
-      return forbidden(new AccessDeniedError())
+
+      const payload: Payload = decodedTokenOrError.value as Payload
+      return ok(payload)
     } catch (error) {
       return serverError(error)
     }
