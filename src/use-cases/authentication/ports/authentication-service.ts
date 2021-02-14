@@ -12,5 +12,6 @@ export type AuthenticationResult = {
 }
 
 export interface AuthenticationService {
-  auth: (authenticationParams: AuthenticationParams) => Promise<Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>>
+  auth: (authenticationParams: AuthenticationParams) =>
+    Promise<Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>>
 }
