@@ -8,6 +8,7 @@ import { UserBuilder } from '@test/builders'
 import { FakeTokenManager } from '@test/doubles/authentication'
 import { FakeEncoder } from '@test/doubles/encoder'
 import { InMemoryUserRepository } from '@test/doubles/repositories'
+import { MissingParamError } from '@/presentation/controllers/errors'
 
 describe('Sign in controller', () => {
   test('should return 200 if valid credentials are provided', async () => {
@@ -26,6 +27,22 @@ describe('Sign in controller', () => {
     expect(response.statusCode).toEqual(200)
     expect(authResult.id).toEqual(validUser.id)
     expect(authResult.accessToken).toBeDefined()
+  })
+
+  test('should return 400 if email is missing in the request', async () => {
+    const singleUserUserRepository = await getSingleUserUserRepository()
+    const validUser: UserData = UserBuilder.aUser().build()
+    const usecase = new SignIn(new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), new FakeTokenManager()))
+    const siginRequestWithoutEmail: HttpRequest = {
+      body: {
+        password: validUser.password
+      }
+    }
+    const controller = new SignInController(usecase)
+    const response: HttpResponse = await controller.handle(siginRequestWithoutEmail)
+    expect(response.statusCode).toEqual(400)
+    expect(response.body).toBeInstanceOf(MissingParamError)
+    expect((response.body as Error).message).toEqual('Missing parameter: email.')
   })
 
   async function getSingleUserUserRepository (): Promise<UserRepository> {
