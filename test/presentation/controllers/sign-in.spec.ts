@@ -1,6 +1,6 @@
 import { CustomAuthentication } from '@/use-cases/authentication'
 import { AuthenticationResult } from '@/use-cases/authentication/ports'
-import { UserData, UserRepository } from '@/use-cases/ports'
+import { UseCase, UserData, UserRepository } from '@/use-cases/ports'
 import { SignIn } from '@/use-cases/sign-in'
 import { SignInController } from '@/presentation/controllers'
 import { HttpRequest, HttpResponse } from '@/presentation/controllers/ports'
@@ -106,6 +106,26 @@ describe('Sign in controller', () => {
     const response: HttpResponse = await controller.handle(signInRequestWithUnregisteredUser)
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(UserNotFoundError)
+  })
+
+  test('should return 500 if an error is raised internally', async () => {
+    const validUser: UserData = UserBuilder.aUser().build()
+    const validUserSignInRequest: HttpRequest = {
+      body: {
+        email: validUser.email,
+        password: validUser.password
+      }
+    }
+    class ErrorThrowingSignInUseCaseStub implements UseCase {
+      async perform (request: UserData): Promise<void> {
+        throw Error()
+      }
+    }
+    const errorThrowingSignInUseCaseStub: ErrorThrowingSignInUseCaseStub = new ErrorThrowingSignInUseCaseStub()
+    const controllerWithStubUseCase = new SignInController(errorThrowingSignInUseCaseStub)
+    const response: HttpResponse = await controllerWithStubUseCase.handle(validUserSignInRequest)
+    expect(response.statusCode).toEqual(500)
+    expect(response.body).toBeInstanceOf(Error)
   })
 
   async function getSingleUserUserRepository (): Promise<UserRepository> {
