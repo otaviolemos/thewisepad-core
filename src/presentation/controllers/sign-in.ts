@@ -30,5 +30,7 @@ export class SignInController implements WebController {
     if (response.value instanceof WrongPasswordError) {
       return forbidden(response.value)
     }
+
+    return badRequest(response.value)
   }
 }
