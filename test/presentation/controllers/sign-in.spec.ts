@@ -9,7 +9,7 @@ import { FakeTokenManager } from '@test/doubles/authentication'
 import { FakeEncoder } from '@test/doubles/encoder'
 import { InMemoryUserRepository } from '@test/doubles/repositories'
 import { MissingParamError } from '@/presentation/controllers/errors'
-import { WrongPasswordError } from '@/use-cases/authentication/errors'
+import { UserNotFoundError, WrongPasswordError } from '@/use-cases/authentication/errors'
 
 describe('Sign in controller', () => {
   test('should return 200 if valid credentials are provided', async () => {
@@ -90,6 +90,22 @@ describe('Sign in controller', () => {
     const response: HttpResponse = await controller.handle(signInRequestWithIncorrectPassword)
     expect(response.statusCode).toEqual(403)
     expect(response.body).toBeInstanceOf(WrongPasswordError)
+  })
+
+  test('should return 400 if user is not found', async () => {
+    const singleUserUserRepository = await getSingleUserUserRepository()
+    const anotherUser: UserData = UserBuilder.aUser().withDifferentEmail().build()
+    const usecase = new SignIn(new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), new FakeTokenManager()))
+    const signInRequestWithUnregisteredUser: HttpRequest = {
+      body: {
+        email: anotherUser.email,
+        password: anotherUser.email
+      }
+    }
+    const controller = new SignInController(usecase)
+    const response: HttpResponse = await controller.handle(signInRequestWithUnregisteredUser)
+    expect(response.statusCode).toEqual(400)
+    expect(response.body).toBeInstanceOf(UserNotFoundError)
   })
 
   async function getSingleUserUserRepository (): Promise<UserRepository> {
