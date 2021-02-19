@@ -45,6 +45,22 @@ describe('Sign in controller', () => {
     expect((response.body as Error).message).toEqual('Missing parameter: email.')
   })
 
+  test('should return 400 if password is missing in the request', async () => {
+    const singleUserUserRepository = await getSingleUserUserRepository()
+    const validUser: UserData = UserBuilder.aUser().build()
+    const usecase = new SignIn(new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), new FakeTokenManager()))
+    const siginRequestWithoutEmail: HttpRequest = {
+      body: {
+        email: validUser.email
+      }
+    }
+    const controller = new SignInController(usecase)
+    const response: HttpResponse = await controller.handle(siginRequestWithoutEmail)
+    expect(response.statusCode).toEqual(400)
+    expect(response.body).toBeInstanceOf(MissingParamError)
+    expect((response.body as Error).message).toEqual('Missing parameter: password.')
+  })
+
   async function getSingleUserUserRepository (): Promise<UserRepository> {
     const aUser = UserBuilder.aUser().build()
     const userDataArrayWithSingleUser: UserData[] =
