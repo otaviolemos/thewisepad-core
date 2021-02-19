@@ -80,14 +80,14 @@ describe('Sign in controller', () => {
     const singleUserUserRepository = await getSingleUserUserRepository()
     const validUser: UserData = UserBuilder.aUser().build()
     const usecase = new SignIn(new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), new FakeTokenManager()))
-    const validUserSignInRequest: HttpRequest = {
+    const signInRequestWithIncorrectPassword: HttpRequest = {
       body: {
         email: validUser.email,
         password: 'incorrect password'
       }
     }
     const controller = new SignInController(usecase)
-    const response: HttpResponse = await controller.handle(validUserSignInRequest)
+    const response: HttpResponse = await controller.handle(signInRequestWithIncorrectPassword)
     expect(response.statusCode).toEqual(403)
     expect(response.body).toBeInstanceOf(WrongPasswordError)
   })
