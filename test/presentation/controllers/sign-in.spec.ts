@@ -9,6 +9,7 @@ import { FakeTokenManager } from '@test/doubles/authentication'
 import { FakeEncoder } from '@test/doubles/encoder'
 import { InMemoryUserRepository } from '@test/doubles/repositories'
 import { MissingParamError } from '@/presentation/controllers/errors'
+import { WrongPasswordError } from '@/use-cases/authentication/errors'
 
 describe('Sign in controller', () => {
   test('should return 200 if valid credentials are provided', async () => {
@@ -73,6 +74,22 @@ describe('Sign in controller', () => {
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(MissingParamError)
     expect((response.body as Error).message).toEqual('Missing parameter: email password.')
+  })
+
+  test('should return 403 if password is incorrect', async () => {
+    const singleUserUserRepository = await getSingleUserUserRepository()
+    const validUser: UserData = UserBuilder.aUser().build()
+    const usecase = new SignIn(new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), new FakeTokenManager()))
+    const validUserSignInRequest: HttpRequest = {
+      body: {
+        email: validUser.email,
+        password: 'incorrect password'
+      }
+    }
+    const controller = new SignInController(usecase)
+    const response: HttpResponse = await controller.handle(validUserSignInRequest)
+    expect(response.statusCode).toEqual(403)
+    expect(response.body).toBeInstanceOf(WrongPasswordError)
   })
 
   async function getSingleUserUserRepository (): Promise<UserRepository> {
