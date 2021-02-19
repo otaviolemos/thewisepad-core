@@ -1,6 +1,6 @@
 import { UseCase } from '@/use-cases/ports'
 import { HttpRequest, HttpResponse, WebController } from '@/presentation/controllers/ports'
-import { badRequest, ok } from '@/presentation/controllers/util'
+import { badRequest, forbidden, ok } from '@/presentation/controllers/util'
 import { MissingParamError } from '@/presentation/controllers/errors'
 import { Either } from '@/shared'
 import { UserNotFoundError, WrongPasswordError } from '@/use-cases/authentication/errors'
@@ -25,6 +25,10 @@ export class SignInController implements WebController {
 
     if (response.isRight()) {
       return ok(response.value)
+    }
+
+    if (response.value instanceof WrongPasswordError) {
+      return forbidden(response.value)
     }
   }
 }
