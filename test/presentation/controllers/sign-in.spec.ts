@@ -33,13 +33,13 @@ describe('Sign in controller', () => {
     const singleUserUserRepository = await getSingleUserUserRepository()
     const validUser: UserData = UserBuilder.aUser().build()
     const usecase = new SignIn(new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), new FakeTokenManager()))
-    const siginRequestWithoutEmail: HttpRequest = {
+    const signInRequestWithoutEmail: HttpRequest = {
       body: {
         password: validUser.password
       }
     }
     const controller = new SignInController(usecase)
-    const response: HttpResponse = await controller.handle(siginRequestWithoutEmail)
+    const response: HttpResponse = await controller.handle(signInRequestWithoutEmail)
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(MissingParamError)
     expect((response.body as Error).message).toEqual('Missing parameter: email.')
