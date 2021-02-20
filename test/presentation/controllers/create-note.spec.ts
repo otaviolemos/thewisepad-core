@@ -38,4 +38,18 @@ describe('Create note controller', () => {
     const response: HttpResponse = await createNoteController.handle(requestWithoutTitle)
     expect(response.statusCode).toBe(400)
   })
+
+  test('should return 400 when required fields are missing from the request', async () => {
+    const aUser = UserBuilder.aUser().build()
+    const emptyNoteRepository = new InMemoryNoteRepository([])
+    const createNoteUseCase = new CreateNote(emptyNoteRepository, new InMemoryUserRepository([aUser]))
+    const createNoteController = new CreateNoteController(createNoteUseCase)
+    const requestWithoutTitle: HttpRequest = {
+      body: {
+      }
+    }
+    const response: HttpResponse = await createNoteController.handle(requestWithoutTitle)
+    expect(response.statusCode).toBe(400)
+    expect((response.body as Error).message).toEqual('Missing parameter: title, content, ownerEmail.')
+  })
 })
