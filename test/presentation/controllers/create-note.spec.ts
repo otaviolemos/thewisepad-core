@@ -22,4 +22,20 @@ describe('Create note controller', () => {
     expect(response.statusCode).toBe(201)
     expect((await emptyNoteRepository.findAllNotesFrom(aUser.id)).length).toBe(1)
   })
+
+  test('should return 400 when title is missing from the request', async () => {
+    const aNote = NoteBuilder.aNote().build()
+    const aUser = UserBuilder.aUser().build()
+    const emptyNoteRepository = new InMemoryNoteRepository([])
+    const createNoteUseCase = new CreateNote(emptyNoteRepository, new InMemoryUserRepository([aUser]))
+    const createNoteController = new CreateNoteController(createNoteUseCase)
+    const requestWithoutTitle: HttpRequest = {
+      body: {
+        content: aNote.content,
+        ownerEmail: aNote.ownerEmail
+      }
+    }
+    const response: HttpResponse = await createNoteController.handle(requestWithoutTitle)
+    expect(response.statusCode).toBe(400)
+  })
 })
