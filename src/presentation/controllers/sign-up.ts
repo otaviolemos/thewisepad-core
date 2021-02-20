@@ -1,5 +1,5 @@
 import { HttpResponse, WebController, HttpRequest } from '@/presentation/controllers/ports'
-import { badRequest, created, forbidden, serverError } from '@/presentation/controllers/util'
+import { badRequest, created, forbidden, getMissingParams, serverError } from '@/presentation/controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { MissingParamError } from '@/presentation/controllers/errors/missing-param-error'
 import { UseCase } from '@/use-cases/ports'
@@ -13,10 +13,9 @@ export class SignUpController implements WebController {
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
-      if (!(request.body.email) || !(request.body.password)) {
-        let missingParam = !(request.body.email) ? 'email ' : ''
-        missingParam += !(request.body.password) ? 'password' : ''
-        return badRequest(new MissingParamError(missingParam.trim()))
+      const missingParams: string[] = getMissingParams(request, ['email', 'password'])
+      if (missingParams.length > 0) {
+        return badRequest(new MissingParamError(missingParams.join(' ')))
       }
 
       const response =

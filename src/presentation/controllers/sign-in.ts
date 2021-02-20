@@ -1,6 +1,6 @@
 import { UseCase } from '@/use-cases/ports'
 import { HttpRequest, HttpResponse, WebController } from '@/presentation/controllers/ports'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/controllers/util'
+import { badRequest, forbidden, getMissingParams, ok, serverError } from '@/presentation/controllers/util'
 import { MissingParamError } from '@/presentation/controllers/errors'
 import { Either } from '@/shared'
 import { UserNotFoundError, WrongPasswordError } from '@/use-cases/authentication/errors'
@@ -15,10 +15,9 @@ export class SignInController implements WebController {
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
-      if (!(request.body.email) || !(request.body.password)) {
-        let missingParam = !(request.body.email) ? 'email ' : ''
-        missingParam += !(request.body.password) ? 'password' : ''
-        return badRequest(new MissingParamError(missingParam.trim()))
+      const missingParams: string[] = getMissingParams(request, ['email', 'password'])
+      if (missingParams.length > 0) {
+        return badRequest(new MissingParamError(missingParams.join(' ')))
       }
 
       const response: Either<UserNotFoundError | WrongPasswordError, AuthenticationResult> =
