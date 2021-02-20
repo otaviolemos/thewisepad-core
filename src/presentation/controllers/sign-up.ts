@@ -13,7 +13,8 @@ export class SignUpController implements WebController {
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
-      const missingParams: string[] = getMissingParams(request, ['email', 'password'])
+      const requiredParams = ['email', 'password']
+      const missingParams: string[] = getMissingParams(request, requiredParams)
       if (missingParams.length > 0) {
         return badRequest(new MissingParamError(missingParams.join(', ')))
       }
