@@ -64,7 +64,7 @@ describe('Create note controller', () => {
       body: {
         title: aNote.title,
         content: aNote.content,
-        ownerEmail: 'another email'
+        ownerEmail: 'unregistered@mail.com'
       }
     }
     const response: HttpResponse = await createNoteController.handle(requestWithUnregisteredUser)
