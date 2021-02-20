@@ -16,7 +16,7 @@ export class CreateNoteController implements WebController {
   async handle (request: HttpRequest): Promise<HttpResponse> {
     const missingParams: string[] = getMissingParams(request, ['title', 'content', 'ownerEmail'])
     if (missingParams.length > 0) {
-      return badRequest(new MissingParamError(missingParams.join(',')))
+      return badRequest(new MissingParamError(missingParams.join(', ')))
     }
     const noteRequest: NoteData = {
       title: request.body.title,
