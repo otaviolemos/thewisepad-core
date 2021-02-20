@@ -1,7 +1,7 @@
 import { HttpRequest, HttpResponse } from '@/presentation/controllers/ports'
 import { SignUpController } from '@/presentation/controllers/sign-up'
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
-import { Encoder, UserData, UseCase } from '@/use-cases/ports'
+import { Encoder, UseCase } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { UserBuilder } from '@test/builders'
@@ -10,6 +10,7 @@ import { FakeEncoder } from '@test/doubles/encoder'
 import { MissingParamError } from '@/presentation/controllers/errors'
 import { makeAuthenticationStub } from '@test/use-cases/authentication'
 import { AuthenticationResult } from '@/use-cases/authentication/ports'
+import { ErrorThrowingUseCaseStub } from '@test/doubles/usecases'
 
 describe('Sign up controller', () => {
   const emptyUserRepository = new InMemoryUserRepository([])
@@ -38,12 +39,7 @@ describe('Sign up controller', () => {
       password: userWithInvalidPassword.password
     }
   }
-  class ErrorThrowingSignUpUseCaseStub implements UseCase {
-    async perform (request: UserData): Promise<void> {
-      throw Error()
-    }
-  }
-  const errorThrowingSignUpUseCaseStub: ErrorThrowingSignUpUseCaseStub = new ErrorThrowingSignUpUseCaseStub()
+  const errorThrowingSignUpUseCaseStub: ErrorThrowingUseCaseStub = new ErrorThrowingUseCaseStub()
 
   test('should return 201 and authentication result when user is successfully signed up', async () => {
     const response: HttpResponse = await controller.handle(validUserSignUpRequest)

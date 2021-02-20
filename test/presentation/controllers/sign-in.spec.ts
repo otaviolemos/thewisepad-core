@@ -1,6 +1,6 @@
 import { CustomAuthentication } from '@/use-cases/authentication'
 import { AuthenticationResult } from '@/use-cases/authentication/ports'
-import { UseCase, UserData, UserRepository } from '@/use-cases/ports'
+import { UserData, UserRepository } from '@/use-cases/ports'
 import { SignIn } from '@/use-cases/sign-in'
 import { SignInController } from '@/presentation/controllers'
 import { HttpRequest, HttpResponse } from '@/presentation/controllers/ports'
@@ -10,6 +10,7 @@ import { FakeEncoder } from '@test/doubles/encoder'
 import { InMemoryUserRepository } from '@test/doubles/repositories'
 import { MissingParamError } from '@/presentation/controllers/errors'
 import { UserNotFoundError, WrongPasswordError } from '@/use-cases/authentication/errors'
+import { ErrorThrowingUseCaseStub } from '@test/doubles/usecases/error-throwing-use-case-stub'
 
 describe('Sign in controller', () => {
   test('should return 200 if valid credentials are provided', async () => {
@@ -116,12 +117,7 @@ describe('Sign in controller', () => {
         password: validUser.password
       }
     }
-    class ErrorThrowingSignInUseCaseStub implements UseCase {
-      async perform (request: UserData): Promise<void> {
-        throw Error()
-      }
-    }
-    const errorThrowingSignInUseCaseStub: ErrorThrowingSignInUseCaseStub = new ErrorThrowingSignInUseCaseStub()
+    const errorThrowingSignInUseCaseStub: ErrorThrowingUseCaseStub = new ErrorThrowingUseCaseStub()
     const controllerWithStubUseCase = new SignInController(errorThrowingSignInUseCaseStub)
     const response: HttpResponse = await controllerWithStubUseCase.handle(validUserSignInRequest)
     expect(response.statusCode).toEqual(500)
