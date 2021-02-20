@@ -29,5 +29,7 @@ export class CreateNoteController implements WebController {
     if (useCaseResponse.isRight()) {
       return created(useCaseResponse.value)
     }
+
+    return badRequest(useCaseResponse.value)
   }
 }
