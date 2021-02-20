@@ -4,6 +4,7 @@ import { CreateNote } from '@/use-cases/create-note'
 import { UnregisteredOwnerError } from '@/use-cases/create-note/errors'
 import { NoteBuilder, UserBuilder } from '@test/builders'
 import { InMemoryNoteRepository, InMemoryUserRepository } from '@test/doubles/repositories'
+import { ErrorThrowingUseCaseStub } from '@test/doubles/usecases'
 
 describe('Create note controller', () => {
   test('should return 201 when note is successfully created', async () => {
@@ -70,5 +71,20 @@ describe('Create note controller', () => {
     const response: HttpResponse = await createNoteController.handle(requestWithUnregisteredUser)
     expect(response.statusCode).toBe(400)
     expect(response.body).toBeInstanceOf(UnregisteredOwnerError)
+  })
+
+  test('should return 500 when server raises', async () => {
+    const aNote = NoteBuilder.aNote().build()
+    const errorThrowingCreateNoteUseCaseStub = new ErrorThrowingUseCaseStub()
+    const createNoteController = new CreateNoteController(errorThrowingCreateNoteUseCaseStub)
+    const validRequest: HttpRequest = {
+      body: {
+        title: aNote.title,
+        content: aNote.content,
+        ownerEmail: aNote.ownerEmail
+      }
+    }
+    const response: HttpResponse = await createNoteController.handle(validRequest)
+    expect(response.statusCode).toBe(500)
   })
 })
