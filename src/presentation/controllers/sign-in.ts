@@ -17,7 +17,7 @@ export class SignInController implements WebController {
     try {
       const missingParams: string[] = getMissingParams(request, ['email', 'password'])
       if (missingParams.length > 0) {
-        return badRequest(new MissingParamError(missingParams.join(' ')))
+        return badRequest(new MissingParamError(missingParams.join(', ')))
       }
 
       const response: Either<UserNotFoundError | WrongPasswordError, AuthenticationResult> =

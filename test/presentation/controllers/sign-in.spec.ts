@@ -73,7 +73,7 @@ describe('Sign in controller', () => {
     const response: HttpResponse = await controller.handle(signInRequestWithoutEmailAndPassword)
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(MissingParamError)
-    expect((response.body as Error).message).toEqual('Missing parameter: email password.')
+    expect((response.body as Error).message).toEqual('Missing parameter: email, password.')
   })
 
   test('should return 403 if password is incorrect', async () => {
