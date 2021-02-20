@@ -3,7 +3,8 @@ import { HttpRequest, HttpResponse, WebController } from '@/presentation/control
 import { Either } from '@/shared'
 import { ExistingTitleError, UnregisteredOwnerError } from '@/use-cases/create-note/errors'
 import { NoteData, UseCase } from '@/use-cases/ports'
-import { created } from '@/presentation/controllers/util/http-helper'
+import { created, badRequest, getMissingParams } from '@/presentation/controllers/util'
+import { MissingParamError } from '@/presentation/controllers/errors'
 
 export class CreateNoteController implements WebController {
   private readonly useCase: UseCase
@@ -13,6 +14,10 @@ export class CreateNoteController implements WebController {
   }
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
+    const missingParams: string[] = getMissingParams(request, ['title', 'content', 'ownerEmail'])
+    if (missingParams.length > 0) {
+      return badRequest(new MissingParamError(missingParams.join(',')))
+    }
     const noteRequest: NoteData = {
       title: request.body.title,
       content: request.body.content,
