@@ -16,9 +16,9 @@ export class SignInController implements WebController {
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
       const requiredParams = ['email', 'password']
-      const missingParams: string[] = getMissingParams(request, requiredParams)
-      if (missingParams.length > 0) {
-        return badRequest(new MissingParamError(missingParams.join(', ')))
+      const missingParams: string = getMissingParams(request, requiredParams)
+      if (missingParams) {
+        return badRequest(new MissingParamError(missingParams))
       }
 
       const response: Either<UserNotFoundError | WrongPasswordError, AuthenticationResult> =

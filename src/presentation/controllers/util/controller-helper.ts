@@ -1,6 +1,6 @@
 import { HttpRequest } from '@/presentation/controllers/ports'
 
-export const getMissingParams = (request: HttpRequest, requiredFields: string[]): string[] => {
+export const getMissingParams = (request: HttpRequest, requiredFields: string[]): string => {
   const missingParams: string[] = []
 
   requiredFields.forEach(function (name) {
@@ -9,5 +9,5 @@ export const getMissingParams = (request: HttpRequest, requiredFields: string[])
     }
   })
 
-  return missingParams
+  return missingParams.join(', ')
 }
