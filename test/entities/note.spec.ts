@@ -1,5 +1,5 @@
-import { User } from '../../src/entities/user'
-import { Note } from '../../src/entities/note'
+import { User } from '@/entities/user'
+import { Note } from '@/entities/note'
 
 describe('Note entity', () => {
   test('should be created with a valid title and owner', () => {

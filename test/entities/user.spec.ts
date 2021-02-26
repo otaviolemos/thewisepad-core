@@ -1,4 +1,4 @@
-import { User } from '../../src/entities/user'
+import { User } from '@/entities/user'
 
 const validEmail = 'any@mail.com'
 const validPassword = '1validpassword'
