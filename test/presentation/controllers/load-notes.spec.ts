@@ -4,6 +4,7 @@ import { LoadNotes } from '@/use-cases/load-notes'
 import { NoteData, NoteRepository } from '@/use-cases/ports'
 import { NoteBuilder, UserBuilder } from '@test/builders'
 import { InMemoryNoteRepository } from '@test/doubles/repositories'
+import { ErrorThrowingUseCaseStub } from '@test/doubles/usecases'
 
 describe('Load notes controller', () => {
   test('should return 200 when load notes use case returns', async () => {
@@ -24,5 +25,18 @@ describe('Load notes controller', () => {
     const loadResult = response.body as NoteData[]
     expect(loadResult.length).toEqual(2)
     expect(response.statusCode).toEqual(200)
+  })
+
+  test('should return 500 if load notes use case throws', async () => {
+    const errorThrowingLoadNotesUseCase = new ErrorThrowingUseCaseStub()
+    const loadNotesController: LoadNotesController = new LoadNotesController(errorThrowingLoadNotesUseCase)
+    const aUser = UserBuilder.aUser().build()
+    const loadNotesRequest: HttpRequest = {
+      body: {
+        userId: aUser.id
+      }
+    }
+    const response: HttpResponse = await loadNotesController.handle(loadNotesRequest)
+    expect(response.statusCode).toEqual(500)
   })
 })
