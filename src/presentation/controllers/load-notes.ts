@@ -8,9 +8,16 @@ export class LoadNotesController implements WebController {
   }
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
-    return {
-      statusCode: 200,
-      body: await this.loadNotesUseCase.perform(request.body.userId)
+    try {
+      return {
+        statusCode: 200,
+        body: await this.loadNotesUseCase.perform(request.body.userId)
+      }
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: error
+      }
     }
   }
 }
