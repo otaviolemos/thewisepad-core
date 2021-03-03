@@ -1,5 +1,5 @@
 import { NoteData, NoteRepository } from '@/use-cases/ports'
-import { LoadNotesForUser } from '@/use-cases/load-notes-for-user'
+import { LoadNotes } from '@/use-cases/load-notes'
 import { InMemoryNoteRepository } from '@test/doubles/repositories'
 import { NoteBuilder } from '@test/builders'
 
@@ -10,7 +10,7 @@ describe('Load notes for user use case', () => {
     const noteRepositoryWithTwoNotes: NoteRepository = new InMemoryNoteRepository(
       [note1, note2]
     )
-    const usecase: LoadNotesForUser = new LoadNotesForUser(noteRepositoryWithTwoNotes)
+    const usecase: LoadNotes = new LoadNotes(noteRepositoryWithTwoNotes)
     const defaultValidUserId = '0'
     const notes: NoteData[] = await usecase.perform(defaultValidUserId)
     expect(notes.length).toEqual(2)
@@ -24,7 +24,7 @@ describe('Load notes for user use case', () => {
     const noteRepositoryWithTwoNotes: NoteRepository = new InMemoryNoteRepository(
       [note1, note2]
     )
-    const usecase: LoadNotesForUser = new LoadNotesForUser(noteRepositoryWithTwoNotes)
+    const usecase: LoadNotes = new LoadNotes(noteRepositoryWithTwoNotes)
     const nonDefaultUserId = '1'
     const notes: NoteData[] = await usecase.perform(nonDefaultUserId)
     expect(notes.length).toEqual(0)
