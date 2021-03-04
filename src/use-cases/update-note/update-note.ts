@@ -4,6 +4,14 @@ import { Either, left, right } from '@/shared'
 import { ExistingTitleError } from '@/use-cases/create-note/errors'
 import { UseCase, NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
 
+export type UpdateNoteRequest = {
+  title?: string,
+  content?: string,
+  ownerEmail: string,
+  ownerId: string,
+  id: string
+}
+
 export class UpdateNote implements UseCase {
   private readonly noteRepository: NoteRepository
   private readonly userRepository: UserRepository
@@ -13,28 +21,32 @@ export class UpdateNote implements UseCase {
     this.userRepository = userRepository
   }
 
-  public async perform (changedNoteData: NoteData): Promise<Either<ExistingTitleError | InvalidTitleError, NoteData>> {
+  public async perform (changedNoteData: UpdateNoteRequest): Promise<Either<ExistingTitleError | InvalidTitleError, NoteData>> {
     const userData = await this.userRepository.findByEmail(changedNoteData.ownerEmail)
+    const originalNoteData = await this.noteRepository.findById(changedNoteData.id)
     const owner = User.create(userData.email, userData.password).value as User
-    const noteOrError = Note.create(owner, changedNoteData.title, changedNoteData.content)
+    const noteOrError = Note.create(owner,
+      changedNoteData.title ? changedNoteData.title : originalNoteData.title,
+      changedNoteData.content)
     if (noteOrError.isLeft()) {
       return left(noteOrError.value)
     }
 
     const changedNote = noteOrError.value as Note
-    const notesFromUser = await this.noteRepository.findAllNotesFrom(changedNoteData.ownerId)
-    const found = notesFromUser.find(note => note.title === changedNote.title.value)
-    if (found) {
-      return left(new ExistingTitleError())
-    }
 
     if (changedNoteData.title) {
+      const notesFromUser = await this.noteRepository.findAllNotesFrom(changedNoteData.ownerId)
+      const found = notesFromUser.find(note => note.title === changedNote.title.value)
+      if (found) {
+        return left(new ExistingTitleError())
+      }
       await this.noteRepository.updateTitle(changedNoteData.id, changedNoteData.title)
     }
+
     if (changedNoteData.content) {
       await this.noteRepository.updateContent(changedNoteData.id, changedNoteData.content)
     }
 
-    return right(changedNoteData)
+    return right(await this.noteRepository.findById(changedNoteData.id))
   }
 }
