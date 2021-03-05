@@ -31,6 +31,6 @@ export class Note {
     if (titleOrError.isLeft()) {
       return left(titleOrError.value)
     }
-    return right(new Note(owner, titleOrError.value, content))
+    return right(new Note(owner, titleOrError.value, !content ? '' : content))
   }
 }
