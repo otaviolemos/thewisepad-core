@@ -17,6 +17,11 @@ export class UpdateNoteController implements WebController {
       statusCode: 200,
       body: useCaseResponse.value
     }
+
+    if (useCaseResponse.isLeft()) {
+      response.statusCode = 400
+    }
+
     return response
   }
 }
