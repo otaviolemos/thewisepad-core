@@ -12,9 +12,9 @@ describe('Update note use case', () => {
     const changedNote: UpdateNoteRequest = {
       title: noteWithDifferentTitleAndContent.title,
       content: noteWithDifferentTitleAndContent.content,
-      id: noteWithDifferentTitleAndContent.id,
-      ownerEmail: noteWithDifferentTitleAndContent.ownerEmail,
-      ownerId: noteWithDifferentTitleAndContent.ownerId
+      id: originalNote.id,
+      ownerEmail: originalNote.ownerEmail,
+      ownerId: originalNote.ownerId
     }
     const owner = UserBuilder.aUser().build()
     const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([originalNote])
