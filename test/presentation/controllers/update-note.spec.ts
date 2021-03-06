@@ -79,4 +79,28 @@ describe('Update note controller', () => {
     expect(response.body).toBeInstanceOf(MissingParamError)
     expect((response.body as Error).message).toEqual('Missing parameter: title, content.')
   })
+
+  test('should return 400 when request does not contain note id', async () => {
+    const originalNote: NoteData = NoteBuilder.aNote().build()
+    const noteWithNoId = {
+      title: 'Different title',
+      content: originalNote.content,
+      ownerEmail: originalNote.ownerEmail,
+      ownerId: originalNote.ownerId
+    }
+    const requestWithNoTitleNorContent: HttpRequest = {
+      body: noteWithNoId
+    }
+    const owner = UserBuilder.aUser().build()
+    const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([originalNote])
+    const userRepositoryWithAUser: UserRepository = new InMemoryUserRepository([
+      owner
+    ])
+    const usecase = new UpdateNote(noteRepositoryWithANote, userRepositoryWithAUser)
+    const controller = new UpdateNoteController(usecase)
+    const response: HttpResponse = await controller.handle(requestWithNoTitleNorContent)
+    expect(response.statusCode).toEqual(400)
+    expect(response.body).toBeInstanceOf(MissingParamError)
+    expect((response.body as Error).message).toEqual('Missing parameter: id.')
+  })
 })
