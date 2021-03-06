@@ -3,7 +3,7 @@ import { HttpRequest, HttpResponse, WebController } from '@/presentation/control
 import { Either } from '@/shared'
 import { ExistingTitleError } from '@/use-cases/create-note/errors'
 import { NoteData, UseCase } from '@/use-cases/ports'
-import { badRequest, getMissingParams, ok } from '@/presentation/controllers/util'
+import { badRequest, getMissingParams, ok, serverError } from '@/presentation/controllers/util'
 import { MissingParamError } from '@/presentation/controllers/errors'
 
 export class UpdateNoteController implements WebController {
@@ -13,27 +13,31 @@ export class UpdateNoteController implements WebController {
   }
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
-    const requiredNoteParams = ['id', 'ownerEmail', 'ownerId']
-    const missingNoteParams: string = getMissingParams(request, requiredNoteParams)
-    if (missingNoteParams) {
-      return badRequest(new MissingParamError(missingNoteParams))
-    }
+    try {
+      const requiredNoteParams = ['id', 'ownerEmail', 'ownerId']
+      const missingNoteParams: string = getMissingParams(request, requiredNoteParams)
+      if (missingNoteParams) {
+        return badRequest(new MissingParamError(missingNoteParams))
+      }
 
-    const requiredUpdateParams = ['title', 'content']
-    const missingUpdateParams: string = getMissingParams(request, requiredUpdateParams)
-    if (missingUpdateParams.split(',').length === 2) {
-      return badRequest(new MissingParamError(missingUpdateParams))
-    }
+      const requiredUpdateParams = ['title', 'content']
+      const missingUpdateParams: string = getMissingParams(request, requiredUpdateParams)
+      if (missingUpdateParams.split(',').length === 2) {
+        return badRequest(new MissingParamError(missingUpdateParams))
+      }
 
-    const useCaseResponse: Either<ExistingTitleError | InvalidTitleError, NoteData> =
-     await this.updateNoteUseCase.perform(request.body)
+      const useCaseResponse: Either<ExistingTitleError | InvalidTitleError, NoteData> =
+      await this.updateNoteUseCase.perform(request.body)
 
-    if (useCaseResponse.isRight()) {
-      return ok(useCaseResponse.value)
-    }
+      if (useCaseResponse.isRight()) {
+        return ok(useCaseResponse.value)
+      }
 
-    if (useCaseResponse.isLeft()) {
-      return badRequest(useCaseResponse.value)
+      if (useCaseResponse.isLeft()) {
+        return badRequest(useCaseResponse.value)
+      }
+    } catch (error) {
+      return serverError(error)
     }
   }
 }
