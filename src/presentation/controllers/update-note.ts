@@ -3,6 +3,8 @@ import { HttpRequest, HttpResponse, WebController } from '@/presentation/control
 import { Either } from '@/shared'
 import { ExistingTitleError } from '@/use-cases/create-note/errors'
 import { NoteData, UseCase } from '@/use-cases/ports'
+import { badRequest, getMissingParams, ok } from '@/presentation/controllers/util'
+import { MissingParamError } from '@/presentation/controllers/errors'
 
 export class UpdateNoteController implements WebController {
   private readonly updateNoteUseCase: UseCase
@@ -11,17 +13,20 @@ export class UpdateNoteController implements WebController {
   }
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
+    const requiredUpdateParams = ['title', 'content']
+    const missingUpdateParams: string = getMissingParams(request, requiredUpdateParams)
+    if (missingUpdateParams.split(',').length === 2) {
+      return badRequest(new MissingParamError(missingUpdateParams))
+    }
     const useCaseResponse: Either<ExistingTitleError | InvalidTitleError, NoteData> =
      await this.updateNoteUseCase.perform(request.body)
-    const response: HttpResponse = {
-      statusCode: 200,
-      body: useCaseResponse.value
+
+    if (useCaseResponse.isRight()) {
+      return ok(useCaseResponse.value)
     }
 
     if (useCaseResponse.isLeft()) {
-      response.statusCode = 400
+      return badRequest(useCaseResponse.value)
     }
-
-    return response
   }
 }
