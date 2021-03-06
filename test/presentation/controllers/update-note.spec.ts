@@ -1,4 +1,5 @@
 import { InvalidTitleError } from '@/entities/errors'
+import { MissingParamError } from '@/presentation/controllers/errors'
 import { HttpRequest, HttpResponse } from '@/presentation/controllers/ports'
 import { UpdateNoteController } from '@/presentation/controllers/update-note'
 import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
@@ -54,5 +55,28 @@ describe('Update note controller', () => {
     const response: HttpResponse = await controller.handle(request)
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(InvalidTitleError)
+  })
+
+  test('should return 400 when request does not contain title nor content', async () => {
+    const originalNote: NoteData = NoteBuilder.aNote().build()
+    const noteWithNoTitleNorContent = {
+      id: originalNote.id,
+      ownerEmail: originalNote.ownerEmail,
+      ownerId: originalNote.ownerId
+    }
+    const requestWithNoTitleNorContent: HttpRequest = {
+      body: noteWithNoTitleNorContent
+    }
+    const owner = UserBuilder.aUser().build()
+    const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([originalNote])
+    const userRepositoryWithAUser: UserRepository = new InMemoryUserRepository([
+      owner
+    ])
+    const usecase = new UpdateNote(noteRepositoryWithANote, userRepositoryWithAUser)
+    const controller = new UpdateNoteController(usecase)
+    const response: HttpResponse = await controller.handle(requestWithNoTitleNorContent)
+    expect(response.statusCode).toEqual(400)
+    expect(response.body).toBeInstanceOf(MissingParamError)
+    expect((response.body as Error).message).toEqual('Missing parameter: title, content.')
   })
 })
