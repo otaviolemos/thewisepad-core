@@ -13,11 +13,18 @@ export class UpdateNoteController implements WebController {
   }
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
+    const requiredNoteParams = ['id', 'ownerEmail', 'ownerId']
+    const missingNoteParams: string = getMissingParams(request, requiredNoteParams)
+    if (missingNoteParams) {
+      return badRequest(new MissingParamError(missingNoteParams))
+    }
+
     const requiredUpdateParams = ['title', 'content']
     const missingUpdateParams: string = getMissingParams(request, requiredUpdateParams)
     if (missingUpdateParams.split(',').length === 2) {
       return badRequest(new MissingParamError(missingUpdateParams))
     }
+
     const useCaseResponse: Either<ExistingTitleError | InvalidTitleError, NoteData> =
      await this.updateNoteUseCase.perform(request.body)
 
