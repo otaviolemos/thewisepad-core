@@ -6,6 +6,7 @@ import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
 import { UpdateNote, UpdateNoteRequest } from '@/use-cases/update-note'
 import { NoteBuilder, UserBuilder } from '@test/builders'
 import { InMemoryNoteRepository, InMemoryUserRepository } from '@test/doubles/repositories'
+import { ErrorThrowingUseCaseStub } from '@test/doubles/usecases'
 
 describe('Update note controller', () => {
   test('should return 200 and updated note when note is updated', async () => {
@@ -102,5 +103,25 @@ describe('Update note controller', () => {
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(MissingParamError)
     expect((response.body as Error).message).toEqual('Missing parameter: id.')
+  })
+
+  test('should return 500 if an error is raised internally', async () => {
+    const errorThrowingSignUpUseCaseStub = new ErrorThrowingUseCaseStub()
+    const controllerWithStubUseCase = new UpdateNoteController(errorThrowingSignUpUseCaseStub)
+    const originalNote: NoteData = NoteBuilder.aNote().build()
+    const noteWithDifferentTitleAndContent: NoteData = NoteBuilder.aNote().withDifferentTitleAndContent().build()
+    const changedNote: UpdateNoteRequest = {
+      title: noteWithDifferentTitleAndContent.title,
+      content: noteWithDifferentTitleAndContent.content,
+      id: originalNote.id,
+      ownerEmail: originalNote.ownerEmail,
+      ownerId: originalNote.ownerId
+    }
+    const validRequest: HttpRequest = {
+      body: changedNote
+    }
+    const response: HttpResponse = await controllerWithStubUseCase.handle(validRequest)
+    expect(response.statusCode).toEqual(500)
+    expect(response.body).toBeInstanceOf(Error)
   })
 })
