@@ -22,7 +22,7 @@ export class UpdateNoteController implements WebController {
 
       const requiredUpdateParams = ['title', 'content']
       const missingUpdateParams: string = getMissingParams(request, requiredUpdateParams)
-      if (missingUpdateParams.split(',').length === 2) {
+      if (this.missingTitleAndContent(missingUpdateParams)) {
         return badRequest(new MissingParamError(missingUpdateParams))
       }
 
@@ -39,5 +39,9 @@ export class UpdateNoteController implements WebController {
     } catch (error) {
       return serverError(error)
     }
+  }
+
+  private missingTitleAndContent (missingUpdateParams: string): boolean {
+    return missingUpdateParams.split(',').length === 2
   }
 }
