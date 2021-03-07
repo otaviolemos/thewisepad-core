@@ -20,8 +20,8 @@ export class UpdateNoteController implements WebController {
         return badRequest(new MissingParamError(missingNoteParams))
       }
 
-      const requiredUpdateParams = ['title', 'content']
-      const missingUpdateParams: string = getMissingParams(request, requiredUpdateParams)
+      const updateParams = ['title', 'content']
+      const missingUpdateParams: string = getMissingParams(request, updateParams)
       if (this.missingTitleAndContent(missingUpdateParams)) {
         return badRequest(new MissingParamError(missingUpdateParams))
       }
