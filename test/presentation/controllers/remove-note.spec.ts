@@ -19,4 +19,18 @@ describe('Remove note controller', () => {
     expect(response.statusCode).toEqual(200)
     expect(response.body).toEqual(aNote)
   })
+
+  test('should return 400 on attemp to remove unexisting note', async () => {
+    const aNote = NoteBuilder.aNote().build()
+    const anotherNote = NoteBuilder.aNote().withDifferentTitleAndId().build()
+    const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([aNote])
+    const usecase = new RemoveNote(noteRepositoryWithANote)
+    const controller: WebController = new RemoveNoteController(usecase)
+    const response: HttpResponse = await controller.handle({
+      body: {
+        noteId: anotherNote.id
+      }
+    })
+    expect(response.statusCode).toEqual(400)
+  })
 })
