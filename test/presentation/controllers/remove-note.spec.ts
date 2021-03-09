@@ -4,6 +4,7 @@ import { NoteRepository } from '@/use-cases/ports'
 import { RemoveNote } from '@/use-cases/remove-note'
 import { NoteBuilder } from '@test/builders'
 import { InMemoryNoteRepository } from '@test/doubles/repositories'
+import { ErrorThrowingUseCaseStub } from '@test/doubles/usecases'
 
 describe('Remove note controller', () => {
   test('should return 200 if successfully removing a note', async () => {
@@ -45,5 +46,17 @@ describe('Remove note controller', () => {
     }
     const response: HttpResponse = await controller.handle(invalidRequest)
     expect(response.statusCode).toEqual(400)
+  })
+
+  test('should return 500 if server throws', async () => {
+    const aNote = NoteBuilder.aNote().build()
+    const errorThrowingRemoveNoteUseCase = new ErrorThrowingUseCaseStub()
+    const controller: WebController = new RemoveNoteController(errorThrowingRemoveNoteUseCase)
+    const response: HttpResponse = await controller.handle({
+      body: {
+        noteId: aNote.id
+      }
+    })
+    expect(response.statusCode).toEqual(500)
   })
 })
