@@ -1,4 +1,4 @@
-import { HttpResponse, WebController } from '@/presentation/controllers/ports'
+import { HttpRequest, HttpResponse, WebController } from '@/presentation/controllers/ports'
 import { RemoveNoteController } from '@/presentation/controllers/remove-note'
 import { NoteRepository } from '@/use-cases/ports'
 import { RemoveNote } from '@/use-cases/remove-note'
@@ -31,6 +31,19 @@ describe('Remove note controller', () => {
         noteId: anotherNote.id
       }
     })
+    expect(response.statusCode).toEqual(400)
+  })
+
+  test('should return 400 if request does not contain note id', async () => {
+    const aNote = NoteBuilder.aNote().build()
+    const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([aNote])
+    const usecase = new RemoveNote(noteRepositoryWithANote)
+    const controller: WebController = new RemoveNoteController(usecase)
+    const invalidRequest: HttpRequest = {
+      body: {
+      }
+    }
+    const response: HttpResponse = await controller.handle(invalidRequest)
     expect(response.statusCode).toEqual(400)
   })
 })
