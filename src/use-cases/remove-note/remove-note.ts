@@ -1,4 +1,6 @@
+import { Either, left, right } from '@/shared'
 import { NoteData, NoteRepository, UseCase } from '@/use-cases/ports'
+import { UnexistingNoteError } from '@/use-cases/remove-note/errors'
 
 export class RemoveNote implements UseCase {
   private readonly noteRepository: NoteRepository
@@ -7,7 +9,10 @@ export class RemoveNote implements UseCase {
     this.noteRepository = noteRepository
   }
 
-  async perform (noteId: string): Promise<NoteData> {
-    return await this.noteRepository.remove(noteId)
+  async perform (noteId: string): Promise<Either<UnexistingNoteError, NoteData>> {
+    if (await this.noteRepository.findById(noteId)) {
+      return right(await this.noteRepository.remove(noteId))
+    }
+    return left(new UnexistingNoteError())
   }
 }
