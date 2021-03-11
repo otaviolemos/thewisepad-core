@@ -7,7 +7,7 @@ import { InMemoryNoteRepository } from '@test/doubles/repositories'
 import { ErrorThrowingUseCaseStub } from '@test/doubles/usecases'
 
 describe('Load notes controller', () => {
-  test('should return 200 when load notes use case returns', async () => {
+  test('should return 200 and notes when load notes use case returns', async () => {
     const note1: NoteData = NoteBuilder.aNote().build()
     const note2: NoteData = NoteBuilder.aNote().withDifferentTitleAndId().build()
     const noteRepositoryWithTwoNotes: NoteRepository = new InMemoryNoteRepository(
