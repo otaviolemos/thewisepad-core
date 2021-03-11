@@ -1,3 +1,4 @@
+import { MissingParamError } from '@/presentation/controllers/errors'
 import { LoadNotesController } from '@/presentation/controllers/load-notes'
 import { HttpRequest, HttpResponse } from '@/presentation/controllers/ports'
 import { LoadNotes } from '@/use-cases/load-notes'
@@ -25,6 +26,23 @@ describe('Load notes controller', () => {
     const loadResult = response.body as NoteData[]
     expect(loadResult.length).toEqual(2)
     expect(response.statusCode).toEqual(200)
+  })
+
+  test('should return 400 if request does not contain user id', async () => {
+    const note1: NoteData = NoteBuilder.aNote().build()
+    const noteRepositoryWithOneNote: NoteRepository = new InMemoryNoteRepository(
+      [note1]
+    )
+    const usecase: LoadNotes = new LoadNotes(noteRepositoryWithOneNote)
+    const loadNotesController: LoadNotesController = new LoadNotesController(usecase)
+    const requestWithoutUserId: HttpRequest = {
+      body: {
+      }
+    }
+    const response: HttpResponse = await loadNotesController.handle(requestWithoutUserId)
+    const loadResult = response.body as Error
+    expect(response.statusCode).toEqual(400)
+    expect(loadResult).toBeInstanceOf(MissingParamError)
   })
 
   test('should return 500 if load notes use case throws', async () => {
