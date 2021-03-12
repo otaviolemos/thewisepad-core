@@ -24,4 +24,15 @@ describe('Mongodb User repository', () => {
     expect(user.id).toBeDefined()
     expect(user.id).not.toEqual(aValidUser.id)
   })
+
+  test('should add two users and find all', async () => {
+    const repository = new MongodbUserRepository()
+    const aUser = UserBuilder.aUser().build()
+    const aSecondUser = UserBuilder.aUser().withDifferentEmail().build()
+    await repository.add(aUser)
+    await repository.add(aSecondUser)
+    const users = await repository.findAll() as UserData[]
+    expect(users.length).toEqual(2)
+    expect(users[0]).toHaveProperty('id')
+  })
 })
