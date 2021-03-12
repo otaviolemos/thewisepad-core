@@ -1,6 +1,12 @@
 import { UserData, UserRepository } from '@/use-cases/ports'
 import { MongoHelper } from './helpers'
 
+export type MongodbUser = {
+  email: string,
+  password: string,
+  _id: string
+}
+
 export class MongodbUserRepository implements UserRepository {
   findAll (): Promise<UserData[]> {
     throw new Error('Method not implemented.')
@@ -9,11 +15,7 @@ export class MongodbUserRepository implements UserRepository {
   async findByEmail (email: string): Promise<UserData> {
     const userCollection = await MongoHelper.getCollection('users')
     const user = await userCollection.findOne({ email: email })
-    return {
-      email: user.email,
-      password: user.password,
-      id: user._id
-    }
+    return this.withApplicationId(user)
   }
 
   async add (user: UserData): Promise<UserData> {
@@ -24,10 +26,14 @@ export class MongodbUserRepository implements UserRepository {
       _id: null
     }
     await userCollection.insertOne(userClone)
+    return this.withApplicationId(userClone)
+  }
+
+  private withApplicationId (dbUser: MongodbUser): UserData {
     return {
-      email: userClone.email,
-      password: userClone.password,
-      id: userClone._id
+      email: dbUser.email,
+      password: dbUser.password,
+      id: dbUser._id
     }
   }
 }
