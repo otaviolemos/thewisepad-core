@@ -8,8 +8,9 @@ export type MongodbUser = {
 }
 
 export class MongodbUserRepository implements UserRepository {
-  findAll (): Promise<UserData[]> {
-    throw new Error('Method not implemented.')
+  async findAll (): Promise<UserData[]> {
+    const userCollection = await MongoHelper.getCollection('users')
+    return (await userCollection.find().toArray()).map(this.withApplicationId)
   }
 
   async findByEmail (email: string): Promise<UserData> {
