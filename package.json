@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.2.3",
     "@types/bcrypt": "^3.0.0",
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.20",
@@ -35,8 +36,10 @@
   },
   "dependencies": {
     "@types/jsonwebtoken": "^8.5.0",
+    "@types/mongodb": "^3.6.9",
     "bcrypt": "^5.0.0",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.4"
   }
 }
