@@ -32,4 +32,15 @@ describe('Mongodb User repository', () => {
     expect(foundNote.length).toEqual(1)
     expect(foundNote[0].title).toEqual(aValidNote.title)
   })
+
+  test('should remove existing note', async () => {
+    const repository = new MongodbNoteRepository()
+    const aValidNote = NoteBuilder.aNote().build()
+    const addedNote: NoteData = await repository.add(aValidNote)
+    const foundNote = await repository.findById(addedNote.id)
+    expect(foundNote).toBeDefined()
+    await repository.remove(foundNote.id)
+    const removedNote = await repository.findById(addedNote.id)
+    expect(removedNote).toBeNull()
+  })
 })
