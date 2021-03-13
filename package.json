@@ -18,6 +18,7 @@
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.25",
     "@types/sinon": "^9.0.10",
+    "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^4.14.2",
     "@typescript-eslint/parser": "^4.14.2",
     "eslint": "^7.19.0",
