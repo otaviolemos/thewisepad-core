@@ -48,7 +48,6 @@ describe('Mongodb User repository', () => {
     const repository = new MongodbNoteRepository()
     const aValidNote = NoteBuilder.aNote().build()
     const addedNote: NoteData = await repository.add(aValidNote)
-    console.log(addedNote.id)
     expect(await repository.updateTitle(addedNote.id, 'New title')).toBeTruthy()
     const updatedNote = await repository.findById(addedNote.id)
     expect(updatedNote.title).toEqual('New title')
