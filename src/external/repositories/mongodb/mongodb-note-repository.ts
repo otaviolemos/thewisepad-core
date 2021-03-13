@@ -32,11 +32,20 @@ export class MongodbNoteRepository implements NoteRepository {
   async findById (noteId: string): Promise<NoteData> {
     const noteCollection = await MongoHelper.getCollection('notes')
     const dbNote: MongodbNote = await noteCollection.findOne({ _id: noteId })
-    return this.withApplicationId(dbNote)
+    if (dbNote) {
+      return this.withApplicationId(dbNote)
+    }
+    return null
   }
 
-  remove (noteId: string): Promise<NoteData> {
-    throw new Error('Method not implemented.')
+  async remove (noteId: string): Promise<NoteData> {
+    const noteCollection = await MongoHelper.getCollection('notes')
+    const noteToBeRemoved = await noteCollection.findOne({ _id: noteId })
+    const result = await noteCollection.deleteOne({ _id: noteId })
+    if (result.deletedCount === 1) {
+      return noteToBeRemoved
+    }
+    return null
   }
 
   updateTitle (noteId: string, newTitle: string): Promise<boolean> {
