@@ -1,5 +1,5 @@
 import { UserData, UserRepository } from '@/use-cases/ports'
-import { MongoHelper } from './helpers'
+import { MongoHelper } from '@/external/repositories/mongodb/helpers'
 
 export type MongodbUser = {
   email: string,
