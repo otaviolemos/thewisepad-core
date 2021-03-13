@@ -61,8 +61,17 @@ export class MongodbNoteRepository implements NoteRepository {
     return false
   }
 
-  updateContent (noteId: string, newContent: string): Promise<boolean> {
-    throw new Error('Method not implemented.')
+  async updateContent (noteId: string, newContent: string): Promise<boolean> {
+    const noteCollection = await MongoHelper.getCollection('notes')
+    const result = await noteCollection.updateOne({ _id: noteId }, {
+      $set: {
+        content: newContent
+      }
+    })
+    if (result.modifiedCount === 1) {
+      return true
+    }
+    return false
   }
 
   private withApplicationId (dbNote: MongodbNote): NoteData {
