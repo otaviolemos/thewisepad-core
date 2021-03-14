@@ -28,7 +28,7 @@ export class SignUp implements UseCase {
 
     const encodedPassword = await this.encoder.encode(userSignupRequest.password)
     await this.userRepository.add({ email: userSignupRequest.email, password: encodedPassword })
-    const response = (await this.authentication.auth({ email: userSignupRequest.email, password: encodedPassword })).value as AuthenticationResult
+    const response = (await this.authentication.auth({ email: userSignupRequest.email, password: userSignupRequest.password })).value as AuthenticationResult
 
     return right(response)
   }
