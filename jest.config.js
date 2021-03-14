@@ -13,5 +13,6 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@test/(.*)$': '<rootDir>/test/$1'
   },
-  preset: '@shelf/jest-mongodb'
+  preset: '@shelf/jest-mongodb',
+  setupFiles: ['dotenv/config']
 }
