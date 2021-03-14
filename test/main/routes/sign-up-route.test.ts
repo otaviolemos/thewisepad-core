@@ -11,7 +11,7 @@ describe('Signup route', () => {
     await MongoHelper.disconnect()
   })
 
-  test('should return an account on success', async () => {
+  test('should return access token and id on success', async () => {
     app.post('/test_cors', (req, res) => {
       res.send()
     })
