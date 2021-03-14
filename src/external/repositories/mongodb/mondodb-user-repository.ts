@@ -16,7 +16,10 @@ export class MongodbUserRepository implements UserRepository {
   async findByEmail (email: string): Promise<UserData> {
     const userCollection = await MongoHelper.getCollection('users')
     const user = await userCollection.findOne({ email: email })
-    return this.withApplicationId(user)
+    if (user) {
+      return this.withApplicationId(user)
+    }
+    return null
   }
 
   async add (user: UserData): Promise<UserData> {
