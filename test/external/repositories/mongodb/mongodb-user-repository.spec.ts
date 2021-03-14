@@ -35,4 +35,9 @@ describe('Mongodb User repository', () => {
     expect(users.length).toEqual(2)
     expect(users[0]).toHaveProperty('id')
   })
+
+  test('should not find unexisting user', async () => {
+    const repository = new MongodbUserRepository()
+    expect(await repository.findByEmail('any@mail.com')).toBeNull()
+  })
 })
