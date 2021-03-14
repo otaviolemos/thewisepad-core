@@ -8,7 +8,7 @@ import { JwtTokenManager } from '@/external/token-manager'
 export const makeSignUpController = (): SignUpController => {
   const userRepository = new MongodbUserRepository()
   const encoder = new BcryptEncoder(10)
-  const authenticationService = new CustomAuthentication(userRepository, encoder, new JwtTokenManager('my secret'))
+  const authenticationService = new CustomAuthentication(userRepository, encoder, new JwtTokenManager(process.env.JWT_SECRET))
   const usecase = new SignUp(userRepository, encoder, authenticationService)
   const controller = new SignUpController(usecase)
   return controller

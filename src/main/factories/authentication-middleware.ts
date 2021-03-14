@@ -1,7 +1,7 @@
 import { Middleware } from '@/presentation/middleware/ports'
 import { Authentication } from '@/presentation/middleware'
-import { FakeTokenManager } from '@test/doubles/authentication'
+import { JwtTokenManager } from '@/external/token-manager'
 
 export const makeAuthMiddleware = (): Middleware => {
-  return new Authentication(new FakeTokenManager())
+  return new Authentication(new JwtTokenManager(process.env.JWT_SECRET))
 }
