@@ -10,6 +10,7 @@ describe('Signin route', () => {
 
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
+    await MongoHelper.clearCollection('users')
     const repo = new MongodbUserRepository()
     const encoder = new BcryptEncoder(parseInt(process.env.BCRYPT_ROUNDS))
     await repo.add({
@@ -19,6 +20,7 @@ describe('Signin route', () => {
   })
 
   afterAll(async () => {
+    await MongoHelper.clearCollection('users')
     await MongoHelper.disconnect()
   })
 

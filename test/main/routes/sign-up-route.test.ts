@@ -5,9 +5,11 @@ import { MongoHelper } from '@/external/repositories/mongodb/helpers'
 describe('Signup route', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
+    await MongoHelper.clearCollection('users')
   })
 
   afterAll(async () => {
+    await MongoHelper.clearCollection('users')
     await MongoHelper.disconnect()
   })
 
