@@ -1,9 +1,8 @@
 import request from 'supertest'
 import app from '@/main/config/app'
 import { MongoHelper } from '@/external/repositories/mongodb/helpers'
-import { MongodbUserRepository } from '@/external/repositories/mongodb/mondodb-user-repository'
 import { UserBuilder } from '@test/builders'
-import { BcryptEncoder } from '@/external/encoder'
+import { makeUserRepository, makeEncoder } from '@/main/factories'
 
 describe('Signin route', () => {
   const validUser = UserBuilder.aUser().build()
@@ -11,9 +10,9 @@ describe('Signin route', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
     await MongoHelper.clearCollection('users')
-    const repo = new MongodbUserRepository()
-    const encoder = new BcryptEncoder(parseInt(process.env.BCRYPT_ROUNDS))
-    await repo.add({
+    const userRepo = makeUserRepository()
+    const encoder = makeEncoder()
+    await userRepo.add({
       email: validUser.email,
       password: await encoder.encode(validUser.password)
     })
