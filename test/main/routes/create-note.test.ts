@@ -12,6 +12,8 @@ describe('Signin route', () => {
 
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
+    await MongoHelper.clearCollection('users')
+    await MongoHelper.clearCollection('notes')
     const userRepo = makeUserRepository()
     const encoder = makeEncoder()
     const tokenManager = makeTokenManager()
@@ -23,11 +25,29 @@ describe('Signin route', () => {
       email: anotherUser.email,
       password: await encoder.encode(anotherUser.password)
     })
-    token = tokenManager.sign({ id: validUser.id })
+    token = await tokenManager.sign({ id: validUser.id })
   })
 
   afterAll(async () => {
+    await MongoHelper.clearCollection('users')
+    await MongoHelper.clearCollection('notes')
     await MongoHelper.disconnect()
+  })
+
+  test('should be able to create note for valid user', async () => {
+    app.post('/test_cors', (req, res) => {
+      res.send()
+    })
+    await request(app)
+      .post('/api/notes')
+      .set('x-access-token', token)
+      .send({
+        title: aNote.title,
+        content: aNote.content,
+        ownerEmail: aNote.ownerEmail,
+        ownerId: validUser.id
+      })
+      .expect(201)
   })
 
   test('should not be able to create note for another user', async () => {
