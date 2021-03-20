@@ -8,14 +8,14 @@ import { Either } from '@/shared'
 describe('Authentication middleware', () => {
   test('should return forbidden with invalid token error if access token is empty', async () => {
     const authMiddleware = new Authentication(new FakeTokenManager())
-    const response: HttpResponse = await authMiddleware.handle({ accessToken: '' })
-    expect(response).toEqual(forbidden(new Error('Invalid token.')))
+    const response: HttpResponse = await authMiddleware.handle({ accessToken: '', requesterId: '0' })
+    expect(response).toEqual(forbidden(new Error('Invalid token or requester id.')))
   })
 
   test('should return forbidden with invalid token error if access token is null', async () => {
     const authMiddleware = new Authentication(new FakeTokenManager())
-    const response: HttpResponse = await authMiddleware.handle({ accessToken: null })
-    expect(response).toEqual(forbidden(new Error('Invalid token.')))
+    const response: HttpResponse = await authMiddleware.handle({ accessToken: null, requesterId: '0' })
+    expect(response).toEqual(forbidden(new Error('Invalid token or requester id.')))
   })
 
   test('should return forbidden with invalid token error if access token is invalid', async () => {
@@ -24,7 +24,7 @@ describe('Authentication middleware', () => {
     const token = await tokenManager.sign(payload)
     const invalidToken = token + 'some trash'
     const authMiddleware = new Authentication(tokenManager)
-    const response: HttpResponse = await authMiddleware.handle({ accessToken: invalidToken })
+    const response: HttpResponse = await authMiddleware.handle({ accessToken: invalidToken, requesterId: '0' })
     expect(response).toEqual(forbidden(new Error('Invalid token.')))
   })
 
@@ -33,7 +33,7 @@ describe('Authentication middleware', () => {
     const payload = { id: 'my id' }
     const validToken = await tokenManager.sign(payload)
     const authMiddleware = new Authentication(tokenManager)
-    const response: HttpResponse = await authMiddleware.handle({ accessToken: validToken })
+    const response: HttpResponse = await authMiddleware.handle({ accessToken: validToken, requesterId: 'my id' })
     expect(response).toEqual(ok(payload))
   })
 
@@ -51,7 +51,7 @@ describe('Authentication middleware', () => {
     const payload = { id: 'my id' }
     const validToken = await tokenManager.sign(payload)
     const authMiddleware = new Authentication(tokenManager)
-    const response: HttpResponse = await authMiddleware.handle({ accessToken: validToken })
+    const response: HttpResponse = await authMiddleware.handle({ accessToken: validToken, requesterId: '0' })
     expect(response).toEqual(serverError(new Error('An error.')))
   })
 })
