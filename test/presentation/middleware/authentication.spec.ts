@@ -24,8 +24,17 @@ describe('Authentication middleware', () => {
     const token = await tokenManager.sign(payload)
     const invalidToken = token + 'some trash'
     const authMiddleware = new Authentication(tokenManager)
-    const response: HttpResponse = await authMiddleware.handle({ accessToken: invalidToken, requesterId: '0' })
+    const response: HttpResponse = await authMiddleware.handle({ accessToken: invalidToken, requesterId: 'my id' })
     expect(response).toEqual(forbidden(new Error('Invalid token.')))
+  })
+
+  test('should return forbidden if id on access token is different from requester id', async () => {
+    const tokenManager = new FakeTokenManager()
+    const payload = { id: 'my id' }
+    const token = await tokenManager.sign(payload)
+    const authMiddleware = new Authentication(tokenManager)
+    const response: HttpResponse = await authMiddleware.handle({ accessToken: token, requesterId: 'other id' })
+    expect(response).toEqual(forbidden(new Error('User not aloud to perform this operation.')))
   })
 
   test('should return payload if access token is valid', async () => {

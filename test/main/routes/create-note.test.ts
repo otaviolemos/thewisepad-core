@@ -49,20 +49,4 @@ describe('Signin route', () => {
       })
       .expect(201)
   })
-
-  test('should not be able to create note for another user', async () => {
-    app.post('/test_cors', (req, res) => {
-      res.send()
-    })
-    await request(app)
-      .post('/api/notes')
-      .set('x-access-token', token)
-      .send({
-        title: aNote.title,
-        content: aNote.content,
-        ownerEmail: anotherUser.email,
-        ownerId: anotherUser.id
-      })
-      .expect(403)
-  })
 })
