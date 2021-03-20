@@ -4,7 +4,8 @@ import { HttpResponse } from '@/presentation/controllers/ports'
 import { forbidden, ok, serverError } from '@/presentation/controllers/util'
 
 export type AuthRequest = {
-  accessToken: string
+  accessToken: string,
+  requesterId: string
 }
 
 export class Authentication implements Middleware {
@@ -16,9 +17,9 @@ export class Authentication implements Middleware {
 
   async handle (request: AuthRequest): Promise<HttpResponse> {
     try {
-      const { accessToken } = request
-      if (!accessToken) {
-        return forbidden(new Error('Invalid token.'))
+      const { accessToken, requesterId } = request
+      if (!accessToken || !requesterId) {
+        return forbidden(new Error('Invalid token or requester id.'))
       }
 
       const decodedTokenOrError = await this.tokenManager.verify(accessToken)
@@ -27,7 +28,12 @@ export class Authentication implements Middleware {
       }
 
       const payload: Payload = decodedTokenOrError.value as Payload
-      return ok(payload)
+
+      if (payload.id === requesterId) {
+        return ok(payload)
+      }
+
+      return forbidden(new Error('User not aloud to perform this operation.'))
     } catch (error) {
       return serverError(error)
     }
