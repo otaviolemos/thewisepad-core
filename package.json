@@ -6,7 +6,7 @@
   "scripts": {
     "test:unit": "jest --passWithNoTests --watch --runInBand -c jest-unit.config.js",
     "test:integration": "jest --passWithNoTests --watch --runInBand -c jest-integration.config.js",
-    "test:staged": "jest --passWithNoTests --findRelatedTests"
+    "test:staged": "jest --passWithNoTests --runInBand --findRelatedTests"
   },
   "keywords": [],
   "author": "",
