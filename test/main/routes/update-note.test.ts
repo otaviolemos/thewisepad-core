@@ -4,7 +4,7 @@ import { makeNoteRepository, makeUserRepository, makeEncoder, makeTokenManager }
 import app from '@/main/config/app'
 import request from 'supertest'
 
-describe('Remove note route', () => {
+describe('Update note route', () => {
   let validUser = UserBuilder.aUser().build()
   let aNote = NoteBuilder.aNote().build()
   let token = null
