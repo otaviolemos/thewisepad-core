@@ -1,5 +1,6 @@
 import { NoteData, NoteRepository } from '@/use-cases/ports'
 import { MongoHelper } from '@/external/repositories/mongodb/helpers'
+import { ObjectId } from 'mongodb'
 
 export type MongodbNote = {
   title: string,
@@ -31,7 +32,7 @@ export class MongodbNoteRepository implements NoteRepository {
 
   async findById (noteId: string): Promise<NoteData> {
     const noteCollection = await MongoHelper.getCollection('notes')
-    const dbNote: MongodbNote = await noteCollection.findOne({ _id: noteId })
+    const dbNote: MongodbNote = await noteCollection.findOne({ _id: new ObjectId(noteId) })
     if (dbNote) {
       return this.withApplicationId(dbNote)
     }
@@ -40,17 +41,17 @@ export class MongodbNoteRepository implements NoteRepository {
 
   async remove (noteId: string): Promise<NoteData> {
     const noteCollection = await MongoHelper.getCollection('notes')
-    const noteToBeRemoved = await noteCollection.findOne({ _id: noteId })
-    const result = await noteCollection.deleteOne({ _id: noteId })
+    const noteToBeRemoved = await noteCollection.findOne({ _id: new ObjectId(noteId) })
+    const result = await noteCollection.deleteOne({ _id: new ObjectId(noteId) })
     if (result.deletedCount === 1) {
-      return noteToBeRemoved
+      return this.withApplicationId(noteToBeRemoved)
     }
     return null
   }
 
   async updateTitle (noteId: string, newTitle: string): Promise<boolean> {
     const noteCollection = await MongoHelper.getCollection('notes')
-    const result = await noteCollection.updateOne({ _id: noteId }, {
+    const result = await noteCollection.updateOne({ _id: new ObjectId(noteId) }, {
       $set: {
         title: newTitle
       }
@@ -63,7 +64,7 @@ export class MongodbNoteRepository implements NoteRepository {
 
   async updateContent (noteId: string, newContent: string): Promise<boolean> {
     const noteCollection = await MongoHelper.getCollection('notes')
-    const result = await noteCollection.updateOne({ _id: noteId }, {
+    const result = await noteCollection.updateOne({ _id: new ObjectId(noteId) }, {
       $set: {
         content: newContent
       }
