@@ -4,10 +4,9 @@ import { makeUserRepository, makeEncoder, makeTokenManager } from '@/main/factor
 import app from '@/main/config/app'
 import request from 'supertest'
 
-describe('Signin route', () => {
+describe('Create note route', () => {
   let validUser = UserBuilder.aUser().build()
   const aNote = NoteBuilder.aNote().build()
-  let anotherUser = UserBuilder.aUser().withDifferentEmail().build()
   let token = null
 
   beforeAll(async () => {
@@ -20,10 +19,6 @@ describe('Signin route', () => {
     validUser = await userRepo.add({
       email: validUser.email,
       password: await encoder.encode(validUser.password)
-    })
-    anotherUser = await userRepo.add({
-      email: anotherUser.email,
-      password: await encoder.encode(anotherUser.password)
     })
     token = await tokenManager.sign({ id: validUser.id })
   })
