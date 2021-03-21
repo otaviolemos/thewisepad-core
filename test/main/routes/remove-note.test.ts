@@ -49,4 +49,18 @@ describe('Remove note route', () => {
       })
       .expect(200)
   })
+
+  test('should not be able to remove existing note for another user', async () => {
+    app.delete('/test_cors', (req, res) => {
+      res.send()
+    })
+    await request(app)
+      .delete('/api/notes/' + aNote.id)
+      .set('x-access-token', token)
+      .send({
+        noteId: aNote.id,
+        userId: 'a different id'
+      })
+      .expect(403)
+  })
 })
