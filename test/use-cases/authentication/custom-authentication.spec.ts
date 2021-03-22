@@ -13,7 +13,7 @@ describe('Custom authenticator', () => {
     const fakeTokenManager = new FakeTokenManager()
     const authentication = new CustomAuthentication(singleUserUserRepository, new FakeEncoder(), fakeTokenManager)
     const response = (await (authentication.auth(validUserSigninRequest))).value as AuthenticationResult
-    expect(response.id).toEqual('0')
+    expect(response.id).toEqual(validUserSigninRequest.id)
     expect((await fakeTokenManager.verify(response.accessToken)).value).toEqual({ id: validUserSigninRequest.id })
   })
 

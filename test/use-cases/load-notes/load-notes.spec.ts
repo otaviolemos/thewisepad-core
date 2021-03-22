@@ -11,7 +11,7 @@ describe('Load notes for user use case', () => {
       [note1, note2]
     )
     const usecase: LoadNotes = new LoadNotes(noteRepositoryWithTwoNotes)
-    const defaultValidUserId = '0'
+    const defaultValidUserId = note1.ownerId
     const notes: NoteData[] = await usecase.perform(defaultValidUserId)
     expect(notes.length).toEqual(2)
     expect(notes[0].title).toEqual(note1.title)

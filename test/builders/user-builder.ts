@@ -4,7 +4,7 @@ export class UserBuilder {
   private user: UserData = {
     email: 'any@mail.com',
     password: '1validpassword',
-    id: '0'
+    id: '6057e9885c94f99b6dc1410a'
   }
 
   public static aUser (): UserBuilder {

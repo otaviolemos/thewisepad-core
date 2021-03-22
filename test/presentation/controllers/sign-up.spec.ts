@@ -45,7 +45,7 @@ describe('Sign up controller', () => {
     const response: HttpResponse = await controller.handle(validUserSignUpRequest)
     const authResult = response.body as AuthenticationResult
     expect(response.statusCode).toEqual(201)
-    expect(authResult.id).toEqual('0')
+    expect(authResult.id).toEqual(validUser.id)
     expect(authResult.accessToken).toBeDefined()
   })
 
