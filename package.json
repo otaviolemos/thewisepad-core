@@ -4,6 +4,8 @@
   "description": "Core of a simple notepad app developed using clean architecture and TDD.",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/main/server.js",
+    "build": "rimraf dist && tsc -p tsconfig-build.json",
     "test:unit": "jest --passWithNoTests --watch --runInBand -c jest-unit.config.js",
     "test:integration": "jest --passWithNoTests --watch --runInBand -c jest-integration.config.js",
     "test:staged": "jest --passWithNoTests --runInBand --findRelatedTests"
