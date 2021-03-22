@@ -1,7 +1,8 @@
 import { MongoHelper } from '@/external/repositories/mongodb/helpers'
 import { MongodbNoteRepository } from '@/external/repositories/mongodb/mongodb-note-repository'
-import { NoteData } from '@/use-cases/ports'
-import { NoteBuilder } from '@test/builders'
+import { NoteData, UserData } from '@/use-cases/ports'
+import { NoteBuilder, UserBuilder } from '@test/builders'
+import { MongodbUserRepository } from '@/external/repositories/mongodb'
 
 describe('Mongodb User repository', () => {
   beforeAll(async () => {
@@ -26,8 +27,11 @@ describe('Mongodb User repository', () => {
 
   test('should find all notes from a user', async () => {
     const repository = new MongodbNoteRepository()
-    const aValidNote = NoteBuilder.aNote().build()
-    await repository.add(aValidNote)
+    const userRepository = new MongodbUserRepository()
+    const user: UserData = await userRepository.add(UserBuilder.aUser().build())
+    let aValidNote = NoteBuilder.aNote().build()
+    aValidNote.ownerId = user.id
+    aValidNote = await repository.add(aValidNote)
     const foundNote: NoteData[] = await repository.findAllNotesFrom(aValidNote.ownerId)
     expect(foundNote.length).toEqual(1)
     expect(foundNote[0].title).toEqual(aValidNote.title)
