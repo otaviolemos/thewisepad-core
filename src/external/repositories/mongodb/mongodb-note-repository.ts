@@ -26,7 +26,7 @@ export class MongodbNoteRepository implements NoteRepository {
 
   async findAllNotesFrom (userId: string): Promise<NoteData[]> {
     const noteCollection = await MongoHelper.getCollection('notes')
-    const notesFromUser: MongodbNote[] = await noteCollection.find({ ownerId: userId }).toArray()
+    const notesFromUser: MongodbNote[] = await noteCollection.find({ ownerId: new ObjectId(userId) }).toArray()
     return notesFromUser.map(this.withApplicationId)
   }
 
