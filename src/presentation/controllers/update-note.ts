@@ -2,16 +2,11 @@ import { InvalidTitleError } from '@/entities/errors'
 import { HttpRequest, HttpResponse, WebController } from '@/presentation/controllers/ports'
 import { Either } from '@/shared'
 import { ExistingTitleError } from '@/use-cases/create-note/errors'
-import { NoteData, UseCase } from '@/use-cases/ports'
+import { NoteData } from '@/use-cases/ports'
 import { badRequest, getMissingParams, ok, serverError } from '@/presentation/controllers/util'
 import { MissingParamError } from '@/presentation/controllers/errors'
 
-export class UpdateNoteController implements WebController {
-  private readonly updateNoteUseCase: UseCase
-  constructor (updateNoteUseCase: UseCase) {
-    this.updateNoteUseCase = updateNoteUseCase
-  }
-
+export class UpdateNoteController extends WebController {
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
       const requiredNoteParams = ['id', 'ownerEmail', 'ownerId']
@@ -27,7 +22,7 @@ export class UpdateNoteController implements WebController {
       }
 
       const useCaseResponse: Either<ExistingTitleError | InvalidTitleError, NoteData> =
-      await this.updateNoteUseCase.perform(request.body)
+      await this.useCase.perform(request.body)
 
       if (useCaseResponse.isRight()) {
         return ok(useCaseResponse.value)

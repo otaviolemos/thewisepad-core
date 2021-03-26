@@ -1,4 +1,3 @@
-import { UseCase } from '@/use-cases/ports'
 import { HttpRequest, HttpResponse, WebController } from '@/presentation/controllers/ports'
 import { badRequest, forbidden, getMissingParams, ok, serverError } from '@/presentation/controllers/util'
 import { MissingParamError } from '@/presentation/controllers/errors'
@@ -6,13 +5,7 @@ import { Either } from '@/shared'
 import { UserNotFoundError, WrongPasswordError } from '@/use-cases/authentication/errors'
 import { AuthenticationResult } from '@/use-cases/authentication/ports'
 
-export class SignInController implements WebController {
-  protected readonly signInUseCase: UseCase
-
-  constructor (signInUseCase: UseCase) {
-    this.signInUseCase = signInUseCase
-  }
-
+export class SignInController extends WebController {
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
       const requiredParams = ['email', 'password']
@@ -22,7 +15,7 @@ export class SignInController implements WebController {
       }
 
       const response: Either<UserNotFoundError | WrongPasswordError, AuthenticationResult> =
-        await this.signInUseCase.perform({ email: request.body.email, password: request.body.password })
+        await this.useCase.perform({ email: request.body.email, password: request.body.password })
 
       if (response.isRight()) {
         return ok(response.value)

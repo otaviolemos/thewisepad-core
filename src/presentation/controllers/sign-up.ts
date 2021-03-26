@@ -2,15 +2,8 @@ import { HttpResponse, WebController, HttpRequest } from '@/presentation/control
 import { badRequest, created, forbidden, getMissingParams, serverError } from '@/presentation/controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { MissingParamError } from '@/presentation/controllers/errors/missing-param-error'
-import { UseCase } from '@/use-cases/ports'
 
-export class SignUpController implements WebController {
-  protected readonly signUpUseCase: UseCase
-
-  constructor (signUpUseCase: UseCase) {
-    this.signUpUseCase = signUpUseCase
-  }
-
+export class SignUpController extends WebController {
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
       const requiredParams = ['email', 'password']
@@ -20,7 +13,7 @@ export class SignUpController implements WebController {
       }
 
       const response =
-        await this.signUpUseCase.perform({ email: request.body.email, password: request.body.password })
+        await this.useCase.perform({ email: request.body.email, password: request.body.password })
 
       if (response.isRight()) {
         return created(response.value)

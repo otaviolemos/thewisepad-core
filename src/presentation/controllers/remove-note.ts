@@ -1,17 +1,11 @@
 import { HttpRequest, HttpResponse, WebController } from '@/presentation/controllers/ports'
 import { Either } from '@/shared'
-import { NoteData, UseCase } from '@/use-cases/ports'
+import { NoteData } from '@/use-cases/ports'
 import { UnexistingNoteError } from '@/use-cases/remove-note/errors'
 import { badRequest, getMissingParams, ok, serverError } from '@/presentation/controllers/util'
 import { MissingParamError } from '@/presentation/controllers/errors'
 
-export class RemoveNoteController implements WebController {
-  private readonly removeNoteUseCase: UseCase
-
-  constructor (removeNoteUseCase: UseCase) {
-    this.removeNoteUseCase = removeNoteUseCase
-  }
-
+export class RemoveNoteController extends WebController {
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
       const requiredParams = ['noteId']
@@ -20,7 +14,7 @@ export class RemoveNoteController implements WebController {
         return badRequest(new MissingParamError(missingParams))
       }
       const useCaseResponse: Either<UnexistingNoteError, NoteData> =
-        await this.removeNoteUseCase.perform(request.body.noteId)
+        await this.useCase.perform(request.body.noteId)
 
       if (useCaseResponse.isRight()) {
         return ok(useCaseResponse.value)
