@@ -2,15 +2,19 @@ import { InvalidTitleError } from '@/entities/errors'
 import { HttpRequest, HttpResponse, WebController } from '@/presentation/controllers/ports'
 import { Either } from '@/shared'
 import { ExistingTitleError } from '@/use-cases/create-note/errors'
-import { NoteData } from '@/use-cases/ports'
+import { NoteData, UseCase } from '@/use-cases/ports'
 import { badRequest, getMissingParams, ok, serverError } from '@/presentation/controllers/util'
 import { MissingParamError } from '@/presentation/controllers/errors'
 
 export class UpdateNoteController extends WebController {
+  constructor (useCase: UseCase) {
+    super(useCase)
+    super.requiredParams = ['id', 'ownerEmail', 'ownerId']
+  }
+
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
-      const requiredNoteParams = ['id', 'ownerEmail', 'ownerId']
-      const missingNoteParams: string = getMissingParams(request, requiredNoteParams)
+      const missingNoteParams: string = getMissingParams(request, this.requiredParams)
       if (missingNoteParams) {
         return badRequest(new MissingParamError(missingNoteParams))
       }

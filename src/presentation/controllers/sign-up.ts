@@ -2,12 +2,17 @@ import { HttpResponse, WebController, HttpRequest } from '@/presentation/control
 import { badRequest, created, forbidden, getMissingParams, serverError } from '@/presentation/controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { MissingParamError } from '@/presentation/controllers/errors/missing-param-error'
+import { UseCase } from '@/use-cases/ports'
 
 export class SignUpController extends WebController {
+  constructor (useCase: UseCase) {
+    super(useCase)
+    super.requiredParams = ['email', 'password']
+  }
+
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
-      const requiredParams = ['email', 'password']
-      const missingParams: string = getMissingParams(request, requiredParams)
+      const missingParams: string = getMissingParams(request, this.requiredParams)
       if (missingParams) {
         return badRequest(new MissingParamError(missingParams))
       }
