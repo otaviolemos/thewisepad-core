@@ -1,7 +1,6 @@
 import { HttpResponse, WebController, HttpRequest } from '@/presentation/controllers/ports'
-import { badRequest, created, forbidden, getMissingParams, serverError } from '@/presentation/controllers/util'
+import { badRequest, created, forbidden } from '@/presentation/controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
-import { MissingParamError } from '@/presentation/controllers/errors/missing-param-error'
 import { UseCase } from '@/use-cases/ports'
 
 export class SignUpController extends WebController {
@@ -10,28 +9,19 @@ export class SignUpController extends WebController {
     super.requiredParams = ['email', 'password']
   }
 
-  async handle (request: HttpRequest): Promise<HttpResponse> {
-    try {
-      const missingParams: string = getMissingParams(request, this.requiredParams)
-      if (missingParams) {
-        return badRequest(new MissingParamError(missingParams))
-      }
+  async specificOp (request: HttpRequest): Promise<HttpResponse> {
+    const response =
+      await this.useCase.perform({ email: request.body.email, password: request.body.password })
 
-      const response =
-        await this.useCase.perform({ email: request.body.email, password: request.body.password })
+    if (response.isRight()) {
+      return created(response.value)
+    }
 
-      if (response.isRight()) {
-        return created(response.value)
+    if (response.isLeft()) {
+      if (response.value instanceof ExistingUserError) {
+        return forbidden(response.value)
       }
-
-      if (response.isLeft()) {
-        if (response.value instanceof ExistingUserError) {
-          return forbidden(response.value)
-        }
-        return badRequest(response.value)
-      }
-    } catch (error) {
-      return serverError(error)
+      return badRequest(response.value)
     }
   }
 }
