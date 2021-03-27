@@ -25,7 +25,7 @@ export abstract class WebController {
 
   protected abstract specificOp (request: HttpRequest): Promise<HttpResponse>
 
-  private getMissingParams (request: HttpRequest, requiredParams: string[]): string {
+  protected getMissingParams (request: HttpRequest, requiredParams: string[]): string {
     const missingParams: string[] = []
     requiredParams.forEach(function (name) {
       if (!Object.keys(request.body).includes(name)) {
