@@ -1,7 +1,7 @@
 import { InvalidTitleError } from '@/entities/errors'
 import { MissingParamError } from '@/presentation/controllers/errors'
 import { HttpRequest, HttpResponse } from '@/presentation/controllers/ports'
-import { UpdateNoteController } from '@/presentation/controllers/update-note'
+import { UpdateNoteOperation } from '@/presentation/controllers/update-note'
 import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
 import { UpdateNote, UpdateNoteRequest } from '@/use-cases/update-note'
 import { NoteBuilder, UserBuilder } from '@test/builders'
@@ -29,7 +29,7 @@ describe('Update note controller', () => {
       owner
     ])
     const usecase = new UpdateNote(noteRepositoryWithANote, userRepositoryWithAUser)
-    const controller = new WebController(new UpdateNoteController(usecase))
+    const controller = new WebController(new UpdateNoteOperation(usecase))
     const response: HttpResponse = await controller.handle(request)
     expect(response.statusCode).toEqual(200)
     expect((response.body as NoteData).content).toEqual(changedNote.content)
@@ -53,7 +53,7 @@ describe('Update note controller', () => {
       owner
     ])
     const usecase = new UpdateNote(noteRepositoryWithANote, userRepositoryWithAUser)
-    const controller = new WebController(new UpdateNoteController(usecase))
+    const controller = new WebController(new UpdateNoteOperation(usecase))
     const response: HttpResponse = await controller.handle(request)
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(InvalidTitleError)
@@ -75,7 +75,7 @@ describe('Update note controller', () => {
       owner
     ])
     const usecase = new UpdateNote(noteRepositoryWithANote, userRepositoryWithAUser)
-    const controller = new WebController(new UpdateNoteController(usecase))
+    const controller = new WebController(new UpdateNoteOperation(usecase))
     const response: HttpResponse = await controller.handle(requestWithNoTitleNorContent)
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(MissingParamError)
@@ -99,7 +99,7 @@ describe('Update note controller', () => {
       owner
     ])
     const usecase = new UpdateNote(noteRepositoryWithANote, userRepositoryWithAUser)
-    const controller = new WebController(new UpdateNoteController(usecase))
+    const controller = new WebController(new UpdateNoteOperation(usecase))
     const response: HttpResponse = await controller.handle(requestWithNoTitleNorContent)
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(MissingParamError)
@@ -108,7 +108,7 @@ describe('Update note controller', () => {
 
   test('should return 500 if an error is raised internally', async () => {
     const errorThrowingSignUpUseCaseStub = new ErrorThrowingUseCaseStub()
-    const controllerWithStubUseCase = new WebController(new UpdateNoteController(errorThrowingSignUpUseCaseStub))
+    const controllerWithStubUseCase = new WebController(new UpdateNoteOperation(errorThrowingSignUpUseCaseStub))
     const originalNote: NoteData = NoteBuilder.aNote().build()
     const noteWithDifferentTitleAndContent: NoteData = NoteBuilder.aNote().withDifferentTitleAndContent().build()
     const changedNote: UpdateNoteRequest = {

@@ -3,7 +3,7 @@ import { badRequest, created, forbidden } from '@/presentation/controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { UseCase } from '@/use-cases/ports'
 
-export class SignUpController implements ControllerOperation {
+export class SignUpOperation implements ControllerOperation {
   requiredParams = ['email', 'password']
   private useCase: UseCase
 

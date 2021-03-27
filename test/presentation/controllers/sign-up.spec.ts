@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse } from '@/presentation/controllers/ports'
-import { SignUpController } from '@/presentation/controllers/sign-up'
+import { SignUpOperation } from '@/presentation/controllers/sign-up'
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
 import { Encoder, UseCase } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
@@ -18,7 +18,7 @@ describe('Sign up controller', () => {
   const encoder: Encoder = new FakeEncoder()
   const authenticationStub = makeAuthenticationStub()
   const signUpUseCase: UseCase = new SignUp(emptyUserRepository, encoder, authenticationStub)
-  const controller = new WebController(new SignUpController(signUpUseCase))
+  const controller = new WebController(new SignUpOperation(signUpUseCase))
   const validUser = UserBuilder.aUser().build()
   const validUserSignUpRequest: HttpRequest = {
     body: {
@@ -105,7 +105,7 @@ describe('Sign up controller', () => {
   })
 
   test('should return 500 if an error is raised internally', async () => {
-    const controllerWithStubUseCase = new WebController(new SignUpController(errorThrowingSignUpUseCaseStub))
+    const controllerWithStubUseCase = new WebController(new SignUpOperation(errorThrowingSignUpUseCaseStub))
     const response: HttpResponse = await controllerWithStubUseCase.handle(validUserSignUpRequest)
     expect(response.statusCode).toEqual(500)
     expect(response.body).toBeInstanceOf(Error)

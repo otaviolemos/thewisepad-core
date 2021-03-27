@@ -2,7 +2,7 @@ import { HttpRequest, HttpResponse, ControllerOperation } from '@/presentation/c
 import { ok } from '@/presentation/controllers/util'
 import { UseCase } from '@/use-cases/ports'
 
-export class LoadNotesController implements ControllerOperation {
+export class LoadNotesOperation implements ControllerOperation {
   requiredParams = ['userId']
   private readonly useCase: UseCase
 

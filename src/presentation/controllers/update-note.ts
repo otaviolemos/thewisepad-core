@@ -7,7 +7,7 @@ import { badRequest, ok } from '@/presentation/controllers/util'
 import { MissingParamError } from '@/presentation/controllers/errors'
 import { WebController } from './web-controller'
 
-export class UpdateNoteController implements ControllerOperation {
+export class UpdateNoteOperation implements ControllerOperation {
   private useCase: UseCase
   requiredParams = ['id', 'ownerEmail', 'ownerId']
 

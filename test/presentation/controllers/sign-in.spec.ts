@@ -2,7 +2,7 @@ import { CustomAuthentication } from '@/use-cases/authentication'
 import { AuthenticationResult } from '@/use-cases/authentication/ports'
 import { UserData, UserRepository } from '@/use-cases/ports'
 import { SignIn } from '@/use-cases/sign-in'
-import { SignInController, WebController } from '@/presentation/controllers'
+import { SignInOperation, WebController } from '@/presentation/controllers'
 import { HttpRequest, HttpResponse } from '@/presentation/controllers/ports'
 import { UserBuilder } from '@test/builders'
 import { FakeTokenManager } from '@test/doubles/authentication'
@@ -23,7 +23,7 @@ describe('Sign in controller', () => {
         password: validUser.password
       }
     }
-    const controller = new WebController(new SignInController(usecase))
+    const controller = new WebController(new SignInOperation(usecase))
     const response: HttpResponse = await controller.handle(validUserSignInRequest)
     const authResult = response.body as AuthenticationResult
     expect(response.statusCode).toEqual(200)
@@ -40,7 +40,7 @@ describe('Sign in controller', () => {
         password: validUser.password
       }
     }
-    const controller = new WebController(new SignInController(usecase))
+    const controller = new WebController(new SignInOperation(usecase))
     const response: HttpResponse = await controller.handle(signInRequestWithoutEmail)
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(MissingParamError)
@@ -56,7 +56,7 @@ describe('Sign in controller', () => {
         email: validUser.email
       }
     }
-    const controller = new WebController(new SignInController(usecase))
+    const controller = new WebController(new SignInOperation(usecase))
     const response: HttpResponse = await controller.handle(signInRequestWithoutPassword)
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(MissingParamError)
@@ -70,7 +70,7 @@ describe('Sign in controller', () => {
       body: {
       }
     }
-    const controller = new WebController(new SignInController(usecase))
+    const controller = new WebController(new SignInOperation(usecase))
     const response: HttpResponse = await controller.handle(signInRequestWithoutEmailAndPassword)
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(MissingParamError)
@@ -87,7 +87,7 @@ describe('Sign in controller', () => {
         password: 'incorrect password'
       }
     }
-    const controller = new WebController(new SignInController(usecase))
+    const controller = new WebController(new SignInOperation(usecase))
     const response: HttpResponse = await controller.handle(signInRequestWithIncorrectPassword)
     expect(response.statusCode).toEqual(403)
     expect(response.body).toBeInstanceOf(WrongPasswordError)
@@ -103,7 +103,7 @@ describe('Sign in controller', () => {
         password: anotherUser.email
       }
     }
-    const controller = new WebController(new SignInController(usecase))
+    const controller = new WebController(new SignInOperation(usecase))
     const response: HttpResponse = await controller.handle(signInRequestWithUnregisteredUser)
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(UserNotFoundError)
@@ -118,7 +118,7 @@ describe('Sign in controller', () => {
       }
     }
     const errorThrowingSignInUseCaseStub: ErrorThrowingUseCaseStub = new ErrorThrowingUseCaseStub()
-    const controllerWithStubUseCase = new WebController(new SignInController(errorThrowingSignInUseCaseStub))
+    const controllerWithStubUseCase = new WebController(new SignInOperation(errorThrowingSignInUseCaseStub))
     const response: HttpResponse = await controllerWithStubUseCase.handle(validUserSignInRequest)
     expect(response.statusCode).toEqual(500)
     expect(response.body).toBeInstanceOf(Error)

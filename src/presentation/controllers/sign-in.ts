@@ -5,7 +5,7 @@ import { UserNotFoundError, WrongPasswordError } from '@/use-cases/authenticatio
 import { AuthenticationResult } from '@/use-cases/authentication/ports'
 import { UseCase } from '@/use-cases/ports'
 
-export class SignInController implements ControllerOperation {
+export class SignInOperation implements ControllerOperation {
   requiredParams = ['email', 'password']
   private readonly useCase: UseCase
 

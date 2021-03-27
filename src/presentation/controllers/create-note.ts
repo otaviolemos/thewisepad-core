@@ -5,7 +5,7 @@ import { ExistingTitleError, UnregisteredOwnerError } from '@/use-cases/create-n
 import { NoteData, UseCase } from '@/use-cases/ports'
 import { created, badRequest } from '@/presentation/controllers/util'
 
-export class CreateNoteController implements ControllerOperation {
+export class CreateNoteOperation implements ControllerOperation {
   private useCase: UseCase
   requiredParams = ['title', 'content', 'ownerEmail']
 

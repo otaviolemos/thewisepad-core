@@ -1,5 +1,5 @@
 import { MissingParamError } from '@/presentation/controllers/errors'
-import { LoadNotesController } from '@/presentation/controllers/load-notes'
+import { LoadNotesOperation } from '@/presentation/controllers/load-notes'
 import { HttpRequest, HttpResponse } from '@/presentation/controllers/ports'
 import { LoadNotes } from '@/use-cases/load-notes'
 import { NoteData, NoteRepository } from '@/use-cases/ports'
@@ -16,7 +16,7 @@ describe('Load notes controller', () => {
       [note1, note2]
     )
     const usecase: LoadNotes = new LoadNotes(noteRepositoryWithTwoNotes)
-    const loadNotesController = new WebController(new LoadNotesController(usecase))
+    const loadNotesController = new WebController(new LoadNotesOperation(usecase))
     const aUser = UserBuilder.aUser().build()
     const loadNotesRequest: HttpRequest = {
       body: {
@@ -35,7 +35,7 @@ describe('Load notes controller', () => {
       [note1]
     )
     const usecase: LoadNotes = new LoadNotes(noteRepositoryWithOneNote)
-    const loadNotesController = new WebController(new LoadNotesController(usecase))
+    const loadNotesController = new WebController(new LoadNotesOperation(usecase))
     const requestWithoutUserId: HttpRequest = {
       body: {
       }
@@ -48,7 +48,7 @@ describe('Load notes controller', () => {
 
   test('should return 500 if load notes use case throws', async () => {
     const errorThrowingLoadNotesUseCase = new ErrorThrowingUseCaseStub()
-    const loadNotesController = new WebController(new LoadNotesController(errorThrowingLoadNotesUseCase))
+    const loadNotesController = new WebController(new LoadNotesOperation(errorThrowingLoadNotesUseCase))
     const aUser = UserBuilder.aUser().build()
     const loadNotesRequest: HttpRequest = {
       body: {
