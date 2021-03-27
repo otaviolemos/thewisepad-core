@@ -1,4 +1,5 @@
-import { HttpRequest, HttpResponse, WebController } from '@/presentation/controllers/ports'
+import { HttpRequest, HttpResponse } from '@/presentation/controllers/ports'
+import { WebController } from '@/presentation/controllers'
 import { RemoveNoteController } from '@/presentation/controllers/remove-note'
 import { NoteRepository } from '@/use-cases/ports'
 import { RemoveNote } from '@/use-cases/remove-note'
@@ -11,7 +12,7 @@ describe('Remove note controller', () => {
     const aNote = NoteBuilder.aNote().build()
     const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([aNote])
     const usecase = new RemoveNote(noteRepositoryWithANote)
-    const controller: WebController = new RemoveNoteController(usecase)
+    const controller = new WebController(new RemoveNoteController(usecase))
     const response: HttpResponse = await controller.handle({
       body: {
         noteId: aNote.id
@@ -26,7 +27,7 @@ describe('Remove note controller', () => {
     const anotherNote = NoteBuilder.aNote().withDifferentTitleAndId().build()
     const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([aNote])
     const usecase = new RemoveNote(noteRepositoryWithANote)
-    const controller: WebController = new RemoveNoteController(usecase)
+    const controller = new WebController(new RemoveNoteController(usecase))
     const response: HttpResponse = await controller.handle({
       body: {
         noteId: anotherNote.id
@@ -39,7 +40,7 @@ describe('Remove note controller', () => {
     const aNote = NoteBuilder.aNote().build()
     const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([aNote])
     const usecase = new RemoveNote(noteRepositoryWithANote)
-    const controller: WebController = new RemoveNoteController(usecase)
+    const controller = new WebController(new RemoveNoteController(usecase))
     const invalidRequest: HttpRequest = {
       body: {
       }
@@ -51,7 +52,7 @@ describe('Remove note controller', () => {
   test('should return 500 if server throws', async () => {
     const aNote = NoteBuilder.aNote().build()
     const errorThrowingRemoveNoteUseCase = new ErrorThrowingUseCaseStub()
-    const controller: WebController = new RemoveNoteController(errorThrowingRemoveNoteUseCase)
+    const controller = new WebController(new RemoveNoteController(errorThrowingRemoveNoteUseCase))
     const response: HttpResponse = await controller.handle({
       body: {
         noteId: aNote.id

@@ -1,11 +1,13 @@
-import { HttpRequest, HttpResponse, WebController } from '@/presentation/controllers/ports'
+import { HttpRequest, HttpResponse, ControllerOperation } from '@/presentation/controllers/ports'
 import { ok } from '@/presentation/controllers/util'
 import { UseCase } from '@/use-cases/ports'
 
-export class LoadNotesController extends WebController {
+export class LoadNotesController implements ControllerOperation {
+  requiredParams = ['userId']
+  private readonly useCase: UseCase
+
   constructor (useCase: UseCase) {
-    super(useCase)
-    super.requiredParams = ['userId']
+    this.useCase = useCase
   }
 
   async specificOp (request: HttpRequest): Promise<HttpResponse> {

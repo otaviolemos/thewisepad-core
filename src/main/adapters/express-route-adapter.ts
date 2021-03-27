@@ -1,5 +1,6 @@
-import { WebController, HttpRequest } from '@/presentation/controllers/ports'
+import { HttpRequest } from '@/presentation/controllers/ports'
 import { Request, Response } from 'express'
+import { WebController } from '@/presentation/controllers'
 
 export const adaptRoute = (controller: WebController) => {
   return async (req: Request, res: Response) => {

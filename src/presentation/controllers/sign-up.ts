@@ -1,12 +1,14 @@
-import { HttpResponse, WebController, HttpRequest } from '@/presentation/controllers/ports'
+import { HttpResponse, HttpRequest, ControllerOperation } from '@/presentation/controllers/ports'
 import { badRequest, created, forbidden } from '@/presentation/controllers/util'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { UseCase } from '@/use-cases/ports'
 
-export class SignUpController extends WebController {
+export class SignUpController implements ControllerOperation {
+  requiredParams = ['email', 'password']
+  private useCase: UseCase
+
   constructor (useCase: UseCase) {
-    super(useCase)
-    super.requiredParams = ['email', 'password']
+    this.useCase = useCase
   }
 
   async specificOp (request: HttpRequest): Promise<HttpResponse> {

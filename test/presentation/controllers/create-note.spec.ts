@@ -5,6 +5,7 @@ import { UnregisteredOwnerError } from '@/use-cases/create-note/errors'
 import { NoteBuilder, UserBuilder } from '@test/builders'
 import { InMemoryNoteRepository, InMemoryUserRepository } from '@test/doubles/repositories'
 import { ErrorThrowingUseCaseStub } from '@test/doubles/usecases'
+import { WebController } from '@/presentation/controllers'
 
 describe('Create note controller', () => {
   test('should return 201 when note is successfully created', async () => {
@@ -12,7 +13,7 @@ describe('Create note controller', () => {
     const aUser = UserBuilder.aUser().build()
     const emptyNoteRepository = new InMemoryNoteRepository([])
     const createNoteUseCase = new CreateNote(emptyNoteRepository, new InMemoryUserRepository([aUser]))
-    const createNoteController = new CreateNoteController(createNoteUseCase)
+    const createNoteController = new WebController(new CreateNoteController(createNoteUseCase))
     const validRequest: HttpRequest = {
       body: {
         title: aNote.title,
@@ -30,7 +31,7 @@ describe('Create note controller', () => {
     const aUser = UserBuilder.aUser().build()
     const emptyNoteRepository = new InMemoryNoteRepository([])
     const createNoteUseCase = new CreateNote(emptyNoteRepository, new InMemoryUserRepository([aUser]))
-    const createNoteController = new CreateNoteController(createNoteUseCase)
+    const createNoteController = new WebController(new CreateNoteController(createNoteUseCase))
     const requestWithoutTitle: HttpRequest = {
       body: {
         content: aNote.content,
@@ -45,7 +46,7 @@ describe('Create note controller', () => {
     const aUser = UserBuilder.aUser().build()
     const emptyNoteRepository = new InMemoryNoteRepository([])
     const createNoteUseCase = new CreateNote(emptyNoteRepository, new InMemoryUserRepository([aUser]))
-    const createNoteController = new CreateNoteController(createNoteUseCase)
+    const createNoteController = new WebController(new CreateNoteController(createNoteUseCase))
     const requestWithoutTitle: HttpRequest = {
       body: {
       }
@@ -60,7 +61,7 @@ describe('Create note controller', () => {
     const aUser = UserBuilder.aUser().build()
     const emptyNoteRepository = new InMemoryNoteRepository([])
     const createNoteUseCase = new CreateNote(emptyNoteRepository, new InMemoryUserRepository([aUser]))
-    const createNoteController = new CreateNoteController(createNoteUseCase)
+    const createNoteController = new WebController(new CreateNoteController(createNoteUseCase))
     const requestWithUnregisteredUser: HttpRequest = {
       body: {
         title: aNote.title,
@@ -76,7 +77,7 @@ describe('Create note controller', () => {
   test('should return 500 when server raises', async () => {
     const aNote = NoteBuilder.aNote().build()
     const errorThrowingCreateNoteUseCaseStub = new ErrorThrowingUseCaseStub()
-    const createNoteController = new CreateNoteController(errorThrowingCreateNoteUseCaseStub)
+    const createNoteController = new WebController(new CreateNoteController(errorThrowingCreateNoteUseCaseStub))
     const validRequest: HttpRequest = {
       body: {
         title: aNote.title,

@@ -6,6 +6,7 @@ import { NoteData, NoteRepository } from '@/use-cases/ports'
 import { NoteBuilder, UserBuilder } from '@test/builders'
 import { InMemoryNoteRepository } from '@test/doubles/repositories'
 import { ErrorThrowingUseCaseStub } from '@test/doubles/usecases'
+import { WebController } from '@/presentation/controllers'
 
 describe('Load notes controller', () => {
   test('should return 200 and notes for valid user', async () => {
@@ -15,7 +16,7 @@ describe('Load notes controller', () => {
       [note1, note2]
     )
     const usecase: LoadNotes = new LoadNotes(noteRepositoryWithTwoNotes)
-    const loadNotesController: LoadNotesController = new LoadNotesController(usecase)
+    const loadNotesController = new WebController(new LoadNotesController(usecase))
     const aUser = UserBuilder.aUser().build()
     const loadNotesRequest: HttpRequest = {
       body: {
@@ -34,7 +35,7 @@ describe('Load notes controller', () => {
       [note1]
     )
     const usecase: LoadNotes = new LoadNotes(noteRepositoryWithOneNote)
-    const loadNotesController: LoadNotesController = new LoadNotesController(usecase)
+    const loadNotesController = new WebController(new LoadNotesController(usecase))
     const requestWithoutUserId: HttpRequest = {
       body: {
       }
@@ -47,7 +48,7 @@ describe('Load notes controller', () => {
 
   test('should return 500 if load notes use case throws', async () => {
     const errorThrowingLoadNotesUseCase = new ErrorThrowingUseCaseStub()
-    const loadNotesController: LoadNotesController = new LoadNotesController(errorThrowingLoadNotesUseCase)
+    const loadNotesController = new WebController(new LoadNotesController(errorThrowingLoadNotesUseCase))
     const aUser = UserBuilder.aUser().build()
     const loadNotesRequest: HttpRequest = {
       body: {

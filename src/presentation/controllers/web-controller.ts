@@ -1,31 +1,27 @@
-import { HttpResponse, HttpRequest } from '@/presentation/controllers/ports'
-import { UseCase } from '@/use-cases/ports'
+import { HttpResponse, HttpRequest, ControllerOperation } from '@/presentation/controllers/ports'
 import { badRequest, serverError } from '@/presentation/controllers/util'
 import { MissingParamError } from '@/presentation/controllers/errors'
 
-export abstract class WebController {
-  protected requiredParams: string[]
-  protected readonly useCase: UseCase
+export class WebController {
+  private controllerOp: ControllerOperation
 
-  constructor (usecase: UseCase) {
-    this.useCase = usecase
+  constructor (controllerOp: ControllerOperation) {
+    this.controllerOp = controllerOp
   }
 
   public async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
-      const missingParams: string = this.getMissingParams(request, this.requiredParams)
+      const missingParams: string = WebController.getMissingParams(request, this.controllerOp.requiredParams)
       if (missingParams) {
         return badRequest(new MissingParamError(missingParams))
       }
-      return await this.specificOp(request)
+      return await this.controllerOp.specificOp(request)
     } catch (error) {
       return serverError(error)
     }
   }
 
-  protected abstract specificOp (request: HttpRequest): Promise<HttpResponse>
-
-  protected getMissingParams (request: HttpRequest, requiredParams: string[]): string {
+  public static getMissingParams (request: HttpRequest, requiredParams: string[]): string {
     const missingParams: string[] = []
     requiredParams.forEach(function (name) {
       if (!Object.keys(request.body).includes(name)) {

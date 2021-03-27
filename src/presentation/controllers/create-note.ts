@@ -1,14 +1,16 @@
 import { InvalidTitleError } from '@/entities/errors'
-import { HttpRequest, HttpResponse, WebController } from '@/presentation/controllers/ports'
+import { HttpRequest, HttpResponse, ControllerOperation } from '@/presentation/controllers/ports'
 import { Either } from '@/shared'
 import { ExistingTitleError, UnregisteredOwnerError } from '@/use-cases/create-note/errors'
 import { NoteData, UseCase } from '@/use-cases/ports'
 import { created, badRequest } from '@/presentation/controllers/util'
 
-export class CreateNoteController extends WebController {
+export class CreateNoteController implements ControllerOperation {
+  private useCase: UseCase
+  requiredParams = ['title', 'content', 'ownerEmail']
+
   constructor (useCase: UseCase) {
-    super(useCase)
-    super.requiredParams = ['title', 'content', 'ownerEmail']
+    this.useCase = useCase
   }
 
   async specificOp (request: HttpRequest): Promise<HttpResponse> {
