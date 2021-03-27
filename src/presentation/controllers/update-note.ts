@@ -14,7 +14,7 @@ export class UpdateNoteController extends WebController {
 
   async specificOp (request: HttpRequest): Promise<HttpResponse> {
     const updateParams = ['title', 'content']
-    const missingUpdateParams: string = this.getMissingUpdateParams(request, updateParams)
+    const missingUpdateParams: string = this.getMissingParams(request, updateParams)
     if (this.missingTitleAndContent(missingUpdateParams)) {
       return badRequest(new MissingParamError(missingUpdateParams))
     }
@@ -29,16 +29,6 @@ export class UpdateNoteController extends WebController {
     if (useCaseResponse.isLeft()) {
       return badRequest(useCaseResponse.value)
     }
-  }
-
-  private getMissingUpdateParams (request: HttpRequest, requiredUpdateParams: string[]): string {
-    const missingParams: string[] = []
-    requiredUpdateParams.forEach(function (name) {
-      if (!Object.keys(request.body).includes(name)) {
-        missingParams.push(name)
-      }
-    })
-    return missingParams.join(', ')
   }
 
   private missingTitleAndContent (missingUpdateParams: string): boolean {
