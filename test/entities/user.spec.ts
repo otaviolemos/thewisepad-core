@@ -5,6 +5,7 @@ const validPassword = '1validpassword'
 const invalidEmail = 'invalid_email'
 const invalidPasswordWithNoNumbers = 'invalid'
 const invalidPasswordWithTooFewCharacters = '123ab'
+const emptyPassword = ''
 
 describe('User domain entity', () => {
   test('should not create user with invalid e-mail address', () => {
@@ -19,6 +20,11 @@ describe('User domain entity', () => {
 
   test('should not create user with invalid password (too few chars)', () => {
     const error = User.create(validEmail, invalidPasswordWithTooFewCharacters).value as Error
+    expect(error.name).toEqual('InvalidPasswordError')
+  })
+
+  test('should not create user with invalid password (empty)', () => {
+    const error = User.create(validEmail, emptyPassword).value as Error
     expect(error.name).toEqual('InvalidPasswordError')
   })
 

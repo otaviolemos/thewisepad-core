@@ -3,7 +3,7 @@ module.exports = {
     '<rootDir>/test',
     '<rootDir>/src'
   ],
-  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+  collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/**/server.ts', '!<rootDir>/**/ports/*.ts'],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
   transform: {
