@@ -8,7 +8,8 @@
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "test:unit": "jest --passWithNoTests --watch --runInBand -c jest-unit.config.js",
     "test:integration": "jest --passWithNoTests --watch --runInBand -c jest-integration.config.js",
-    "test:staged": "jest --passWithNoTests --runInBand --findRelatedTests"
+    "test:staged": "jest --passWithNoTests --runInBand --findRelatedTests",
+    "test:ci": "jest --passWithNoTests --runInBand --coverage"
   },
   "keywords": [],
   "author": "",
