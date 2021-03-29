@@ -31,21 +31,17 @@ export class InMemoryNoteRepository implements NoteRepository {
     this.data.splice(this.data.findIndex(note => note.id === noteId), 1)
   }
 
-  public async updateTitle (noteId: string, newTitle: string): Promise<boolean> {
+  public async updateTitle (noteId: string, newTitle: string): Promise<void> {
     const originalNote = await this.findById(noteId)
-    if (!originalNote) {
-      return false
+    if (originalNote) {
+      originalNote.title = newTitle
     }
-    originalNote.title = newTitle
-    return true
   }
 
-  public async updateContent (noteId: string, newContent: string): Promise<boolean> {
+  public async updateContent (noteId: string, newContent: string): Promise<void> {
     const originalNote = await this.findById(noteId)
-    if (!originalNote) {
-      return false
+    if (originalNote) {
+      originalNote.content = newContent
     }
-    originalNote.content = newContent
-    return true
   }
 }

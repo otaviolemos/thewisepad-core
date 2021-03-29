@@ -44,30 +44,22 @@ export class MongodbNoteRepository implements NoteRepository {
     await noteCollection.deleteOne({ _id: new ObjectId(noteId) })
   }
 
-  async updateTitle (noteId: string, newTitle: string): Promise<boolean> {
+  async updateTitle (noteId: string, newTitle: string): Promise<void> {
     const noteCollection = await MongoHelper.getCollection('notes')
-    const result = await noteCollection.updateOne({ _id: new ObjectId(noteId) }, {
+    await noteCollection.updateOne({ _id: new ObjectId(noteId) }, {
       $set: {
         title: newTitle
       }
     })
-    if (result.modifiedCount === 1) {
-      return true
-    }
-    return false
   }
 
-  async updateContent (noteId: string, newContent: string): Promise<boolean> {
+  async updateContent (noteId: string, newContent: string): Promise<void> {
     const noteCollection = await MongoHelper.getCollection('notes')
-    const result = await noteCollection.updateOne({ _id: new ObjectId(noteId) }, {
+    await noteCollection.updateOne({ _id: new ObjectId(noteId) }, {
       $set: {
         content: newContent
       }
     })
-    if (result.modifiedCount === 1) {
-      return true
-    }
-    return false
   }
 
   private withApplicationId (dbNote: MongodbNote): NoteData {
