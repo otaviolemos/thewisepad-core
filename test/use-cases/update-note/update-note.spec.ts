@@ -4,6 +4,7 @@ import { InMemoryNoteRepository, InMemoryUserRepository } from '@test/doubles/re
 import { UserBuilder, NoteBuilder } from '@test/builders'
 import { ExistingTitleError } from '@/use-cases/create-note/errors'
 import { InvalidTitleError } from '@/entities/errors'
+import { UnexistingNoteError } from '@/use-cases/remove-note/errors'
 
 describe('Update note use case', () => {
   test('should update title and content of existing note', async () => {
@@ -99,5 +100,23 @@ describe('Update note use case', () => {
     const usecase = new UpdateNote(noteRepositoryWithANote, userRepositoryWithAUser)
     const response = (await usecase.perform(changedNote)).value as Error
     expect(response).toBeInstanceOf(InvalidTitleError)
+  })
+
+  test('should not update unexisting note', async () => {
+    const originalNote: NoteData = NoteBuilder.aNote().build()
+    const changedNote = {
+      title: originalNote.title,
+      ownerEmail: originalNote.ownerEmail,
+      id: originalNote.id,
+      ownerId: originalNote.ownerId
+    }
+    const owner = UserBuilder.aUser().build()
+    const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([])
+    const userRepositoryWithAUser: UserRepository = new InMemoryUserRepository([
+      owner
+    ])
+    const usecase = new UpdateNote(noteRepositoryWithANote, userRepositoryWithAUser)
+    const response = (await usecase.perform(changedNote)).value as Error
+    expect(response).toBeInstanceOf(UnexistingNoteError)
   })
 })

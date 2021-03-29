@@ -8,6 +8,7 @@ import { NoteBuilder, UserBuilder } from '@test/builders'
 import { InMemoryNoteRepository, InMemoryUserRepository } from '@test/doubles/repositories'
 import { ErrorThrowingUseCaseStub } from '@test/doubles/usecases'
 import { WebController } from '@/presentation/controllers'
+import { UnexistingNoteError } from '@/use-cases/remove-note/errors'
 
 describe('Update note controller', () => {
   test('should return 200 and updated note when note is updated', async () => {
@@ -34,6 +35,29 @@ describe('Update note controller', () => {
     expect(response.statusCode).toEqual(200)
     expect((response.body as NoteData).content).toEqual(changedNote.content)
     expect((response.body as NoteData).title).toEqual(changedNote.title)
+  })
+
+  test('should return 400 when trying to update unexisting note', async () => {
+    const originalNote: NoteData = NoteBuilder.aNote().build()
+    const changedNote: UpdateNoteRequest = {
+      title: originalNote.title,
+      id: originalNote.id,
+      ownerEmail: originalNote.ownerEmail,
+      ownerId: originalNote.ownerId
+    }
+    const request: HttpRequest = {
+      body: changedNote
+    }
+    const owner = UserBuilder.aUser().build()
+    const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([])
+    const userRepositoryWithAUser: UserRepository = new InMemoryUserRepository([
+      owner
+    ])
+    const usecase = new UpdateNote(noteRepositoryWithANote, userRepositoryWithAUser)
+    const controller = new WebController(new UpdateNoteOperation(usecase))
+    const response: HttpResponse = await controller.handle(request)
+    expect(response.statusCode).toEqual(400)
+    expect(response.body).toBeInstanceOf(UnexistingNoteError)
   })
 
   test('should return 400 when trying to update note with invalid title', async () => {
