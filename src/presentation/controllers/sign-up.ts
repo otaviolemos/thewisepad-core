@@ -19,11 +19,9 @@ export class SignUpOperation implements ControllerOperation {
       return created(response.value)
     }
 
-    if (response.isLeft()) {
-      if (response.value instanceof ExistingUserError) {
-        return forbidden(response.value)
-      }
-      return badRequest(response.value)
+    if (response.value instanceof ExistingUserError) {
+      return forbidden(response.value)
     }
+    return badRequest(response.value)
   }
 }
