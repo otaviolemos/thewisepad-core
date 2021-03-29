@@ -5,8 +5,7 @@ export const adaptMiddleware = (middleware: Middleware) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const request = {
       accessToken: req.headers['x-access-token'],
-      requesterId: req.body.ownerId ? req.body.ownerId : req.body.userId,
-      ...(req.headers || {})
+      requesterId: req.body.ownerId ? req.body.ownerId : req.body.userId
     }
     const httpResponse = await middleware.handle(request)
     if (httpResponse.statusCode === 200) {
