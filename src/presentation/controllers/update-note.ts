@@ -29,9 +29,7 @@ export class UpdateNoteOperation implements ControllerOperation {
       return ok(useCaseResponse.value)
     }
 
-    if (useCaseResponse.isLeft()) {
-      return badRequest(useCaseResponse.value)
-    }
+    return badRequest(useCaseResponse.value)
   }
 
   private missingTitleAndContent (missingUpdateParams: string): boolean {
