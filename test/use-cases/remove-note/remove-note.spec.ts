@@ -12,8 +12,7 @@ describe('Remove note use case', () => {
       .build()
     const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([aNote])
     const usecase = new RemoveNote(noteRepositoryWithANote)
-    const removed = (await usecase.perform(aNote.id)).value
-    expect(removed).toBe(aNote)
+    await usecase.perform(aNote.id)
     expect(await noteRepositoryWithANote.findById(aNote.id)).toBeNull()
   })
 

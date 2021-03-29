@@ -48,12 +48,6 @@ describe('Mongodb User repository', () => {
     expect(removedNote).toBeNull()
   })
 
-  test('should not remove unexisting note', async () => {
-    const repository = new MongodbNoteRepository()
-    const idOfUnexistingNote = '6058fdd8dcaa1ab0d608f337'
-    expect(await repository.remove(idOfUnexistingNote)).toBeNull()
-  })
-
   test('should update title of existing note', async () => {
     const repository = new MongodbNoteRepository()
     const aValidNote = NoteBuilder.aNote().build()

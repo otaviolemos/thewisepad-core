@@ -19,7 +19,7 @@ describe('Remove note controller', () => {
       }
     })
     expect(response.statusCode).toEqual(200)
-    expect(response.body).toEqual(aNote)
+    expect(await noteRepositoryWithANote.findById(aNote.id)).toBeNull()
   })
 
   test('should return 400 on attemp to remove unexisting note', async () => {

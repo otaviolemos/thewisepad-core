@@ -39,14 +39,9 @@ export class MongodbNoteRepository implements NoteRepository {
     return null
   }
 
-  async remove (noteId: string): Promise<NoteData> {
+  async remove (noteId: string): Promise<void> {
     const noteCollection = await MongoHelper.getCollection('notes')
-    const noteToBeRemoved = await noteCollection.findOne({ _id: new ObjectId(noteId) })
-    const result = await noteCollection.deleteOne({ _id: new ObjectId(noteId) })
-    if (result.deletedCount === 1) {
-      return this.withApplicationId(noteToBeRemoved)
-    }
-    return null
+    await noteCollection.deleteOne({ _id: new ObjectId(noteId) })
   }
 
   async updateTitle (noteId: string, newTitle: string): Promise<boolean> {
