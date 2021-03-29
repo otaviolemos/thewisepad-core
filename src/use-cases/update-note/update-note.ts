@@ -3,6 +3,7 @@ import { Note, User } from '@/entities'
 import { Either, left, right } from '@/shared'
 import { ExistingTitleError } from '@/use-cases/create-note/errors'
 import { UseCase, NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
+import { UnexistingNoteError } from '@/use-cases/remove-note/errors'
 
 export type UpdateNoteRequest = {
   title?: string,
@@ -21,9 +22,12 @@ export class UpdateNote implements UseCase {
     this.userRepository = userRepository
   }
 
-  public async perform (changedNoteData: UpdateNoteRequest): Promise<Either<ExistingTitleError | InvalidTitleError, NoteData>> {
+  public async perform (changedNoteData: UpdateNoteRequest): Promise<Either<ExistingTitleError | InvalidTitleError | UnexistingNoteError, NoteData>> {
     const userData = await this.userRepository.findByEmail(changedNoteData.ownerEmail)
     const originalNoteData = await this.noteRepository.findById(changedNoteData.id)
+    if (!originalNoteData) {
+      return left(new UnexistingNoteError())
+    }
     const owner = User.create(userData.email, userData.password).value as User
     const noteOrError = Note.create(owner,
       this.containsTitle(changedNoteData) ? changedNoteData.title : originalNoteData.title,
