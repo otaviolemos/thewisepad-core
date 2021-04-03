@@ -8,8 +8,8 @@ import { MissingParamError } from '@/presentation/controllers/errors'
 import { WebController } from './web-controller'
 
 export class UpdateNoteOperation implements ControllerOperation {
+  readonly requiredParams = ['id', 'ownerEmail', 'ownerId']
   private useCase: UseCase
-  requiredParams = ['id', 'ownerEmail', 'ownerId']
 
   constructor (useCase: UseCase) {
     this.useCase = useCase

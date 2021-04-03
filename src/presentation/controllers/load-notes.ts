@@ -3,7 +3,7 @@ import { ok } from '@/presentation/controllers/util'
 import { UseCase } from '@/use-cases/ports'
 
 export class LoadNotesOperation implements ControllerOperation {
-  requiredParams = ['userId']
+  readonly requiredParams = ['userId']
   private readonly useCase: UseCase
 
   constructor (useCase: UseCase) {

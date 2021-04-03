@@ -7,7 +7,7 @@ import { created, badRequest } from '@/presentation/controllers/util'
 
 export class CreateNoteOperation implements ControllerOperation {
   private useCase: UseCase
-  requiredParams = ['title', 'content', 'ownerEmail']
+  readonly requiredParams = ['title', 'content', 'ownerEmail']
 
   constructor (useCase: UseCase) {
     this.useCase = useCase

@@ -6,7 +6,7 @@ import { AuthenticationResult } from '@/use-cases/authentication/ports'
 import { UseCase } from '@/use-cases/ports'
 
 export class SignInOperation implements ControllerOperation {
-  requiredParams = ['email', 'password']
+  readonly requiredParams = ['email', 'password']
   private readonly useCase: UseCase
 
   constructor (useCase: UseCase) {

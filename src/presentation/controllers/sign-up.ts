@@ -4,7 +4,7 @@ import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import { UseCase } from '@/use-cases/ports'
 
 export class SignUpOperation implements ControllerOperation {
-  requiredParams = ['email', 'password']
+  readonly requiredParams = ['email', 'password']
   private useCase: UseCase
 
   constructor (useCase: UseCase) {

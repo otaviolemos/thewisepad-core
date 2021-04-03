@@ -5,7 +5,7 @@ import { UnexistingNoteError } from '@/use-cases/remove-note/errors'
 import { badRequest, ok } from '@/presentation/controllers/util'
 
 export class RemoveNoteOperation implements ControllerOperation {
-  requiredParams = ['noteId']
+  readonly requiredParams = ['noteId']
   private readonly useCase: UseCase
 
   constructor (useCase: UseCase) {
