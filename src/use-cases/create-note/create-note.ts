@@ -32,6 +32,11 @@ export class CreateNote implements UseCase {
     }
 
     const note: Note = noteOrError.value
-    return right(await this.noteRepository.add({ title: note.title.value, content: note.content, ownerEmail: ownerUser.email.value, ownerId: owner.id }))
+    return right(await this.noteRepository.add({
+      title: note.title.value,
+      content: note.content,
+      ownerEmail: ownerUser.email.value,
+      ownerId: owner.id
+    }))
   }
 }
