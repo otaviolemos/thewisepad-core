@@ -26,8 +26,8 @@ export class CreateNote implements UseCase {
     }
 
     const ownerNotes: NoteData[] = await this.noteRepository.findAllNotesFrom(owner.id)
-    const existing = ownerNotes.find(note => note.title === request.title)
-    if (existing) {
+    const noteExists = ownerNotes.find(note => note.title === request.title)
+    if (noteExists) {
       return left(new ExistingTitleError())
     }
 
