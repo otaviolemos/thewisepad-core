@@ -22,7 +22,8 @@ export class SignUp implements UseCase {
       return left(userOrError.value)
     }
 
-    if (await this.userRepository.findByEmail(userSignupRequest.email)) {
+    const user = await this.userRepository.findByEmail(userSignupRequest.email)
+    if (user) {
       return left(new ExistingUserError(userSignupRequest))
     }
 
