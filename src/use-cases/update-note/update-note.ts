@@ -28,9 +28,10 @@ export class UpdateNote implements UseCase {
     if (!originalNoteData) {
       return left(new UnexistingNoteError())
     }
+
     const owner = User.create(userData.email, userData.password).value as User
     const noteOrError = Note.create(owner,
-      this.containsTitle(changedNoteData) ? changedNoteData.title : originalNoteData.title,
+      UpdateNote.containsTitle(changedNoteData) ? changedNoteData.title : originalNoteData.title,
       changedNoteData.content)
     if (noteOrError.isLeft()) {
       return left(noteOrError.value)
@@ -54,7 +55,7 @@ export class UpdateNote implements UseCase {
     return right(await this.noteRepository.findById(changedNoteData.id))
   }
 
-  private containsTitle (updateNoteRequest: UpdateNoteRequest) {
+  private static containsTitle (updateNoteRequest: UpdateNoteRequest) {
     return Object.keys(updateNoteRequest).indexOf('title') !== -1
   }
 }
