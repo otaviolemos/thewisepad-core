@@ -20,10 +20,12 @@ export class CustomAuthentication implements AuthenticationService {
     if (!user) {
       return left(new UserNotFoundError())
     }
-    const isValid = await this.encoder.compare(authenticationParams.password, user.password)
-    if (!isValid) {
+
+    const matches = await this.encoder.compare(authenticationParams.password, user.password)
+    if (!matches) {
       return left(new WrongPasswordError())
     }
+
     const accessToken = await this.tokenManager.sign({ id: user.id })
 
     return right({
