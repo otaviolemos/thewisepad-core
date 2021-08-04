@@ -26,14 +26,14 @@ export class Password {
       return false
     }
 
-    if (!Password.hasNumber(password) || password.length < 6) {
+    if (Password.doesNotHaveNumber(password) || password.length < 6) {
       return false
     }
 
     return true
   }
 
-  private static hasNumber (str: string) {
-    return /\d/.test(str)
+  private static doesNotHaveNumber (str: string) {
+    return !(/\d/.test(str))
   }
 }
