@@ -43,14 +43,14 @@ export class Email {
     }
 
     const domainParts = domain.split('.')
-    if (this.somePartIsLargerThanMax(domainParts)) {
+    if (this.somePartIsTooLarge(domainParts)) {
       return false
     }
 
     return true
   }
 
-  private static somePartIsLargerThanMax (domainParts: string[]): boolean {
+  private static somePartIsTooLarge (domainParts: string[]): boolean {
     return domainParts.some(function (part) {
       return part.length > 63
     })
