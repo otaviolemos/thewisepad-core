@@ -13,7 +13,8 @@ export class CreateNote implements UseCase {
     this.userRepository = userRepository
   }
 
-  public async perform (request: NoteData): Promise<Either<ExistingTitleError | UnregisteredOwnerError | InvalidTitleError, NoteData>> {
+  public async perform (request: NoteData):
+    Promise<Either<ExistingTitleError | UnregisteredOwnerError | InvalidTitleError, NoteData>> {
     const owner = await this.userRepository.findByEmail(request.ownerEmail)
     if (!owner) {
       return left(new UnregisteredOwnerError())

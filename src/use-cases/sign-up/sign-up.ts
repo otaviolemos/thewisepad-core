@@ -16,7 +16,8 @@ export class SignUp implements UseCase {
     this.authentication = authentication
   }
 
-  public async perform (userSignupRequest: UserData): Promise<Either<ExistingUserError | InvalidEmailError | InvalidPasswordError, AuthenticationResult>> {
+  public async perform (userSignupRequest: UserData):
+    Promise<Either<ExistingUserError | InvalidEmailError | InvalidPasswordError, AuthenticationResult>> {
     const userOrError = User.create(userSignupRequest.email, userSignupRequest.password)
     if (userOrError.isLeft()) {
       return left(userOrError.value)
@@ -28,8 +29,16 @@ export class SignUp implements UseCase {
     }
 
     const encodedPassword = await this.encoder.encode(userSignupRequest.password)
-    await this.userRepository.add({ email: userSignupRequest.email, password: encodedPassword })
-    const response = (await this.authentication.auth({ email: userSignupRequest.email, password: userSignupRequest.password })).value as AuthenticationResult
+    await this.userRepository.add({
+      email: userSignupRequest.email,
+      password: encodedPassword
+    })
+
+    const response =
+      (await this.authentication.auth({
+        email: userSignupRequest.email,
+        password: userSignupRequest.password
+      })).value as AuthenticationResult
 
     return right(response)
   }

@@ -15,7 +15,8 @@ export class CustomAuthentication implements AuthenticationService {
     this.tokenManager = tokenManager
   }
 
-  async auth (authenticationParams: AuthenticationParams): Promise<Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>> {
+  async auth (authenticationParams: AuthenticationParams):
+    Promise<Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>> {
     const user = await this.userRepository.findByEmail(authenticationParams.email)
     if (!user) {
       return left(new UserNotFoundError())
