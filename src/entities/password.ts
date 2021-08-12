@@ -26,14 +26,18 @@ export class Password {
       return false
     }
 
-    if (Password.doesNotHaveNumber(password) || password.length < 6) {
+    if (Password.doesNotHaveNumber(password) || Password.isTooShort(password)) {
       return false
     }
 
     return true
   }
 
-  private static doesNotHaveNumber (str: string) {
-    return !(/\d/.test(str))
+  private static doesNotHaveNumber (password: string) {
+    return !(/\d/.test(password))
+  }
+
+  private static isTooShort (password: string) {
+    return password.length < 6
   }
 }
