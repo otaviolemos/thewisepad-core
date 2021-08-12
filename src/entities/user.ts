@@ -20,7 +20,8 @@ export class User {
     Object.freeze(this)
   }
 
-  public static create (email: string, password: string): Either<InvalidEmailError | InvalidPasswordError, User> {
+  public static create (email: string, password: string):
+    Either<InvalidEmailError | InvalidPasswordError, User> {
     const emailOrError = Email.create(email)
     if (emailOrError.isLeft()) {
       return left(new InvalidEmailError(email))
