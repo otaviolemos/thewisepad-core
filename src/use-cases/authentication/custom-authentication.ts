@@ -9,7 +9,8 @@ export class CustomAuthentication implements AuthenticationService {
   private readonly encoder: Encoder
   private readonly tokenManager: TokenManager
 
-  constructor (userRepository: UserRepository, encoder: Encoder, tokenManager: TokenManager) {
+  constructor
+  (userRepository: UserRepository, encoder: Encoder, tokenManager: TokenManager) {
     this.userRepository = userRepository
     this.encoder = encoder
     this.tokenManager = tokenManager
@@ -22,7 +23,8 @@ export class CustomAuthentication implements AuthenticationService {
       return left(new UserNotFoundError())
     }
 
-    const matches = await this.encoder.compare(authenticationParams.password, user.password)
+    const matches =
+      await this.encoder.compare(authenticationParams.password, user.password)
     if (!matches) {
       return left(new WrongPasswordError())
     }
