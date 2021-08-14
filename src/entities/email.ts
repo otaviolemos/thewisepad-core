@@ -9,8 +9,7 @@ export class Email {
     Object.freeze(this)
   }
 
-  public static create (email: string):
-    Either<InvalidEmailError, Email> {
+  public static create (email: string): Either<InvalidEmailError, Email> {
     if (Email.validate(email)) {
       return right(new Email(email))
     }
