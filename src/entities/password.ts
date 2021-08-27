@@ -13,7 +13,8 @@ export class Password {
     Object.freeze(this)
   }
 
-  public static create (password: string): Either<InvalidPasswordError, Password> {
+  public static create (password: string):
+    Either<InvalidPasswordError, Password> {
     if (!Password.validate(password)) {
       return left(new InvalidPasswordError())
     }
@@ -26,14 +27,14 @@ export class Password {
       return false
     }
 
-    if (Password.doesNotHaveNumber(password) || Password.isTooShort(password)) {
+    if (Password.doesNotContainNumber(password) || Password.isTooShort(password)) {
       return false
     }
 
     return true
   }
 
-  private static doesNotHaveNumber (password: string) {
+  private static doesNotContainNumber (password: string) {
     return !(/\d/.test(password))
   }
 
