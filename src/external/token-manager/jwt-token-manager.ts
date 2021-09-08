@@ -13,7 +13,7 @@ export class JwtTokenManager implements TokenManager {
     if (expires) {
       return jwt.sign(info, this.secret, { expiresIn: expires })
     }
-    return jwt.sign(info, this.secret, { expiresIn: '1m' })
+    return jwt.sign(info, this.secret, { expiresIn: '30d' })
   }
 
   async verify (token: string): Promise<Either<Error, Payload>> {
