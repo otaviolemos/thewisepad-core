@@ -10,7 +10,13 @@ export class SignIn implements UseCase {
     this.authentication = authentication
   }
 
-  public async perform (signinRequest: UserData): Promise<Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>> {
-    return await this.authentication.auth({ email: signinRequest.email, password: signinRequest.password })
+  public async perform (signinRequest: UserData):
+    Promise<Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>> {
+    return await this.authentication.auth(
+      {
+        email: signinRequest.email,
+        password: signinRequest.password
+      }
+    )
   }
 }
