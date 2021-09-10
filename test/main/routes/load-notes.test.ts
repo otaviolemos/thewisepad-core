@@ -44,9 +44,6 @@ describe('Load notes route', () => {
   })
 
   test('should be able to load notes for valid user', async () => {
-    app.delete('/test_cors', (req, res) => {
-      res.send()
-    })
     await request(app)
       .get('/api/notes/')
       .set('x-access-token', token)

@@ -30,9 +30,6 @@ describe('Create note route', () => {
   })
 
   test('should be able to create note for valid user', async () => {
-    app.post('/test_cors', (req, res) => {
-      res.send()
-    })
     await request(app)
       .post('/api/notes')
       .set('x-access-token', token)

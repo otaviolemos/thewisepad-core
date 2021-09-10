@@ -37,9 +37,6 @@ describe('Remove note route', () => {
   })
 
   test('should be able to remove existing note for valid user', async () => {
-    app.delete('/test_cors', (req, res) => {
-      res.send()
-    })
     await request(app)
       .delete('/api/notes/' + aNote.id)
       .set('x-access-token', token)
@@ -51,9 +48,6 @@ describe('Remove note route', () => {
   })
 
   test('should not be able to remove existing note for another user', async () => {
-    app.delete('/test_cors', (req, res) => {
-      res.send()
-    })
     await request(app)
       .delete('/api/notes/' + aNote.id)
       .set('x-access-token', token)

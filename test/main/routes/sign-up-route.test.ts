@@ -14,9 +14,6 @@ describe('Signup route', () => {
   })
 
   test('should return access token and id on success', async () => {
-    app.post('/test_cors', (req, res) => {
-      res.send()
-    })
     await request(app)
       .post('/api/signup')
       .send({

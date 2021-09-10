@@ -37,9 +37,6 @@ describe('Update note route', () => {
   })
 
   test('should be able to update title of existing note for valid user', async () => {
-    // app.put('/test_cors', (req, res) => {
-    //   res.send()
-    // })
     const newTitle = 'a new title'
     await request(app)
       .put('/api/notes/' + aNote.id)
@@ -57,9 +54,6 @@ describe('Update note route', () => {
   })
 
   test('should be able to update content of existing note for valid user', async () => {
-    app.put('/test_cors', (req, res) => {
-      res.send()
-    })
     const newContent = 'new content'
     await request(app)
       .put('/api/notes/' + aNote.id)

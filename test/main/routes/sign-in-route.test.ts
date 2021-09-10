@@ -24,9 +24,6 @@ describe('Signin route', () => {
   })
 
   test('should successfully sign in with valid user', async () => {
-    app.post('/test_cors', (req, res) => {
-      res.send()
-    })
     await request(app)
       .post('/api/signin')
       .send({
