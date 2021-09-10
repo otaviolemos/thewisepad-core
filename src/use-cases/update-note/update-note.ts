@@ -42,7 +42,7 @@ export class UpdateNote implements UseCase {
     const changedNote = noteOrError.value as Note
 
     if (changedNoteData.title) {
-      if (await this.noteHasExistingTitle(changedNoteData, changedNote)) {
+      if (await this.newTitleAlreadyExists(changedNoteData, changedNote)) {
         return left(new ExistingTitleError())
       }
       await this.noteRepository.updateTitle(changedNoteData.id, changedNoteData.title)
@@ -55,7 +55,7 @@ export class UpdateNote implements UseCase {
     return right(await this.noteRepository.findById(changedNoteData.id))
   }
 
-  private async noteHasExistingTitle (changedNoteData: UpdateNoteRequest, changedNote: Note) {
+  private async newTitleAlreadyExists (changedNoteData: UpdateNoteRequest, changedNote: Note) {
     const notesFromUser = await this.noteRepository.findAllNotesFrom(changedNoteData.ownerId)
     const found = notesFromUser.find(note => note.title === changedNote.title.value)
     return found
