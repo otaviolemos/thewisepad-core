@@ -32,8 +32,9 @@ export class UpdateNote implements UseCase {
 
     const owner = User.create(userData.email, userData.password).value as User
     const noteOrError = Note.create(owner,
-      UpdateNote.containsTitle(changedNoteData) ? changedNoteData.title : originalNoteData.title,
-      changedNoteData.content)
+      UpdateNote.containsTitleProperty(changedNoteData)
+        ? changedNoteData.title
+        : originalNoteData.title, changedNoteData.content)
     if (noteOrError.isLeft()) {
       return left(noteOrError.value)
     }
@@ -41,9 +42,7 @@ export class UpdateNote implements UseCase {
     const changedNote = noteOrError.value as Note
 
     if (changedNoteData.title) {
-      const notesFromUser = await this.noteRepository.findAllNotesFrom(changedNoteData.ownerId)
-      const found = notesFromUser.find(note => note.title === changedNote.title.value)
-      if (found) {
+      if (await this.noteHasExistingTitle(changedNoteData, changedNote)) {
         return left(new ExistingTitleError())
       }
       await this.noteRepository.updateTitle(changedNoteData.id, changedNoteData.title)
@@ -56,7 +55,13 @@ export class UpdateNote implements UseCase {
     return right(await this.noteRepository.findById(changedNoteData.id))
   }
 
-  private static containsTitle (updateNoteRequest: UpdateNoteRequest) {
+  private async noteHasExistingTitle (changedNoteData: UpdateNoteRequest, changedNote: Note) {
+    const notesFromUser = await this.noteRepository.findAllNotesFrom(changedNoteData.ownerId)
+    const found = notesFromUser.find(note => note.title === changedNote.title.value)
+    return found
+  }
+
+  private static containsTitleProperty (updateNoteRequest: UpdateNoteRequest) {
     return Object.keys(updateNoteRequest).indexOf('title') !== -1
   }
 }
