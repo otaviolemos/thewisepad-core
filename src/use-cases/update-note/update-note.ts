@@ -31,12 +31,8 @@ export class UpdateNote implements UseCase {
     }
 
     const owner = User.create(userData.email, userData.password).value as User
-
-    const titleToBeUsed: string =
-      shouldChangeTitle(changedNoteData) ? changedNoteData.title : original.title
-    const contentToBeUsed: string =
-      shouldChangeContent(changedNoteData) ? changedNoteData.content : original.content
-    const noteOrError = Note.create(owner, titleToBeUsed, contentToBeUsed)
+    const noteOrError = Note.create(owner, getTitleToBeUsed(changedNoteData, original),
+      getContentToBeUsed(changedNoteData, original))
     if (noteOrError.isLeft()) {
       return left(noteOrError.value)
     }
@@ -70,4 +66,12 @@ function shouldChangeTitle (updateNoteRequest: UpdateNoteRequest) {
 
 function shouldChangeContent (updateNoteRequest: UpdateNoteRequest) {
   return Object.keys(updateNoteRequest).indexOf('content') !== -1
+}
+
+function getTitleToBeUsed (changedNoteData: UpdateNoteRequest, original: NoteData): string {
+  return shouldChangeTitle(changedNoteData) ? changedNoteData.title : original.title
+}
+
+function getContentToBeUsed (changedNoteData: UpdateNoteRequest, original: NoteData): string {
+  return shouldChangeContent(changedNoteData) ? changedNoteData.title : original.title
 }
