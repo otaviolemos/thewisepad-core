@@ -22,7 +22,8 @@ export class UpdateNote implements UseCase {
     this.userRepository = userRepository
   }
 
-  public async perform (changedNoteData: UpdateNoteRequest): Promise<Either<ExistingTitleError | InvalidTitleError | UnexistingNoteError, NoteData>> {
+  public async perform (changedNoteData: UpdateNoteRequest):
+    Promise<Either<UnexistingNoteError | InvalidTitleError | ExistingTitleError, NoteData>> {
     const userData = await this.userRepository.findByEmail(changedNoteData.ownerEmail)
     const originalNoteData = await this.noteRepository.findById(changedNoteData.id)
     if (!originalNoteData) {
