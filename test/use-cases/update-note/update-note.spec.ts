@@ -84,6 +84,24 @@ describe('Update note use case', () => {
     expect(response.content).toEqual(changedNote.content)
   })
 
+  test('should update content of existing note to empty content', async () => {
+    const originalNote: NoteData = NoteBuilder.aNote().build()
+    const changedNote = {
+      ownerEmail: originalNote.ownerEmail,
+      id: originalNote.id,
+      ownerId: originalNote.ownerId,
+      content: ''
+    }
+    const owner = UserBuilder.aUser().build()
+    const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([originalNote])
+    const userRepositoryWithAUser: UserRepository = new InMemoryUserRepository([
+      owner
+    ])
+    const usecase = new UpdateNote(noteRepositoryWithANote, userRepositoryWithAUser)
+    const response = (await usecase.perform(changedNote)).value as NoteData
+    expect(response.content).toEqual(changedNote.content)
+  })
+
   test('should not update title with invalid title', async () => {
     const originalNote: NoteData = NoteBuilder.aNote().build()
     const changedNote = {
