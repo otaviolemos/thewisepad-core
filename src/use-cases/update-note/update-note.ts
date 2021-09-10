@@ -25,18 +25,19 @@ export class UpdateNote implements UseCase {
   public async perform (changedNoteData: UpdateNoteRequest):
     Promise<Either<UnexistingNoteError | InvalidTitleError | ExistingTitleError, NoteData>> {
     const userData = await this.userRepository.findByEmail(changedNoteData.ownerEmail)
-    const originalNoteData = await this.noteRepository.findById(changedNoteData.id)
-    if (!originalNoteData) {
+    const original = await this.noteRepository.findById(changedNoteData.id)
+    if (!original) {
       return left(new UnexistingNoteError())
     }
 
     const owner = User.create(userData.email, userData.password).value as User
-    let titleToBeUsed: string = originalNoteData.title
-    if (shouldChangeTitle(changedNoteData)) {
-      titleToBeUsed = changedNoteData.title
-    }
+    const titleToBeUsed: string =
+      shouldChangeTitle(changedNoteData) ? changedNoteData.title : original.title
 
-    const noteOrError = Note.create(owner, titleToBeUsed, changedNoteData.content)
+    const contentToBeUsed: string =
+      shouldChangeTitle(changedNoteData) ? changedNoteData.content : original.content
+
+    const noteOrError = Note.create(owner, titleToBeUsed, contentToBeUsed)
     if (noteOrError.isLeft()) {
       return left(noteOrError.value)
     }
