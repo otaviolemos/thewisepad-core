@@ -31,12 +31,11 @@ export class UpdateNote implements UseCase {
     }
 
     const owner = User.create(userData.email, userData.password).value as User
+
     const titleToBeUsed: string =
       shouldChangeTitle(changedNoteData) ? changedNoteData.title : original.title
-
     const contentToBeUsed: string =
-      shouldChangeTitle(changedNoteData) ? changedNoteData.content : original.content
-
+      shouldChangeContent(changedNoteData) ? changedNoteData.content : original.content
     const noteOrError = Note.create(owner, titleToBeUsed, contentToBeUsed)
     if (noteOrError.isLeft()) {
       return left(noteOrError.value)
