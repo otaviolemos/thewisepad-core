@@ -13,7 +13,10 @@ export class SignUpOperation implements ControllerOperation {
 
   async specificOp (request: HttpRequest): Promise<HttpResponse> {
     const response =
-      await this.useCase.perform({ email: request.body.email, password: request.body.password })
+      await this.useCase.perform({
+        email: request.body.email,
+        password: request.body.password
+      })
 
     if (response.isRight()) {
       return created(response.value)
