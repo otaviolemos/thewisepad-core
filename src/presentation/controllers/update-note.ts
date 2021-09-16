@@ -18,7 +18,7 @@ export class UpdateNoteOperation implements ControllerOperation {
   async specificOp (request: HttpRequest): Promise<HttpResponse> {
     const updateParams = ['title', 'content']
     const missingUpdateParams: string = WebController.getMissingParams(request, updateParams)
-    if (this.missingTitleAndContent(missingUpdateParams)) {
+    if (missingTitleAndContent(missingUpdateParams)) {
       return badRequest(new MissingParamError(missingUpdateParams))
     }
 
@@ -31,8 +31,8 @@ export class UpdateNoteOperation implements ControllerOperation {
 
     return badRequest(useCaseResponse.value)
   }
+}
 
-  private missingTitleAndContent (missingUpdateParams: string): boolean {
-    return missingUpdateParams.split(',').length === 2
-  }
+function missingTitleAndContent (missingUpdateParams: string): boolean {
+  return missingUpdateParams.split(',').length === 2
 }
