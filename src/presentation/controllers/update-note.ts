@@ -22,8 +22,9 @@ export class UpdateNoteOperation implements ControllerOperation {
       return badRequest(new MissingParamError(missingUpdateParams))
     }
 
-    const useCaseResponse: Either<ExistingTitleError | InvalidTitleError, NoteData> =
-    await this.useCase.perform(request.body)
+    const useCaseResponse:
+      Either<ExistingTitleError | InvalidTitleError, NoteData> =
+        await this.useCase.perform(request.body)
 
     if (useCaseResponse.isRight()) {
       return ok(useCaseResponse.value)
