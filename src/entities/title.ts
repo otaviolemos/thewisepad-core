@@ -10,20 +10,20 @@ export class Title {
   }
 
   public static create (title: string): Either<InvalidTitleError, Title> {
-    if (invalid(title)) {
-      return left(new InvalidTitleError(title))
+    if (valid(title)) {
+      return right(new Title(title))
     }
 
-    return right(new Title(title))
+    return left(new InvalidTitleError(title))
   }
 }
 
-function invalid (title: string): boolean {
+function valid (title: string): boolean {
   if (emptyOrTooLittle(title) || tooLarge(title)) {
-    return true
+    return false
   }
 
-  return false
+  return true
 }
 
 function emptyOrTooLittle (title: string): boolean {

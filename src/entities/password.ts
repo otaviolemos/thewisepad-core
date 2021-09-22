@@ -15,24 +15,24 @@ export class Password {
 
   public static create (password: string):
     Either<InvalidPasswordError, Password> {
-    if (invalid(password)) {
-      return left(new InvalidPasswordError())
+    if (valid(password)) {
+      return right(new Password(password))
     }
 
-    return right(new Password(password))
+    return left(new InvalidPasswordError())
   }
 }
 
-function invalid (password: string): boolean {
+function valid (password: string): boolean {
   if (!password) {
-    return true
+    return false
   }
 
   if (noNumberIn(password) || tooShort(password)) {
-    return true
+    return false
   }
 
-  return false
+  return true
 }
 
 function noNumberIn (password: string) {

@@ -1,68 +1,68 @@
-import { invalid } from '@/entities/email'
+import { valid } from '@/entities/email'
 
 describe('Email validation', () => {
   test('should not accept null strings', () => {
     const email = null
-    expect(invalid(email)).toBeTruthy()
+    expect(valid(email)).toBeFalsy()
   })
 
   test('should not accept empty strings', () => {
     const email = ''
-    expect(invalid(email)).toBeTruthy()
+    expect(valid(email)).toBeFalsy()
   })
 
   test('should accept valid email', () => {
     const email = 'any@mail.com'
-    expect(invalid(email)).toBeFalsy()
+    expect(valid(email)).toBeTruthy()
   })
 
   test('should not accept strings larger than 320 chars', () => {
     const email = 'l'.repeat(64) + '@' + 'd'.repeat(128) + '.' + 'd'.repeat(127)
-    expect(invalid(email)).toBeTruthy()
+    expect(valid(email)).toBeFalsy()
   })
 
   test('should not accept domain part larger than 255 chars', () => {
     const email = 'local@' + 'd'.repeat(128) + '.' + 'd'.repeat(127)
-    expect(invalid(email)).toBeTruthy()
+    expect(valid(email)).toBeFalsy()
   })
 
   test('should not accept local part larger than 64 chars', () => {
     const email = 'l'.repeat(65) + '@mail.com'
-    expect(invalid(email)).toBeTruthy()
+    expect(valid(email)).toBeFalsy()
   })
 
   test('should not accept empty local part', () => {
     const email = '@mail.com'
-    expect(invalid(email)).toBeTruthy()
+    expect(valid(email)).toBeFalsy()
   })
 
   test('should not accept empty domain', () => {
     const email = 'any@'
-    expect(invalid(email)).toBeTruthy()
+    expect(valid(email)).toBeFalsy()
   })
 
   test('should not accept domain with a part larger than 63 chars', () => {
     const email = 'any@' + 'd'.repeat(64) + '.com'
-    expect(invalid(email)).toBeTruthy()
+    expect(valid(email)).toBeFalsy()
   })
 
   test('should not accept local part with invalid char', () => {
     const email = 'any email@mail.com'
-    expect(invalid(email)).toBeTruthy()
+    expect(valid(email)).toBeFalsy()
   })
 
   test('should not accept local part with two dots', () => {
     const email = 'any..email@mail.com'
-    expect(invalid(email)).toBeTruthy()
+    expect(valid(email)).toBeFalsy()
   })
 
   test('should not accept local part with ending dot', () => {
     const email = 'any.@mail.com'
-    expect(invalid(email)).toBeTruthy()
+    expect(valid(email)).toBeFalsy()
   })
 
   test('should not accept email without an at-sign', () => {
     const email = 'anymail.com'
-    expect(invalid(email)).toBeTruthy()
+    expect(valid(email)).toBeFalsy()
   })
 })

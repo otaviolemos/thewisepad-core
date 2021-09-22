@@ -10,32 +10,33 @@ export class Email {
   }
 
   public static create (email: string): Either<InvalidEmailError, Email> {
-    if (invalid(email)) {
-      return left(new InvalidEmailError(email))
+    if (valid(email)) {
+      return right(new Email(email))
     }
 
-    return right(new Email(email))
+    return left(new InvalidEmailError(email))
   }
 }
 
-export function invalid (email: string): boolean {
+export function valid (email: string): boolean {
   const maxEmailSize = 320
   if (emptyOrTooLarge(email, maxEmailSize) || nonConformant(email)) {
-    return true
+    return false
   }
 
   const [local, domain] = email.split('@')
   const maxLocalSize = 64
   const maxDomainSize = 255
-  if (emptyOrTooLarge(local, maxLocalSize) || emptyOrTooLarge(domain, maxDomainSize)) {
-    return true
+  if (emptyOrTooLarge(local, maxLocalSize) ||
+      emptyOrTooLarge(domain, maxDomainSize)) {
+    return false
   }
 
   if (somePartIsTooLargeIn(domain)) {
-    return true
+    return false
   }
 
-  return false
+  return true
 }
 
 function emptyOrTooLarge (str: string, maxSize: number): boolean {
