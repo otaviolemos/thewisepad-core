@@ -15,30 +15,30 @@ export class Password {
 
   public static create (password: string):
     Either<InvalidPasswordError, Password> {
-    if (!Password.validate(password)) {
+    if (invalid(password)) {
       return left(new InvalidPasswordError())
     }
 
     return right(new Password(password))
   }
+}
 
-  public static validate (password: string): boolean {
-    if (!password) {
-      return false
-    }
-
-    if (Password.doesNotContainNumber(password) || Password.isTooShort(password)) {
-      return false
-    }
-
+function invalid (password: string): boolean {
+  if (!password) {
     return true
   }
 
-  private static doesNotContainNumber (password: string) {
-    return !(/\d/.test(password))
+  if (noNumberIn(password) || tooShort(password)) {
+    return true
   }
 
-  private static isTooShort (password: string) {
-    return password.length < 6
-  }
+  return false
+}
+
+function noNumberIn (password: string) {
+  return !(/\d/.test(password))
+}
+
+function tooShort (password: string) {
+  return password.length < 6
 }

@@ -10,49 +10,48 @@ export class Email {
   }
 
   public static create (email: string): Either<InvalidEmailError, Email> {
-    if (Email.validate(email)) {
-      return right(new Email(email))
+    if (invalid(email)) {
+      return left(new InvalidEmailError(email))
     }
 
-    return left(new InvalidEmailError(email))
+    return right(new Email(email))
   }
+}
 
-  static validate (email: string): boolean {
-    if (!email) {
-      return false
-    }
-
-    if (email.length > 320) {
-      return false
-    }
-
-    const emailRegex =
-      /^[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/
-
-    if (!emailRegex.test(email)) {
-      return false
-    }
-
-    const [local, domain] = email.split('@')
-    if (local.length > 64 || local.length === 0) {
-      return false
-    }
-
-    if (domain.length > 255 || domain.length === 0) {
-      return false
-    }
-
-    const domainParts = domain.split('.')
-    if (this.somePartIsTooLarge(domainParts)) {
-      return false
-    }
-
+export function invalid (email: string): boolean {
+  if (emptyOrTooLarge(email, 320) || nonConformant(email)) {
     return true
   }
 
-  private static somePartIsTooLarge (domainParts: string[]): boolean {
-    return domainParts.some(function (part) {
-      return part.length > 63
-    })
+  const [local, domain] = email.split('@')
+  if (emptyOrTooLarge(local, 64) || emptyOrTooLarge(domain, 255)) {
+    return true
   }
+
+  if (somePartIsTooLargeIn(domain)) {
+    return true
+  }
+
+  return false
+}
+
+function emptyOrTooLarge (str: string, maxSize: number): boolean {
+  if (!str || str.length === 0 || str.length > maxSize) {
+    return true
+  }
+}
+
+function nonConformant (email: string): boolean {
+  const emailRegex =
+    /^[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/
+
+  return !emailRegex.test(email)
+}
+
+function somePartIsTooLargeIn (domain: string): boolean {
+  const maxPartSize = 63
+  const domainParts = domain.split('.')
+  return domainParts.some(function (part) {
+    return part.length > maxPartSize
+  })
 }

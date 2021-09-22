@@ -10,20 +10,26 @@ export class Title {
   }
 
   public static create (title: string): Either<InvalidTitleError, Title> {
-    if (Title.validate(title)) {
-      return right(new Title(title))
+    if (invalid(title)) {
+      return left(new InvalidTitleError(title))
     }
 
-    return left(new InvalidTitleError(title))
+    return right(new Title(title))
   }
+}
 
-  static validate (title: string): boolean {
-    if (!title) {
-      return false
-    }
-    if (title.trim().length < 3 || title.trim().length > 256) {
-      return false
-    }
+function invalid (title: string): boolean {
+  if (emptyOrTooLittle(title) || tooLarge(title)) {
     return true
   }
+
+  return false
+}
+
+function emptyOrTooLittle (title: string): boolean {
+  return !title || title.trim().length < 3
+}
+
+function tooLarge (title: string): boolean {
+  return title.length > 256
 }
