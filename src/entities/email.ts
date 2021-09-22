@@ -19,12 +19,15 @@ export class Email {
 }
 
 export function invalid (email: string): boolean {
-  if (emptyOrTooLarge(email, 320) || nonConformant(email)) {
+  const maxEmailSize = 320
+  if (emptyOrTooLarge(email, maxEmailSize) || nonConformant(email)) {
     return true
   }
 
   const [local, domain] = email.split('@')
-  if (emptyOrTooLarge(local, 64) || emptyOrTooLarge(domain, 255)) {
+  const maxLocalSize = 64
+  const maxDomainSize = 255
+  if (emptyOrTooLarge(local, maxLocalSize) || emptyOrTooLarge(domain, maxDomainSize)) {
     return true
   }
 
@@ -36,7 +39,7 @@ export function invalid (email: string): boolean {
 }
 
 function emptyOrTooLarge (str: string, maxSize: number): boolean {
-  if (!str || str.length === 0 || str.length > maxSize) {
+  if (!str || str.length > maxSize) {
     return true
   }
 }
