@@ -36,4 +36,32 @@ describe('JWT token manager', () => {
     expect(((await (tokenManager.verify(signedToken))).value)).toBeInstanceOf(TokenExpiredError)
     clock.restore()
   })
+
+  test('should correctly verify default expiration of json web tokens - not expired', async () => {
+    const clock = sinon.useFakeTimers()
+    const secret = 'my secret'
+    const tokenManager = new JwtTokenManager(secret)
+    const info: Payload = { id: 'my id' }
+    const signedToken = await tokenManager.sign(info)
+    const twentyNineDays: number = 3600100 * 24 * 29
+    clock.tick(twentyNineDays)
+    const response = await tokenManager.verify(signedToken)
+    expect(signedToken).not.toEqual(info)
+    expect(response).toHaveProperty('value.id')
+    expect(response.isRight()).toBeTruthy()
+    clock.restore()
+  })
+
+  test('should correctly verify default expiration of json web tokens - expired', async () => {
+    const clock = sinon.useFakeTimers()
+    const secret = 'my secret'
+    const tokenManager = new JwtTokenManager(secret)
+    const info: Payload = { id: 'my id' }
+    const signedToken = await tokenManager.sign(info)
+    const thirtyOneDays: number = 3600100 * 24 * 31
+    clock.tick(thirtyOneDays)
+    expect(signedToken).not.toEqual(info)
+    expect(((await (tokenManager.verify(signedToken))).value)).toBeInstanceOf(TokenExpiredError)
+    clock.restore()
+  })
 })
