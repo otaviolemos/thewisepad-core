@@ -9,7 +9,8 @@ export const makeSignInController = (): WebController => {
   const userRepository = makeUserRepository()
   const encoder = makeEncoder()
   const tokenManager = makeTokenManager()
-  const authenticationService = new CustomAuthentication(userRepository, encoder, tokenManager)
+  const authenticationService =
+    new CustomAuthentication(userRepository, encoder, tokenManager)
   const usecase = new SignIn(authenticationService)
   const controller = new WebController(new SignInOperation(usecase))
   return controller
