@@ -43,11 +43,11 @@ export class UpdateNote implements UseCase {
       if (await this.newTitleAlreadyExists(changedNoteData, changedNote)) {
         return left(new ExistingTitleError())
       }
-      await this.noteRepository.updateTitle(changedNoteData.id, changedNoteData.title)
+      await this.noteRepository.updateTitle(changedNoteData.id, changedNote.title.value)
     }
 
     if (shouldChangeContent(changedNoteData)) {
-      await this.noteRepository.updateContent(changedNoteData.id, changedNoteData.content)
+      await this.noteRepository.updateContent(changedNoteData.id, changedNote.content)
     }
 
     return right(await this.noteRepository.findById(changedNoteData.id))
@@ -73,5 +73,5 @@ function getTitleToBeUsed (changedNoteData: UpdateNoteRequest, original: NoteDat
 }
 
 function getContentToBeUsed (changedNoteData: UpdateNoteRequest, original: NoteData): string {
-  return shouldChangeContent(changedNoteData) ? changedNoteData.title : original.title
+  return shouldChangeContent(changedNoteData) ? changedNoteData.content : original.content
 }
