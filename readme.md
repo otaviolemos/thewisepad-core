@@ -1,4 +1,4 @@
-## theWiseDev | This is an API of a backend for a simple notepad application. It was written in Node.js and TypeScript following the Clean Architecture principles.
+## theWisePad | This is an API of a backend for a simple notepad application. It was written in Node.js and TypeScript following the Clean Architecture principles.
 
 The API was developed using concepts from *Clean Architecture*, *Domain-Driven Design*, *Test-Driven Development*, *Continuos Refactoring*, and *Atomic Commits*.
 
