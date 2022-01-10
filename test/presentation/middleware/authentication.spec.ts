@@ -34,7 +34,7 @@ describe('Authentication middleware', () => {
     const token = await tokenManager.sign(payload)
     const authMiddleware = new Authentication(tokenManager)
     const response: HttpResponse = await authMiddleware.handle({ accessToken: token, requesterId: 'other id' })
-    expect(response).toEqual(forbidden(new Error('User not aloud to perform this operation.')))
+    expect(response).toEqual(forbidden(new Error('User not allowed to perform this operation.')))
   })
 
   test('should return payload if access token is valid', async () => {

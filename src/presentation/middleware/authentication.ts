@@ -33,7 +33,7 @@ export class Authentication implements Middleware {
         return ok(payload)
       }
 
-      return forbidden(new Error('User not aloud to perform this operation.'))
+      return forbidden(new Error('User not allowed to perform this operation.'))
     } catch (error) {
       return serverError(error)
     }
