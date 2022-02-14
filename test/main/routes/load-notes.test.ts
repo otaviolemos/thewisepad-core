@@ -38,9 +38,9 @@ describe('Load notes route', () => {
   })
 
   afterAll(async () => {
-    await MongoHelper.disconnect()
     await MongoHelper.clearCollection('users')
     await MongoHelper.clearCollection('notes')
+    await MongoHelper.disconnect()
   })
 
   test('should be able to load notes for valid user', async () => {
