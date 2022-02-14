@@ -9,7 +9,8 @@
     "test:unit": "jest --passWithNoTests --watch --runInBand -c jest-unit.config.js",
     "test:integration": "jest --passWithNoTests --watch --runInBand -c jest-integration.config.js",
     "test:staged": "jest --passWithNoTests --runInBand --findRelatedTests",
-    "test:ci": "jest --passWithNoTests --runInBand --coverage"
+    "test:ci": "jest --passWithNoTests --runInBand --coverage",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -30,7 +31,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0",
     "git-commit-msg-linter": "^4.0.7",
-    "husky": "^7.0.4",
+    "husky": "^7.0.0",
     "jest": "^27.5.1",
     "lint-staged": "^12.3.3",
     "rimraf": "^3.0.2",
