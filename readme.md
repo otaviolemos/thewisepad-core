@@ -13,4 +13,4 @@ To run this project you will need to create a `.env` file at the root of your pr
 
 We believe this project can be used as a *reference implementation* of the **Clean Architecture** with Node.js and TypeScript.
 
-Copyright © 2021 theWiseDev
+Copyright © 2022 theWiseDev
