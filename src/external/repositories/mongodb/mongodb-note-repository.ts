@@ -6,8 +6,8 @@ export type MongodbNote = {
   title: string,
   content: string,
   ownerEmail: string,
-  ownerId: string,
-  _id: string
+  ownerId: ObjectId,
+  _id: ObjectId
 }
 
 export class MongodbNoteRepository implements NoteRepository {
@@ -17,7 +17,7 @@ export class MongodbNoteRepository implements NoteRepository {
       title: note.title,
       content: note.content,
       ownerEmail: note.ownerEmail,
-      ownerId: note.ownerId,
+      ownerId: new ObjectId(note.ownerId),
       _id: null
     }
     await noteCollection.insertOne(noteClone)
@@ -26,13 +26,14 @@ export class MongodbNoteRepository implements NoteRepository {
 
   async findAllNotesFrom (userId: string): Promise<NoteData[]> {
     const noteCollection = await MongoHelper.getCollection('notes')
-    const notesFromUser: MongodbNote[] = await noteCollection.find({ ownerId: new ObjectId(userId) }).toArray()
+    const notesFromUser: MongodbNote[] =
+      await noteCollection.find<MongodbNote>({ ownerId: new ObjectId(userId) }).toArray()
     return notesFromUser.map(this.withApplicationId)
   }
 
   async findById (noteId: string): Promise<NoteData> {
     const noteCollection = await MongoHelper.getCollection('notes')
-    const dbNote: MongodbNote = await noteCollection.findOne({ _id: new ObjectId(noteId) })
+    const dbNote: MongodbNote = await noteCollection.findOne<MongodbNote>({ _id: new ObjectId(noteId) })
     if (dbNote) {
       return this.withApplicationId(dbNote)
     }
@@ -67,8 +68,8 @@ export class MongodbNoteRepository implements NoteRepository {
       title: dbNote.title,
       content: dbNote.content,
       ownerEmail: dbNote.ownerEmail,
-      ownerId: dbNote.ownerId,
-      id: dbNote._id
+      ownerId: dbNote.ownerId.toString(),
+      id: dbNote._id.toString()
     }
   }
 }
