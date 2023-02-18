@@ -46,13 +46,13 @@ export default function configAppToGenerateDoc (app: Express) {
 
 function createMorganTokens () {
   morgan.token('resBodySchema', function (req, res: any) {
-    const responseBody = res.__custombody__
-    if (!responseBody) {
+    if (!res.__custombody__) {
       return ' '
     }
-    if (Object.keys(responseBody).length === 0 || Object.keys(responseBody)[0] === '0') {
+    if (Object.keys(res.__custombody__).length === 0 || Object.keys(res.__custombody__)[0] === '0') {
       return ' '
     }
+    const responseBody = JSON.parse(res.__custombody__)
     const lineBreakAndTabs = '\n\t\t\t\t\t\t\t\t\t\t\t'
     const responseBodySchema = Object.keys(responseBody).map((key) => {
       return `"${key}": {${lineBreakAndTabs}"type": "${typeof responseBody[key]}"${lineBreakAndTabs}}`
