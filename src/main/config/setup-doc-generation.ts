@@ -11,7 +11,7 @@ export default function configAppToGenerateDoc (app: Express) {
   const format = (`
       ":url :randomId": {
         ":lowermethod": {
-          "description": "",
+          "description": :description,
           "parameters": [
             {
               "in": "body",
@@ -78,6 +78,7 @@ function createMorganTokens () {
   morgan.token('lowermethod', (req: Request, res) => req.method.toLowerCase())
   morgan.token('randomId', (req: Request, res) =>
     Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5))
+  morgan.token('description', (req: Request) => `"${req.headers.description}"`)
 }
 
 function overrideSendToAccessResponse (app: Express) {

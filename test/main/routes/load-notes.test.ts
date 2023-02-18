@@ -47,6 +47,7 @@ describe('Load notes route', () => {
     await request(app)
       .get('/api/notes/')
       .set('x-access-token', token)
+      .set('description', expect.getState().currentTestName)
       .send({
         userId: aNote.ownerId
       })

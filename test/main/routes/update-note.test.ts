@@ -41,6 +41,7 @@ describe('Update note route', () => {
     await request(app)
       .put('/api/notes/' + aNote.id)
       .set('x-access-token', token)
+      .set('description', expect.getState().currentTestName)
       .send({
         id: aNote.id,
         title: newTitle,
@@ -58,6 +59,7 @@ describe('Update note route', () => {
     await request(app)
       .put('/api/notes/' + aNote.id)
       .set('x-access-token', token)
+      .set('description', expect.getState().currentTestName)
       .send({
         id: aNote.id,
         content: newContent,

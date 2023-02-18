@@ -16,6 +16,7 @@ describe('Signup route', () => {
   test('should return access token and id on success', async () => {
     await request(app)
       .post('/api/signup')
+      .set('description', expect.getState().currentTestName)
       .send({
         email: 'any@mail.com',
         password: '1validpassword'

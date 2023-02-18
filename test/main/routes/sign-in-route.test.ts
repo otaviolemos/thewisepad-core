@@ -26,6 +26,7 @@ describe('Signin route', () => {
   test('should successfully sign in with valid user', async () => {
     await request(app)
       .post('/api/signin')
+      .set('description', expect.getState().currentTestName)
       .send({
         email: validUser.email,
         password: validUser.password

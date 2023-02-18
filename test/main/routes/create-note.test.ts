@@ -33,6 +33,7 @@ describe('Create note route', () => {
     await request(app)
       .post('/api/notes')
       .set('x-access-token', token)
+      .set('description', expect.getState().currentTestName)
       .send({
         title: aNote.title,
         content: aNote.content,

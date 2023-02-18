@@ -40,6 +40,7 @@ describe('Remove note route', () => {
     await request(app)
       .delete('/api/notes/' + aNote.id)
       .set('x-access-token', token)
+      .set('description', expect.getState().currentTestName)
       .send({
         noteId: aNote.id,
         userId: aNote.ownerId
@@ -51,6 +52,7 @@ describe('Remove note route', () => {
     await request(app)
       .delete('/api/notes/' + aNote.id)
       .set('x-access-token', token)
+      .set('description', expect.getState().currentTestName)
       .send({
         noteId: aNote.id,
         userId: 'a different id'
