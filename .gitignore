@@ -5,3 +5,4 @@ globalConfig.json
 .env
 coverage
 .vscode
+api-doc.json
